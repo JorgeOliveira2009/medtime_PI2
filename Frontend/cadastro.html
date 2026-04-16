@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>MedTime - Cadastro</title>
+  <style>
+    body {
+    display: flex;
+      font-family: Arial;
+      text-align: center;
+      background-color: #f4f6f8;
+      height: 100vh;
+      justify-content: center;
+    }
+
+    .caixa {
+        
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      width: 320px;
+      margin: auto;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    input {
+      width: 90%;
+      padding: 10px;
+      font-size: 16px;
+      margin-top: 5px;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      border: none;
+      border-radius: 8px;
+      background-color: #2ecc71;
+      color: white;
+    }
+
+    button:hover {
+      background-color: #27ae60;
+    }
+
+    a {
+      text-decoration: none;
+      color: #3498db;
+      font-weight: bold;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    #mensagem {
+      margin-top: 15px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="caixa">
+    <h1>MedTime 💊</h1>
+    <h2>Criar Conta</h2>
+
+    <input type="email" id="email" placeholder="Digite seu email">
+    <br><br>
+
+    <input type="password" id="senha" placeholder="Crie uma senha">
+    <br><br>
+
+    <button onclick="cadastrar()">Cadastrar</button>
+
+    <p id="mensagem"></p>
+
+    <hr>
+
+    <!-- BOTÃO DE LOGIN (IMPORTANTE) -->
+    <p>Já tem uma conta?</p>
+    <a href="login.html">Ir para o Login</a>
+  </div>
+
+  <script src="cadastrar.JS"></script>
+</body>
+</html>
