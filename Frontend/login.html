@@ -2,28 +2,33 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <link rel="stylesheet" href="../Frontend/css/login.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>MedTime - Login</title>
+  <link rel="stylesheet" href="../Frontend/css/login.css">
 </head>
 
 <body>
 
-  <h1>MedTime 💊</h1>
-  <h2>Login</h2>
+  <div class="container">
 
-  <input type="email" id="email" placeholder="Digite seu email">
-  <br><br>
+    <h1>MedTime 💊</h1>
+    <h2>Login</h2>
 
-  <input type="password" id="senha" placeholder="Digite sua senha">
-  <br><br>
+    <div class="input-group">
+      <input type="email" id="email" placeholder="Digite seu email">
+    </div>
 
-  <button onclick="fazerLogin()">Entrar</button>
-  <br><br>
+    <div class="input-group">
+      <input type="password" id="senha" placeholder="Digite sua senha">
+    </div>
 
-  <!-- BOTÃO DE REGISTRO -->
-  <button onclick=" irParaCadastro()">Registrar</button>
+    <button onclick="fazerLogin()">Entrar</button>
 
-  <p id="mensagem"></p>
+    <button class="registrar" onclick="irParaCadastro()">Registrar</button>
+
+    <p id="mensagem"></p>
+
+  </div>
 
   <script src="js/login.js"></script>
 </body>

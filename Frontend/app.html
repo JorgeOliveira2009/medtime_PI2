@@ -7,30 +7,30 @@
 </head>
 <body>
 
-  <h1>MedTime 💊</h1>
-  <div id="alerta" style="color: red; font-weight: bold;"></div>
-  <h2>Seus Lembretes de Remédio</h2>
+  <div class="container">
 
-  <button onclick="logout()">Sair</button>
+    <h1>MedTime 💊</h1>
+    <div id="alerta"></div>
+    <h2>Seus Lembretes de Remédio</h2>
 
-  <hr>
+    <button class="sair" onclick="logout()">Sair</button>
 
-  <h3>Adicionar novo lembrete</h3>
+    <hr>
 
-  <input type="text" id="nomeRemedio" placeholder="Nome do remédio">
-  <br><br>
+    <h3>Adicionar novo lembrete</h3>
 
-  <input type="time" id="horario">
-  <br><br>
+    <input type="text" id="nomeRemedio" placeholder="Nome do remédio">
+    <input type="time" id="horario">
 
-  <button onclick="adicionarLembrete()">Adicionar Lembrete</button>
+    <button onclick="adicionarLembrete()">Adicionar Lembrete</button>
 
-  <hr>
+    <hr>
 
-  <h3>Lembretes de Hoje:</h3>
-  <ul id="lista"></ul>
+    <h3>Lembretes de Hoje:</h3>
+    <ul id="lista"></ul>
+
+  </div>
 
 <script src="js/app.js"></script>
 <script src="js/app2.js"></script>
 </body>
-</html>
