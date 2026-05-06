@@ -6,3 +6,7 @@ Rotas:
 - http://localhost:3000/atualizar/1
 - http://localhost:3000/deletar/1
 - http://localhost:3000/Listar
+
+## COMO USAR:
+- INSTALAR DEPENDENCIA COMO? PERGUNTA PRO DAVI!
+- NPM INSTALL e ja eras...
