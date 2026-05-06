@@ -1,18 +1,3 @@
-/*
-
-----------cola ai no sql cpx-----------
-
-CREATE DATABASE medtime;
-
-USE medtime;
-
-CREATE TABLE usuarios (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    email VARCHAR(100) NOT NULL UNIQUE,
-    senha VARCHAR(100) NOT NULL
-);
-*/
-
 const express = require("express");
 const mysql = require("mysql2");
 const cors = require("cors");
