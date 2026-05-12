@@ -1,4 +1,4 @@
-function cadastrar() {
+ function cadastrar() {
     const email = document.getElementById("email").value;
     const senha = document.getElementById("senha").value;
     const mensagem = document.getElementById("mensagem");
