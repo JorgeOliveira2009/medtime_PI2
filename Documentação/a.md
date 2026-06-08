@@ -10,3 +10,4 @@ Rotas:
 ## COMO USAR:
 - INSTALAR DEPENDENCIA COMO? PERGUNTA PRO DAVI!
 - NPM INSTALL e ja eras...
+- use npm run dev
