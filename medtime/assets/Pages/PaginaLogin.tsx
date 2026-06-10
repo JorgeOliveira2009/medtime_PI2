@@ -12,17 +12,16 @@ import {
 import Input from '../Components/input';
 import Botao from '../Components/Botao';
 
-// Troque pelo caminho correto da sua logo:
- import logo from '../Pages/logo.png';
+import logo from '../Pages/logo.png';
 
-const PaginaLogin = () => {
+const PaginaLogin = ({ navigation }: any) => {
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
   const [loading, setLoading] = useState(false);
 
   const handleLogin = () => {
     setLoading(true);
-    setTimeout(() => setLoading(false), 2000); // simula requisição
+    setTimeout(() => setLoading(false), 2000);
   };
 
   return (
@@ -35,9 +34,7 @@ const PaginaLogin = () => {
         {/* Header */}
         <View style={styles.header}>
           <View style={styles.logoBox}>
-            {/* Descomente quando tiver a logo: */}
-            { <Image source={logo} style={styles.logoImg} /> }
-            
+            <Image source={logo} style={styles.logoImg} />
           </View>
           <View>
             <Text style={styles.bemVindo}>Bem-vindo!!</Text>
@@ -87,7 +84,7 @@ const PaginaLogin = () => {
 
           <View style={styles.registerRow}>
             <Text style={styles.registerText}>Não tem uma conta? </Text>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => navigation.navigate('PaginaCadastro')}>
               <Text style={styles.registerLink}>Cadastrar-se</Text>
             </TouchableOpacity>
           </View>
@@ -136,9 +133,7 @@ const styles = StyleSheet.create({
     width: 52,
     height: 52,
     borderRadius: 12,
-  },
-  logoEmoji: {
-    fontSize: 36,
+    resizeMode: 'contain',
   },
   bemVindo: {
     fontSize: 28,
