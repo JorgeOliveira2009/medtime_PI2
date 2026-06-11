@@ -9,6 +9,7 @@ import {
   Platform,
   Image,
 } from 'react-native';
+
 import Input from '../Components/input';
 import Botao from '../Components/Botao';
 
@@ -21,7 +22,18 @@ const PaginaLogin = ({ navigation }: any) => {
 
   const handleLogin = () => {
     setLoading(true);
-    setTimeout(() => setLoading(false), 2000);
+
+    setTimeout(() => {
+      setLoading(false);
+
+      // LOGIN NORMAL
+      navigation.navigate('PaginaPrincipal');
+    }, 1000);
+  };
+
+  // LOGIN DEV
+  const handleDevLogin = () => {
+    navigation.navigate('PaginaPrincipal');
   };
 
   return (
@@ -29,22 +41,32 @@ const PaginaLogin = ({ navigation }: any) => {
       style={styles.flex}
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
     >
-      <ScrollView contentContainerStyle={styles.scroll} keyboardShouldPersistTaps="handled">
-
+      <ScrollView
+        contentContainerStyle={styles.scroll}
+        keyboardShouldPersistTaps="handled"
+      >
         {/* Header */}
         <View style={styles.header}>
           <View style={styles.logoBox}>
             <Image source={logo} style={styles.logoImg} />
           </View>
+
           <View>
-            <Text style={styles.bemVindo}>Bem-vindo!!</Text>
-            <Text style={styles.subtitle}>Seu lembrete de medicamentos</Text>
+            <Text style={styles.bemVindo}>
+              Bem-vindo!!
+            </Text>
+
+            <Text style={styles.subtitle}>
+              Seu lembrete de medicamentos
+            </Text>
           </View>
         </View>
 
-        {/* Card de Login */}
+        {/* Card Login */}
         <View style={styles.card}>
-          <Text style={styles.cardTitle}>Login</Text>
+          <Text style={styles.cardTitle}>
+            Login
+          </Text>
 
           <Input
             label="E-mail"
@@ -64,32 +86,68 @@ const PaginaLogin = ({ navigation }: any) => {
           />
 
           <TouchableOpacity style={styles.forgotButton}>
-            <Text style={styles.forgotText}>Esqueci minha senha</Text>
+            <Text style={styles.forgotText}>
+              Esqueci minha senha
+            </Text>
           </TouchableOpacity>
 
-          {/* Login social */}
+          {/* Login Social */}
           <View style={styles.socialRow}>
             <TouchableOpacity style={styles.socialBtn}>
-              <Text style={styles.socialIcon}>G</Text>
+              <Text style={styles.socialIcon}>
+                G
+              </Text>
             </TouchableOpacity>
+
             <TouchableOpacity style={styles.socialBtn}>
-              <Text style={styles.socialIcon}>f</Text>
+              <Text style={styles.socialIcon}>
+                f
+              </Text>
             </TouchableOpacity>
+
             <TouchableOpacity style={styles.socialBtn}>
-              <Text style={styles.socialIcon}>in</Text>
+              <Text style={styles.socialIcon}>
+                in
+              </Text>
             </TouchableOpacity>
           </View>
 
-          <Botao title="Acessar" loading={loading} onPress={handleLogin} />
+          {/* Botão normal */}
+          <Botao
+            title="Acessar"
+            loading={loading}
+            onPress={handleLogin}
+          />
 
+          {/* Botão DEV */}
+          {__DEV__ && (
+            <TouchableOpacity
+              style={styles.devButton}
+              onPress={handleDevLogin}
+            >
+              <Text style={styles.devText}>
+                Entrar como DEV ⚡
+              </Text>
+            </TouchableOpacity>
+          )}
+
+          {/* Cadastro */}
           <View style={styles.registerRow}>
-            <Text style={styles.registerText}>Não tem uma conta? </Text>
-            <TouchableOpacity onPress={() => navigation.navigate('PaginaCadastro')}>
-              <Text style={styles.registerLink}>Cadastrar-se</Text>
+            <Text style={styles.registerText}>
+              Não tem uma conta?
+            </Text>
+
+            <TouchableOpacity
+              onPress={() =>
+                navigation.navigate('PaginaCadastro')
+              }
+            >
+              <Text style={styles.registerLink}>
+                Cadastrar-se
+              </Text>
             </TouchableOpacity>
           </View>
         </View>
-
       </ScrollView>
     </KeyboardAvoidingView>
   );
@@ -102,6 +160,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#E0F7FA',
   },
+
   scroll: {
     flexGrow: 1,
     paddingBottom: 40,
@@ -116,6 +175,7 @@ const styles = StyleSheet.create({
     paddingTop: 60,
     paddingBottom: 32,
   },
+
   logoBox: {
     width: 68,
     height: 68,
@@ -124,23 +184,29 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     shadowColor: '#00BCD4',
-    shadowOffset: { width: 0, height: 4 },
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
     shadowOpacity: 0.2,
     shadowRadius: 8,
     elevation: 4,
   },
+
   logoImg: {
     width: 52,
     height: 52,
     borderRadius: 12,
     resizeMode: 'contain',
   },
+
   bemVindo: {
     fontSize: 28,
     fontWeight: '800',
     color: '#006064',
     letterSpacing: -0.5,
   },
+
   subtitle: {
     fontSize: 13,
     color: '#00838F',
@@ -154,11 +220,15 @@ const styles = StyleSheet.create({
     borderRadius: 28,
     padding: 28,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 8 },
+    shadowOffset: {
+      width: 0,
+      height: 8,
+    },
     shadowOpacity: 0.08,
     shadowRadius: 24,
     elevation: 8,
   },
+
   cardTitle: {
     fontSize: 22,
     fontWeight: '800',
@@ -171,6 +241,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     marginTop: -6,
   },
+
   forgotText: {
     fontSize: 13,
     color: '#00BCD4',
@@ -184,6 +255,7 @@ const styles = StyleSheet.create({
     gap: 12,
     marginBottom: 20,
   },
+
   socialBtn: {
     width: 44,
     height: 44,
@@ -193,10 +265,27 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+
   socialIcon: {
     fontSize: 15,
     fontWeight: '700',
     color: '#455A64',
+  },
+
+  // DEV
+  devButton: {
+    marginTop: 12,
+    backgroundColor: '#263238',
+    paddingVertical: 14,
+    borderRadius: 16,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+
+  devText: {
+    color: '#fff',
+    fontWeight: '700',
+    fontSize: 14,
   },
 
   // Cadastro
@@ -205,10 +294,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginTop: 20,
   },
+
   registerText: {
     fontSize: 14,
     color: '#78909C',
   },
+
   registerLink: {
     fontSize: 14,
     color: '#00BCD4',

@@ -23,8 +23,8 @@ const ITENS = [
   { icon: '💊', label: 'Remédios',       rota: 'PaginaPrincipal' },
   { icon: '👤', label: 'Perfil',         rota: 'PaginaPerfil' },
   { icon: '🔔', label: 'Notificações',   rota: 'PaginaNotificacoes' },
-  { icon: '❓', label: 'Ajuda',          rota: null },
-  { icon: '⚙️', label: 'Configurações',  rota: null },
+  { icon: '❓', label: 'Ajuda',          rota: 'PaginaAjuda' },
+  { icon: '⚙️', label: 'Configurações',  rota: 'PaginaConfiguracoes' },
 ];
 
 const MenuLateral = ({ visible, onClose, navigation }: MenuLateralProps) => {
