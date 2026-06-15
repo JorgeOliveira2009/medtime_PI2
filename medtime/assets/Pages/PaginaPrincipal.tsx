@@ -47,7 +47,6 @@ const PaginaPrincipal = ({ navigation }: any) => {
   const [remedios, setRemedios] = useState<Remedio[]>([]);
   const [menuVisible, setMenuVisible] = useState(false);
 
-  // Modal de adicionar
   const [modalVisible, setModalVisible] = useState(false);
   const [novoNome, setNovoNome] = useState('');
   const [novoHorario, setNovoHorario] = useState('');
@@ -86,18 +85,31 @@ const PaginaPrincipal = ({ navigation }: any) => {
 
   function salvarRemedio() {
     let valido = true;
+
     if (!novoNome.trim()) {
       setErroNome('Informe o nome do remédio');
       valido = false;
     } else {
       setErroNome('');
     }
+
+    const horarioValido = /^\d{2}:\d{2}$/.test(novoHorario.trim());
+    const partes = novoHorario.split(':');
+    const hora = parseInt(partes[0], 10);
+    const minuto = parseInt(partes[1] ?? '', 10);
+    const horaValida = hora >= 0 && hora <= 23;
+    const minutoValido = minuto >= 0 && minuto <= 59;
+
     if (!novoHorario.trim()) {
       setErroHorario('Informe o horário');
+      valido = false;
+    } else if (!horarioValido || !horaValida || !minutoValido) {
+      setErroHorario('Horário inválido (00:00 até 23:59)');
       valido = false;
     } else {
       setErroHorario('');
     }
+
     if (!valido) return;
 
     setRemedios(prev => [
@@ -109,6 +121,7 @@ const PaginaPrincipal = ({ navigation }: any) => {
         tomado: false,
       },
     ]);
+
     setModalVisible(false);
   }
 
@@ -216,7 +229,6 @@ const PaginaPrincipal = ({ navigation }: any) => {
             </Text>
           </View>
 
-          {/* Lista vazia */}
           {remedios.length === 0 && (
             <View style={styles.emptyState}>
               <Text style={styles.emptyIcon}>💊</Text>
@@ -289,11 +301,21 @@ const PaginaPrincipal = ({ navigation }: any) => {
             <Text style={styles.inputLabel}>Horário</Text>
             <TextInput
               style={[styles.input, erroHorario ? styles.inputError : null]}
-              placeholder="Ex: 08:00"
+              placeholder="Ex: 0830"
               placeholderTextColor="#B0BEC5"
               value={novoHorario}
-              onChangeText={t => { setNovoHorario(t); setErroHorario(''); }}
-              keyboardType="numbers-and-punctuation"
+              onChangeText={t => {
+                const apenasNumeros = t.replace(/\D/g, '').slice(0, 4);
+                if (apenasNumeros.length <= 2) {
+                  setNovoHorario(apenasNumeros);
+                } else {
+                  const hh = apenasNumeros.slice(0, 2);
+                  const mm = apenasNumeros.slice(2, 4);
+                  setNovoHorario(`${hh}:${mm}`);
+                }
+                setErroHorario('');
+              }}
+              keyboardType="numeric"
               maxLength={5}
             />
             {erroHorario ? <Text style={styles.erroText}>{erroHorario}</Text> : null}
@@ -430,10 +452,8 @@ const styles = StyleSheet.create({
   },
   addBtnText: { color: TEAL, fontSize: 14, fontWeight: '700' },
 
-  /* Modal */
   modalOverlay: {
-    flex: 1, backgroundColor: 'rgba(0,0,0,0.4)',
-    justifyContent: 'flex-end',
+    flex: 1, backgroundColor: 'rgba(0,0,0,0.4)', justifyContent: 'flex-end',
   },
   modalCard: {
     backgroundColor: WHITE, borderTopLeftRadius: 28, borderTopRightRadius: 28,
