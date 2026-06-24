@@ -1,13 +1,11 @@
 import dotenv from "dotenv";
 dotenv.config();
-
+import "reflect-metadata";
 import express from "express";
 import cors from "cors";
 import userRoutes from "./src/routes/user-routes";
 import { errorMiddleware, notFoundMiddleware } from "./src/middlewares/errors-middlewares";
-import { testConnection } from "./src/config/database";
-import { DB_HOST, DB_DATABASE, JWT_SECRET } from "./src/config/env-config";
-
+import { AppDataSource } from "./src/config/database";
 const app = express();
 
 app.use(cors());
@@ -17,18 +15,15 @@ app.use(express.urlencoded({ extended: true }));
 // Rotas
 app.use("/", userRoutes);
 
-app.get("/", (req, res) => {
-  res.json({
-    message: "API MedTime rodando!",
-    status: "online",
-    database: DB_DATABASE
-  });
-});
+const port = 3000;
 
 // Middlewares de erro
 app.use(errorMiddleware);
 
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`🚀 Servidor rodando em http://localhost:${PORT}`);
-});
+AppDataSource.initialize()
+    .then(() => {
+        console.log("✅ Conectado ao banco!");
+        app.use("/user", userRoutes);
+        app.listen(port, () => console.log(`🚀 Servidor rodando: http://localhost:${port}`));
+    })
+    .catch((error) => console.error("❌ Erro:", error));

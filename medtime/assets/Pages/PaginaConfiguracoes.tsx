@@ -21,7 +21,7 @@ const PaginaConfiguracoes = ({ navigation }: any) => {
   const [temaEscuro, setTemaEscuro] = useState(false);
   const [notificacoesAtivas, setNotificacoesAtivas] = useState(true);
 
-  function handleTrocarUsuario() {
+  function handleTrocarusuario() {
     Alert.alert('Trocar usuário', 'Deseja sair e trocar de conta?', [
       { text: 'Cancelar', style: 'cancel' },
       { text: 'Sair', style: 'destructive', onPress: () => navigation?.navigate('PaginaLogin') },
@@ -115,7 +115,7 @@ const PaginaConfiguracoes = ({ navigation }: any) => {
         <View style={styles.card}>
           <Text style={styles.sectionTitle}>👤 Conta</Text>
 
-          <TouchableOpacity style={styles.settingRow} onPress={handleTrocarUsuario} activeOpacity={0.7}>
+          <TouchableOpacity style={styles.settingRow} onPress={handleTrocarusuario} activeOpacity={0.7}>
             <View style={styles.settingLeft}>
               <View style={styles.settingIconBox}>
                 <Text style={styles.settingIcon}>🔄</Text>
@@ -141,7 +141,7 @@ const PaginaConfiguracoes = ({ navigation }: any) => {
         {/* ── Sair ── */}
         <TouchableOpacity
           style={styles.sairBtn}
-          onPress={handleTrocarUsuario}
+          onPress={handleTrocarusuario}
           activeOpacity={0.8}
         >
           <Text style={styles.sairBtnText}>🚪  Sair da conta</Text>

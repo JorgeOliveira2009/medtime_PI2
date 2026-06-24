@@ -1,47 +1,32 @@
-import { pool } from "../config/database";
-import { User } from "../models/user";
+import { Usuario } from "../models/user";
+import { AppDataSource } from "../config/database";
 
-// CRIAR
-export const createUser = async (user: User) => {
-  await pool.query(
-    "INSERT INTO usuarios (email, senha) VALUES (?, ?)",
-    [user.email, user.senha]
-  );
-};
+export class UsuarioRepository {
+    private repository = AppDataSource.getRepository(Usuario);
 
-// LISTAR TODOS
-export const getUsers = async () => {
-  const [rows] = await pool.query("SELECT * FROM usuarios");
-  return rows;
-};
+    async criar(usuario: Usuario) {
+        return await this.repository.save(usuario);
+    }
 
-// BUSCAR POR ID
-export const getUserById = async (id: number) => {
-  const [rows] = await pool.query(
-    "SELECT * FROM usuarios WHERE id = ?",
-    [id]
-  );
-  return rows;
-};
+    async buscarTodos(): Promise<Usuario[]> {
+        return await this.repository.find();
+    }
 
-// 🔑 BUSCAR POR EMAIL (SUBSTITUI loginUser)
-export const getUserByEmail = async (email: string) => {
-  const [rows] = await pool.query(
-    "SELECT * FROM usuarios WHERE email = ?",
-    [email]
-  );
-  return rows;
-};
+    async buscarPorId(id: number): Promise<Usuario | null> {
+        return await this.repository.findOneBy({ id });
+    }
 
-// DELETAR
-export const deleteUser = async (id: number) => {
-  await pool.query("DELETE FROM usuarios WHERE id = ?", [id]);
-};
+    async buscarPorEmail(email: string): Promise<Usuario | null> {
+        return await this.repository.findOneBy({ email });
+    }
 
-// ATUALIZAR
-export const updateUser = async (id: number, email: string, senha: string) => {
-  await pool.query(
-    "UPDATE usuarios SET email = ?, senha = ? WHERE id = ?",
-    [email, senha, id]
-  );
-};
+    async atualizar(usuario: Usuario): Promise<Usuario> {
+        return await this.repository.save(usuario);
+    }
+
+    async deletar(id: number): Promise<void> {
+        await this.repository.delete(id);
+    }
+}
+
+export const usuarioRepository = new UsuarioRepository();
