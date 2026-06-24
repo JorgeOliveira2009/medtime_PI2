@@ -8,30 +8,119 @@ import {
   KeyboardAvoidingView,
   Platform,
   Image,
+  Alert,
 } from 'react-native';
 
 import Input from '../Components/input';
 import Botao from '../Components/Botao';
-
 import logo from '../Pages/logo.png';
 
 const PaginaLogin = ({ navigation }: any) => {
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
   const [loading, setLoading] = useState(false);
+  
+  // ✅ SEU IP CORRETO
+  const API_URL = 'http://172.20.86.232:3000';
 
-  const handleLogin = () => {
+  // LOGIN
+  const handleLogin = async () => {
+    if (!email || !senha) {
+      Alert.alert('Atenção', 'Preencha email e senha');
+      return;
+    }
+
     setLoading(true);
+    
+    try {
+      console.log('📤 Tentando login...');
+      console.log('🌐 URL:', `${API_URL}/user/login`);
+      
+      const response = await fetch(`${API_URL}/user/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+        body: JSON.stringify({ email, senha }),
+      });
 
-    setTimeout(() => {
+      console.log('📥 Status:', response.status);
+      
+      const data = await response.json();
+      console.log('📦 Resposta:', data);
+
+      if (data.sucesso) {
+        Alert.alert('✅ Sucesso', 'Login realizado com sucesso!');
+        navigation.navigate('PaginaPrincipal');
+      } else {
+        Alert.alert('❌ Erro', data.message || 'Email ou senha incorretos');
+      }
+    } catch (error: any) {
+      console.error('❌ Erro detalhado:', error);
+      
+      Alert.alert(
+        '❌ Erro de Conexão',
+        'Não foi possível conectar ao servidor.\n\n' +
+        'Verifique:\n' +
+        '1️⃣ O backend está rodando? (npm run dev)\n' +
+        '2️⃣ O IP está correto? 172.20.86.232:3000\n' +
+        '3️⃣ Dispositivo e computador estão na mesma rede Wi-Fi?\n' +
+        '4️⃣ Firewall está bloqueando a porta 3000?'
+      );
+    } finally {
       setLoading(false);
-
-      // LOGIN NORMAL
-      navigation.navigate('PaginaPrincipal');
-    }, 1000);
+    }
   };
 
-  // LOGIN DEV
+  // CADASTRO
+  const handleCadastro = async () => {
+    if (!email || !senha) {
+      Alert.alert('Atenção', 'Preencha email e senha');
+      return;
+    }
+
+    if (senha.length < 8) {
+      Alert.alert('Atenção', 'A senha deve ter no mínimo 8 caracteres');
+      return;
+    }
+
+    setLoading(true);
+    
+    try {
+      console.log('📤 Tentando cadastrar...');
+      console.log('🌐 URL:', `${API_URL}/user/cadastro`);
+      
+      const response = await fetch(`${API_URL}/user/cadastro`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+        body: JSON.stringify({ email, senha }),
+      });
+
+      console.log('📥 Status:', response.status);
+      
+      const data = await response.json();
+      console.log('📦 Resposta:', data);
+
+      if (data.sucesso) {
+        Alert.alert('✅ Sucesso', 'Cadastro realizado com sucesso!');
+        setEmail('');
+        setSenha('');
+        Alert.alert('ℹ️ Info', 'Agora faça login com suas credenciais');
+      } else {
+        Alert.alert('❌ Erro', data.message || 'Erro ao cadastrar');
+      }
+    } catch (error: any) {
+      console.error('❌ Erro:', error);
+      Alert.alert('❌ Erro', 'Não foi possível conectar ao servidor');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleDevLogin = () => {
     navigation.navigate('PaginaPrincipal');
   };
@@ -55,7 +144,6 @@ const PaginaLogin = ({ navigation }: any) => {
             <Text style={styles.bemVindo}>
               Bem-vindo!!
             </Text>
-
             <Text style={styles.subtitle}>
               Seu lembrete de medicamentos
             </Text>
@@ -64,9 +152,7 @@ const PaginaLogin = ({ navigation }: any) => {
 
         {/* Card Login */}
         <View style={styles.card}>
-          <Text style={styles.cardTitle}>
-            Login
-          </Text>
+          <Text style={styles.cardTitle}>Login</Text>
 
           <Input
             label="E-mail"
@@ -86,33 +172,9 @@ const PaginaLogin = ({ navigation }: any) => {
           />
 
           <TouchableOpacity style={styles.forgotButton}>
-            <Text style={styles.forgotText}>
-              Esqueci minha senha
-            </Text>
+            <Text style={styles.forgotText}>Esqueci minha senha</Text>
           </TouchableOpacity>
 
-          {/* Login Social */}
-          <View style={styles.socialRow}>
-            <TouchableOpacity style={styles.socialBtn}>
-              <Text style={styles.socialIcon}>
-                G
-              </Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity style={styles.socialBtn}>
-              <Text style={styles.socialIcon}>
-                f
-              </Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity style={styles.socialBtn}>
-              <Text style={styles.socialIcon}>
-                in
-              </Text>
-            </TouchableOpacity>
-          </View>
-
-          {/* Botão normal */}
           <Botao
             title="Acessar"
             loading={loading}
@@ -136,12 +198,7 @@ const PaginaLogin = ({ navigation }: any) => {
             <Text style={styles.registerText}>
               Não tem uma conta?
             </Text>
-
-            <TouchableOpacity
-              onPress={() =>
-                navigation.navigate('PaginaCadastro')
-              }
-            >
+            <TouchableOpacity onPress={handleCadastro}>
               <Text style={styles.registerLink}>
                 Cadastrar-se
               </Text>
@@ -160,13 +217,10 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#E0F7FA',
   },
-
   scroll: {
     flexGrow: 1,
     paddingBottom: 40,
   },
-
-  // Header
   header: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -175,7 +229,6 @@ const styles = StyleSheet.create({
     paddingTop: 60,
     paddingBottom: 32,
   },
-
   logoBox: {
     width: 68,
     height: 68,
@@ -192,28 +245,23 @@ const styles = StyleSheet.create({
     shadowRadius: 8,
     elevation: 4,
   },
-
   logoImg: {
     width: 52,
     height: 52,
     borderRadius: 12,
     resizeMode: 'contain',
   },
-
   bemVindo: {
     fontSize: 28,
     fontWeight: '800',
     color: '#006064',
     letterSpacing: -0.5,
   },
-
   subtitle: {
     fontSize: 13,
     color: '#00838F',
     marginTop: 2,
   },
-
-  // Card
   card: {
     marginHorizontal: 20,
     backgroundColor: '#fff',
@@ -228,34 +276,28 @@ const styles = StyleSheet.create({
     shadowRadius: 24,
     elevation: 8,
   },
-
   cardTitle: {
     fontSize: 22,
     fontWeight: '800',
     color: '#263238',
     marginBottom: 24,
   },
-
   forgotButton: {
     alignSelf: 'flex-start',
     marginBottom: 20,
     marginTop: -6,
   },
-
   forgotText: {
     fontSize: 13,
     color: '#00BCD4',
     fontWeight: '500',
   },
-
-  // Social
   socialRow: {
     flexDirection: 'row',
     justifyContent: 'center',
     gap: 12,
     marginBottom: 20,
   },
-
   socialBtn: {
     width: 44,
     height: 44,
@@ -265,14 +307,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-
   socialIcon: {
     fontSize: 15,
     fontWeight: '700',
     color: '#455A64',
   },
-
-  // DEV
   devButton: {
     marginTop: 12,
     backgroundColor: '#263238',
@@ -281,25 +320,20 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-
   devText: {
     color: '#fff',
     fontWeight: '700',
     fontSize: 14,
   },
-
-  // Cadastro
   registerRow: {
     flexDirection: 'row',
     justifyContent: 'center',
     marginTop: 20,
   },
-
   registerText: {
     fontSize: 14,
     color: '#78909C',
   },
-
   registerLink: {
     fontSize: 14,
     color: '#00BCD4',

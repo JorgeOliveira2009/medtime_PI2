@@ -18,28 +18,79 @@ import logo from '../Pages/logo.png';
 const PaginaCadastro = ({ navigation }: any) => {
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
-  const [confirmarSenha, setConfirmarSenha] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const handleCadastro = () => {
-    if (!email || !senha || !confirmarSenha) {
+  // URL do backend
+  const API_URL = 'http://172.20.86.232:3000';
+
+  const handleCadastro = async () => {
+    // Validações
+    if (!email || !senha) {
       Alert.alert('Atenção', 'Preencha todos os campos.');
       return;
     }
-    if (senha !== confirmarSenha) {
-      Alert.alert('Atenção', 'As senhas não coincidem.');
-      return;
-    }
-    if (senha.length < 6) {
-      Alert.alert('Atenção', 'A senha deve ter pelo menos 6 caracteres.');
+
+    if (senha.length < 8) {
+      Alert.alert('Atenção', 'A senha deve ter pelo menos 8 caracteres.');
       return;
     }
 
     setLoading(true);
-    setTimeout(() => {
+
+    try {
+      console.log('📤 Tentando cadastrar...');
+      console.log('🌐 URL:', `${API_URL}/user/cadastro`);
+      console.log('📧 Email:', email);
+
+      const response = await fetch(`${API_URL}/user/cadastro`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+        body: JSON.stringify({ 
+          email: email.trim(), 
+          senha: senha 
+        }),
+      });
+
+      console.log('📥 Status:', response.status);
+
+      const data = await response.json();
+      console.log('📦 Resposta:', data);
+
+      if (data.sucesso) {
+        Alert.alert(
+          '✅ Sucesso', 
+          'Cadastro realizado com sucesso!\n\nAgora faça login com suas credenciais.',
+          [
+            {
+              text: 'OK',
+              onPress: () => {
+                setEmail('');
+                setSenha('');
+                navigation.navigate('PaginaLogin');
+              }
+            }
+          ]
+        );
+      } else {
+        Alert.alert('❌ Erro', data.message || 'Erro ao cadastrar');
+      }
+    } catch (error: any) {
+      console.error('❌ Erro detalhado:', error);
+
+      let mensagem = 'Não foi possível conectar ao servidor.\n\n';
+      mensagem += 'Verifique:\n';
+      mensagem += '1️⃣ O backend está rodando? (npm run dev)\n';
+      mensagem += '2️⃣ O IP está correto? 172.20.86.232:3000\n';
+      mensagem += '3️⃣ Dispositivo e computador estão na mesma rede Wi-Fi?\n';
+      mensagem += '4️⃣ Firewall está bloqueando a porta 3000?';
+
+      Alert.alert('❌ Erro de Conexão', mensagem);
+    } finally {
       setLoading(false);
-      navigation?.navigate('PaginaLogin');
-    }, 2000);
+    }
   };
 
   return (
@@ -47,8 +98,10 @@ const PaginaCadastro = ({ navigation }: any) => {
       style={styles.flex}
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
     >
-      <ScrollView contentContainerStyle={styles.scroll} keyboardShouldPersistTaps="handled">
-
+      <ScrollView 
+        contentContainerStyle={styles.scroll} 
+        keyboardShouldPersistTaps="handled"
+      >
         {/* Header */}
         <View style={styles.header}>
           <View style={styles.logoBox}>
@@ -75,21 +128,41 @@ const PaginaCadastro = ({ navigation }: any) => {
 
           <Input
             label="Senha"
-            placeholder="Coloque sua senha aqui"
+            placeholder="Coloque sua senha aqui (mínimo 8 caracteres)"
             isPassword
             value={senha}
             onChangeText={setSenha}
           />
 
-          <Input
-            label="Confirme sua senha"
-            placeholder="Confirme sua senha aqui"
-            isPassword
-            value={confirmarSenha}
-            onChangeText={setConfirmarSenha}
+          <Botao 
+            title="Cadastrar" 
+            loading={loading} 
+            onPress={handleCadastro} 
           />
 
-          <Botao title="Cadastrar" loading={loading} onPress={handleCadastro} />
+          {/* Botão DEV - Pula cadastro */}
+          {__DEV__ && (
+            <TouchableOpacity
+              style={styles.devButton}
+              onPress={() => {
+                Alert.alert(
+                  '⚡ Modo DEV',
+                  'Pular cadastro e ir para o login?',
+                  [
+                    { text: 'Cancelar', style: 'cancel' },
+                    { 
+                      text: 'Sim', 
+                      onPress: () => navigation.navigate('PaginaLogin')
+                    }
+                  ]
+                );
+              }}
+            >
+              <Text style={styles.devText}>
+                Pular cadastro (DEV) ⚡
+              </Text>
+            </TouchableOpacity>
+          )}
 
           <View style={styles.loginRow}>
             <Text style={styles.loginText}>Já tem uma conta? </Text>
@@ -98,7 +171,6 @@ const PaginaCadastro = ({ navigation }: any) => {
             </TouchableOpacity>
           </View>
         </View>
-
       </ScrollView>
     </KeyboardAvoidingView>
   );
@@ -173,6 +245,21 @@ const styles = StyleSheet.create({
     fontWeight: '800',
     color: '#263238',
     marginBottom: 24,
+  },
+
+  // DEV Button
+  devButton: {
+    marginTop: 12,
+    backgroundColor: '#FF6B6B',
+    paddingVertical: 14,
+    borderRadius: 16,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  devText: {
+    color: '#fff',
+    fontWeight: '700',
+    fontSize: 14,
   },
 
   // Login link
