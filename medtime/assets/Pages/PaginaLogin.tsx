@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import {
   View,
@@ -20,10 +21,8 @@ const PaginaLogin = ({ navigation }: any) => {
   const [senha, setSenha] = useState('');
   const [loading, setLoading] = useState(false);
   
-  // ✅ SEU IP CORRETO
   const API_URL = 'http://172.20.86.232:3000';
 
-  // LOGIN
   const handleLogin = async () => {
     if (!email || !senha) {
       Alert.alert('Atenção', 'Preencha email e senha');
@@ -33,9 +32,6 @@ const PaginaLogin = ({ navigation }: any) => {
     setLoading(true);
     
     try {
-      console.log('📤 Tentando login...');
-      console.log('🌐 URL:', `${API_URL}/user/login`);
-      
       const response = await fetch(`${API_URL}/user/login`, {
         method: 'POST',
         headers: {
@@ -45,10 +41,7 @@ const PaginaLogin = ({ navigation }: any) => {
         body: JSON.stringify({ email, senha }),
       });
 
-      console.log('📥 Status:', response.status);
-      
       const data = await response.json();
-      console.log('📦 Resposta:', data);
 
       if (data.sucesso) {
         Alert.alert('✅ Sucesso', 'Login realizado com sucesso!');
@@ -57,8 +50,6 @@ const PaginaLogin = ({ navigation }: any) => {
         Alert.alert('❌ Erro', data.message || 'Email ou senha incorretos');
       }
     } catch (error: any) {
-      console.error('❌ Erro detalhado:', error);
-      
       Alert.alert(
         '❌ Erro de Conexão',
         'Não foi possível conectar ao servidor.\n\n' +
@@ -68,54 +59,6 @@ const PaginaLogin = ({ navigation }: any) => {
         '3️⃣ Dispositivo e computador estão na mesma rede Wi-Fi?\n' +
         '4️⃣ Firewall está bloqueando a porta 3000?'
       );
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // CADASTRO
-  const handleCadastro = async () => {
-    if (!email || !senha) {
-      Alert.alert('Atenção', 'Preencha email e senha');
-      return;
-    }
-
-    if (senha.length < 8) {
-      Alert.alert('Atenção', 'A senha deve ter no mínimo 8 caracteres');
-      return;
-    }
-
-    setLoading(true);
-    
-    try {
-      console.log('📤 Tentando cadastrar...');
-      console.log('🌐 URL:', `${API_URL}/user/cadastro`);
-      
-      const response = await fetch(`${API_URL}/user/cadastro`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-        },
-        body: JSON.stringify({ email, senha }),
-      });
-
-      console.log('📥 Status:', response.status);
-      
-      const data = await response.json();
-      console.log('📦 Resposta:', data);
-
-      if (data.sucesso) {
-        Alert.alert('✅ Sucesso', 'Cadastro realizado com sucesso!');
-        setEmail('');
-        setSenha('');
-        Alert.alert('ℹ️ Info', 'Agora faça login com suas credenciais');
-      } else {
-        Alert.alert('❌ Erro', data.message || 'Erro ao cadastrar');
-      }
-    } catch (error: any) {
-      console.error('❌ Erro:', error);
-      Alert.alert('❌ Erro', 'Não foi possível conectar ao servidor');
     } finally {
       setLoading(false);
     }
@@ -139,14 +82,9 @@ const PaginaLogin = ({ navigation }: any) => {
           <View style={styles.logoBox}>
             <Image source={logo} style={styles.logoImg} />
           </View>
-
           <View>
-            <Text style={styles.bemVindo}>
-              Bem-vindo!!
-            </Text>
-            <Text style={styles.subtitle}>
-              Seu lembrete de medicamentos
-            </Text>
+            <Text style={styles.bemVindo}>Bem-vindo!!</Text>
+            <Text style={styles.subtitle}>Seu lembrete de medicamentos</Text>
           </View>
         </View>
 
@@ -175,33 +113,20 @@ const PaginaLogin = ({ navigation }: any) => {
             <Text style={styles.forgotText}>Esqueci minha senha</Text>
           </TouchableOpacity>
 
-          <Botao
-            title="Acessar"
-            loading={loading}
-            onPress={handleLogin}
-          />
+          <Botao title="Acessar" loading={loading} onPress={handleLogin} />
 
           {/* Botão DEV */}
           {__DEV__ && (
-            <TouchableOpacity
-              style={styles.devButton}
-              onPress={handleDevLogin}
-            >
-              <Text style={styles.devText}>
-                Entrar como DEV ⚡
-              </Text>
+            <TouchableOpacity style={styles.devButton} onPress={handleDevLogin}>
+              <Text style={styles.devText}>Entrar como DEV ⚡</Text>
             </TouchableOpacity>
           )}
 
           {/* Cadastro */}
           <View style={styles.registerRow}>
-            <Text style={styles.registerText}>
-              Não tem uma conta?
-            </Text>
-            <TouchableOpacity onPress={handleCadastro}>
-              <Text style={styles.registerLink}>
-                Cadastrar-se
-              </Text>
+            <Text style={styles.registerText}>Não tem uma conta? </Text>
+            <TouchableOpacity onPress={() => navigation.navigate('PaginaCadastro')}>
+              <Text style={styles.registerLink}>Cadastrar-se</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -237,10 +162,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     shadowColor: '#00BCD4',
-    shadowOffset: {
-      width: 0,
-      height: 4,
-    },
+    shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.2,
     shadowRadius: 8,
     elevation: 4,
@@ -268,10 +190,7 @@ const styles = StyleSheet.create({
     borderRadius: 28,
     padding: 28,
     shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 8,
-    },
+    shadowOffset: { width: 0, height: 8 },
     shadowOpacity: 0.08,
     shadowRadius: 24,
     elevation: 8,
@@ -291,26 +210,6 @@ const styles = StyleSheet.create({
     fontSize: 13,
     color: '#00BCD4',
     fontWeight: '500',
-  },
-  socialRow: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    gap: 12,
-    marginBottom: 20,
-  },
-  socialBtn: {
-    width: 44,
-    height: 44,
-    borderRadius: 22,
-    borderWidth: 1.5,
-    borderColor: '#E0E0E0',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  socialIcon: {
-    fontSize: 15,
-    fontWeight: '700',
-    color: '#455A64',
   },
   devButton: {
     marginTop: 12,
