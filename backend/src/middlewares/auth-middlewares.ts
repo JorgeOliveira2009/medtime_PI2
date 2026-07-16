@@ -60,6 +60,8 @@ export class Authmiddle {
         sucesso: false,
         message: "Token inválido"
       });
+   
+   
     }
   }
 }
