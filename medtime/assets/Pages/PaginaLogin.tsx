@@ -42,6 +42,7 @@ const PaginaLogin = ({ navigation }: any) => {
       });
 
       const data = await response.json();
+      Alert.alert(data)
 
       if (data.sucesso) {
         Alert.alert('✅ Sucesso', 'Login realizado com sucesso!');

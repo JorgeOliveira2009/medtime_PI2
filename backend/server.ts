@@ -32,9 +32,9 @@ const port = 3000;
 AppDataSource.initialize()
     .then(() => {
         console.log("✅ Conectado ao banco!");
-        app.listen(port, () => {
-            console.log(`🚀 Servidor rodando: http://localhost:${port}`);
-            console.log(`📚 Docs Swagger: http://localhost:${port}/api-docs`);
-        });
+       app.listen(port, "0.0.0.0", () => {
+    console.log(`🚀 Servidor rodando na porta ${port}`);
+    console.log(`📚 Docs Swagger: http://localhost:${port}/api-docs`);
+});
     })
     .catch((error) => console.error("❌ Erro:", error));
