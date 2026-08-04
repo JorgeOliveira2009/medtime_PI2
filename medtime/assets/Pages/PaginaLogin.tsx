@@ -21,7 +21,7 @@ const PaginaLogin = ({ navigation }: any) => {
   const [senha, setSenha] = useState('');
   const [loading, setLoading] = useState(false);
   
-  const API_URL = 'http://172.20.86.232:3000';
+  const API_URL = 'http://172.20.86.193:3000';
 
   const handleLogin = async () => {
     if (!email || !senha) {
@@ -42,7 +42,7 @@ const PaginaLogin = ({ navigation }: any) => {
       });
 
       const data = await response.json();
-      Alert.alert(data)
+      
 
       if (data.sucesso) {
         Alert.alert('✅ Sucesso', 'Login realizado com sucesso!');
@@ -56,7 +56,7 @@ const PaginaLogin = ({ navigation }: any) => {
         'Não foi possível conectar ao servidor.\n\n' +
         'Verifique:\n' +
         '1️⃣ O backend está rodando? (npm run dev)\n' +
-        '2️⃣ O IP está correto? 172.20.86.232:3000\n' +
+        '2️⃣ O IP está correto? 172.20.86.193:3000\n' +
         '3️⃣ Dispositivo e computador estão na mesma rede Wi-Fi?\n' +
         '4️⃣ Firewall está bloqueando a porta 3000?'
       );
