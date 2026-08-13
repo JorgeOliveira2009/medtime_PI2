@@ -21,7 +21,7 @@ const PaginaLogin = ({ navigation }: any) => {
   const [senha, setSenha] = useState('');
   const [loading, setLoading] = useState(false);
   
-  const API_URL = 'http://172.20.86.193:3000';
+  const API_URL = 'http://172.20.86.189:3000';
 
   const handleLogin = async () => {
     if (!email || !senha) {

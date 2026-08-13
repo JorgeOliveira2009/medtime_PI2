@@ -21,7 +21,7 @@ const PaginaCadastro = ({ navigation }: any) => {
   const [loading, setLoading] = useState(false);
 
   // URL do backend
-  const API_URL = 'http://172.20.86.193:3000';
+  const API_URL = 'http://172.20.86.189:3000';
 
   const handleCadastro = async () => {
     // Validações

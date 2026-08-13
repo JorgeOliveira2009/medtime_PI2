@@ -10,7 +10,7 @@ import {
   SafeAreaView,
   Modal,
   TextInput,
-  Platform,
+  Platform,           
   KeyboardAvoidingView,
 } from 'react-native';
 
