@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import {
   View,
@@ -15,8 +14,10 @@ import {
 import Input from '../Components/input';
 import Botao from '../Components/Botao';
 import logo from '../Pages/logo.png';
+import { useAuth } from '../Contexts/AuthContext';
 
 const PaginaLogin = ({ navigation }: any) => {
+  const { login } = useAuth();
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
   const [loading, setLoading] = useState(false);
@@ -45,6 +46,7 @@ const PaginaLogin = ({ navigation }: any) => {
       
 
       if (data.sucesso) {
+        login(email);
         Alert.alert('✅ Sucesso', 'Login realizado com sucesso!');
         navigation.navigate('PaginaPrincipal');
       } else {
@@ -66,6 +68,7 @@ const PaginaLogin = ({ navigation }: any) => {
   };
 
   const handleDevLogin = () => {
+    login('dev@teste.com');
     navigation.navigate('PaginaPrincipal');
   };
 

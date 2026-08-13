@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useAuth } from './AuthContext';
 
 /* ─── Tipos ─── */
 export interface Remedio {
@@ -18,30 +19,40 @@ interface RemediosContextType {
 }
 
 const RemediosContext = createContext<RemediosContextType | undefined>(undefined);
-const STORAGE_KEY = '@medtime:remedios';
 
 /* ─── Provider ─── */
 export function RemediosProvider({ children }: { children: React.ReactNode }) {
+  const { usuarioAtual, carregado: authCarregado } = useAuth();
   const [remedios, setRemedios] = useState<Remedio[]>([]);
   const [carregado, setCarregado] = useState(false);
 
-  // Carrega do disco assim que o app abre
+  // Chave única por usuário — cada conta tem seu próprio "balde" de remédios
+  const storageKey = usuarioAtual ? `@medtime:remedios:${usuarioAtual}` : null;
+
+  // Recarrega toda vez que o usuário logado mudar (login, troca de conta, logout)
   useEffect(() => {
-    AsyncStorage.getItem(STORAGE_KEY)
-      .then(json => {
-        if (json) setRemedios(JSON.parse(json));
-      })
+    if (!authCarregado) return;
+
+    if (!storageKey) {
+      setRemedios([]);
+      setCarregado(true);
+      return;
+    }
+
+    setCarregado(false);
+    AsyncStorage.getItem(storageKey)
+      .then(json => setRemedios(json ? JSON.parse(json) : []))
       .catch(err => console.error('Erro ao carregar remédios:', err))
       .finally(() => setCarregado(true));
-  }, []);
+  }, [storageKey, authCarregado]);
 
   // Salva no disco sempre que a lista mudar (depois do carregamento inicial)
   useEffect(() => {
-    if (!carregado) return;
-    AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(remedios)).catch(err =>
+    if (!carregado || !storageKey) return;
+    AsyncStorage.setItem(storageKey, JSON.stringify(remedios)).catch(err =>
       console.error('Erro ao salvar remédios:', err)
     );
-  }, [remedios, carregado]);
+  }, [remedios, carregado, storageKey]);
 
   function adicionarRemedio(dados: Omit<Remedio, 'id' | 'tomado'>) {
     setRemedios(prev => [
