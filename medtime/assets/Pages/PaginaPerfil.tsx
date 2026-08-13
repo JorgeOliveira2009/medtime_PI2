@@ -16,8 +16,10 @@ import {
 
 import logo from '../Pages/logo.png';
 import MenuLateral from '../Components/MenuLateral';
+import { useRemedios } from '../Contexts/RemediosContext';
 
 const PaginaPerfil = ({ navigation }: any) => {
+  const { remedios } = useRemedios();
   const [menuVisible, setMenuVisible] = useState(false);
   const [editando, setEditando] = useState(false);
 
@@ -100,10 +102,19 @@ const PaginaPerfil = ({ navigation }: any) => {
         {/* ── Remédios tomados do dia ── */}
         <View style={styles.card}>
           <Text style={styles.sectionTitle}>💊 Remédios tomados hoje</Text>
-          <View style={styles.emptyState}>
-            <Text style={styles.emptyText}>Nenhum remédio registrado</Text>
-            <Text style={styles.emptySubtext}>Os remédios marcados aparecerão aqui</Text>
-          </View>
+          {remedios.filter(r => r.tomado).length === 0 ? (
+            <View style={styles.emptyState}>
+              <Text style={styles.emptyText}>Nenhum remédio registrado</Text>
+              <Text style={styles.emptySubtext}>Os remédios marcados aparecerão aqui</Text>
+            </View>
+          ) : (
+            remedios.filter(r => r.tomado).map(r => (
+              <View key={r.id} style={styles.tomadoRow}>
+                <Text style={styles.tomadoHorario}>{r.horario}</Text>
+                <Text style={styles.tomadoNome}>{r.nome}</Text>
+              </View>
+            ))
+          )}
         </View>
 
         <View style={{ height: 32 }} />
@@ -246,6 +257,13 @@ const styles = StyleSheet.create({
   emptyState: { alignItems: 'center', paddingVertical: 20 },
   emptyText: { fontSize: 14, fontWeight: '700', color: DARK, marginBottom: 4 },
   emptySubtext: { fontSize: 12, color: GRAY },
+
+   tomadoRow: {
+    flexDirection: 'row', alignItems: 'center', gap: 10,
+    paddingVertical: 8, borderBottomWidth: 1, borderBottomColor: '#F0F4F8',
+  },
+  tomadoHorario: { fontSize: 12, fontWeight: '700', color: TEAL, minWidth: 44 },
+  tomadoNome: { fontSize: 14, color: DARK, fontWeight: '600' },
 
   /* Modal */
   modalOverlay: {
