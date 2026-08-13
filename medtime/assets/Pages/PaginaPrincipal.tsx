@@ -16,14 +16,10 @@ import {
 
 import logo from '../Pages/logo.png';
 import MenuLateral from '../Components/MenuLateral';
+import { useRemedios } from '../Contexts/RemediosContext';
 
 /* ─── Tipos ─── */
-interface Remedio {
-  id: number;
-  nome: string;
-  horario: string;
-  tomado: boolean;
-}
+
 
 const MESES = [
   'Janeiro','Fevereiro','Março','Abril','Maio','Junho',
@@ -44,7 +40,7 @@ const PaginaPrincipal = ({ navigation }: any) => {
   const [mesSel, setMesSel] = useState(hoje.getMonth());
   const [anoSel, setAnoSel] = useState(hoje.getFullYear());
   const [diaSel, setDiaSel] = useState(hoje.getDate());
-  const [remedios, setRemedios] = useState<Remedio[]>([]);
+  const { remedios, adicionarRemedio, toggleRemedio, removerRemedio } = useRemedios();
   const [menuVisible, setMenuVisible] = useState(false);
 
   const [modalVisible, setModalVisible] = useState(false);
@@ -55,16 +51,6 @@ const PaginaPrincipal = ({ navigation }: any) => {
 
   const tomados = remedios.filter(r => r.tomado).length;
   const total = remedios.length;
-
-  function toggleRemedio(id: number) {
-    setRemedios(prev =>
-      prev.map(r => (r.id === id ? { ...r, tomado: !r.tomado } : r))
-    );
-  }
-
-  function removerRemedio(id: number) {
-    setRemedios(prev => prev.filter(r => r.id !== id));
-  }
 
   function mudarMes(delta: number) {
     let novoMes = mesSel + delta;
@@ -112,15 +98,10 @@ const PaginaPrincipal = ({ navigation }: any) => {
 
     if (!valido) return;
 
-    setRemedios(prev => [
-      ...prev,
-      {
-        id: Date.now(),
-        nome: novoNome.trim(),
-        horario: novoHorario.trim(),
-        tomado: false,
-      },
-    ]);
+     adicionarRemedio({
+      nome: novoNome.trim(),
+      horario: novoHorario.trim(),
+    });
 
     setModalVisible(false);
   }
