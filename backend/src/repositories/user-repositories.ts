@@ -1,42 +1,42 @@
 import { Usuario } from "../models/user";
 import { AppDataSource } from "../config/database";
 
+// Classe que concentra todas as operações de banco do usuário num só lugar
+// Os services chamam daqui em vez de falar direto com o banco — fica mais organizado
 export class UsuarioRepository {
-    // pega o repositório do TypeORM pra tabela usuarios
-    // é por aqui que todas as queries passam
+    // pega o repositório do TypeORM pra tabela de usuários
     private repository = AppDataSource.getRepository(Usuario);
 
-    // INSERT — salva um novo usuário no banco
+    // salva um usuário novo no banco
     async criar(usuario: Usuario) {
         return await this.repository.save(usuario);
     }
 
-    // SELECT * — busca todos os usuários
+    // busca todos os usuários da tabela
     async buscarTodos(): Promise<Usuario[]> {
         return await this.repository.find();
     }
 
-    // SELECT WHERE id — busca um usuário pelo id
-    // retorna null se não encontrar (por isso o Usuario | null)
+    // busca um usuário pelo id — retorna null se não achar
     async buscarPorId(id: number): Promise<Usuario | null> {
         return await this.repository.findOneBy({ id });
     }
 
-    // SELECT WHERE email — usado no login pra achar o usuário pelo email
+    // busca um usuário pelo email — retorna null se não achar
     async buscarPorEmail(email: string): Promise<Usuario | null> {
         return await this.repository.findOneBy({ email });
     }
 
-    // UPDATE — o save() do TypeORM atualiza se o id já existe
+    // atualiza os dados de um usuário que já existe
     async atualizar(usuario: Usuario): Promise<Usuario> {
-        return await this.repository.save(usuario);
+        return await this.repository.save(usuario); // o save atualiza se o id já existir
     }
 
-    // DELETE WHERE id
+    // remove um usuário do banco pelo id
     async deletar(id: number): Promise<void> {
         await this.repository.delete(id);
     }
 }
 
-// exporta uma instância pronta pra não precisar dar new em todo lugar
+// exporta uma instância pronta pra não precisar fazer "new" em cada arquivo que usar
 export const usuarioRepository = new UsuarioRepository();

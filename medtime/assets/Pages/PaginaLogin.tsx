@@ -16,13 +16,13 @@ import Botao from '../Components/Botao';
 import logo from '../Pages/logo.png';
 import { useAuth } from '../Contexts/AuthContext';
 
+const API_URL = 'http://172.20.86.189:3000'
+
 const PaginaLogin = ({ navigation }: any) => {
   const { login } = useAuth();
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
   const [loading, setLoading] = useState(false);
-  
-  const API_URL = 'http://172.20.86.189:3000';
 
   const handleLogin = async () => {
     if (!email || !senha) {
@@ -39,15 +39,16 @@ const PaginaLogin = ({ navigation }: any) => {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
         },
-        body: JSON.stringify({ email, senha }),
+        body: JSON.stringify({ email: email.trim(), senha }),
       });
 
       const data = await response.json();
-      
 
       if (data.sucesso) {
-        login(email);
-        Alert.alert('✅ Sucesso', 'Login realizado com sucesso!');
+        // ✅ Salva o usuário COMPLETO e o TOKEN
+        await login(data.user, data.token);
+        
+        Alert.alert('✅ Sucesso', `Bem-vindo(a), ${data.user.nome}!`);
         navigation.navigate('PaginaPrincipal');
       } else {
         Alert.alert('❌ Erro', data.message || 'Email ou senha incorretos');
@@ -56,20 +57,11 @@ const PaginaLogin = ({ navigation }: any) => {
       Alert.alert(
         '❌ Erro de Conexão',
         'Não foi possível conectar ao servidor.\n\n' +
-        'Verifique:\n' +
-        '1️⃣ O backend está rodando? (npm run dev)\n' +
-        '2️⃣ O IP está correto? 172.20.86.193:3000\n' +
-        '3️⃣ Dispositivo e computador estão na mesma rede Wi-Fi?\n' +
-        '4️⃣ Firewall está bloqueando a porta 3000?'
+        'Verifique sua conexão com a internet.'
       );
     } finally {
       setLoading(false);
     }
-  };
-
-  const handleDevLogin = () => {
-    login('dev@teste.com');
-    navigation.navigate('PaginaPrincipal');
   };
 
   return (
@@ -81,7 +73,6 @@ const PaginaLogin = ({ navigation }: any) => {
         contentContainerStyle={styles.scroll}
         keyboardShouldPersistTaps="handled"
       >
-        {/* Header */}
         <View style={styles.header}>
           <View style={styles.logoBox}>
             <Image source={logo} style={styles.logoImg} />
@@ -92,7 +83,6 @@ const PaginaLogin = ({ navigation }: any) => {
           </View>
         </View>
 
-        {/* Card Login */}
         <View style={styles.card}>
           <Text style={styles.cardTitle}>Login</Text>
 
@@ -113,20 +103,8 @@ const PaginaLogin = ({ navigation }: any) => {
             onChangeText={setSenha}
           />
 
-          <TouchableOpacity style={styles.forgotButton}>
-            <Text style={styles.forgotText}>Esqueci minha senha</Text>
-          </TouchableOpacity>
-
           <Botao title="Acessar" loading={loading} onPress={handleLogin} />
 
-          {/* Botão DEV */}
-          {__DEV__ && (
-            <TouchableOpacity style={styles.devButton} onPress={handleDevLogin}>
-              <Text style={styles.devText}>Entrar como DEV ⚡</Text>
-            </TouchableOpacity>
-          )}
-
-          {/* Cadastro */}
           <View style={styles.registerRow}>
             <Text style={styles.registerText}>Não tem uma conta? </Text>
             <TouchableOpacity onPress={() => navigation.navigate('PaginaCadastro')}>
@@ -141,15 +119,10 @@ const PaginaLogin = ({ navigation }: any) => {
 
 export default PaginaLogin;
 
+// Styles (mantém os mesmos do seu arquivo original)
 const styles = StyleSheet.create({
-  flex: {
-    flex: 1,
-    backgroundColor: '#E0F7FA',
-  },
-  scroll: {
-    flexGrow: 1,
-    paddingBottom: 40,
-  },
+  flex: { flex: 1, backgroundColor: '#E0F7FA' },
+  scroll: { flexGrow: 1, paddingBottom: 40 },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -204,29 +177,6 @@ const styles = StyleSheet.create({
     fontWeight: '800',
     color: '#263238',
     marginBottom: 24,
-  },
-  forgotButton: {
-    alignSelf: 'flex-start',
-    marginBottom: 20,
-    marginTop: -6,
-  },
-  forgotText: {
-    fontSize: 13,
-    color: '#00BCD4',
-    fontWeight: '500',
-  },
-  devButton: {
-    marginTop: 12,
-    backgroundColor: '#263238',
-    paddingVertical: 14,
-    borderRadius: 16,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  devText: {
-    color: '#fff',
-    fontWeight: '700',
-    fontSize: 14,
   },
   registerRow: {
     flexDirection: 'row',

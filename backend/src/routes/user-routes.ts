@@ -2,20 +2,22 @@ import { Router } from "express";
 import * as controller from "../controller/user-controller";
 import { authMiddleware } from "../middlewares/auth-middlewares";
 import { validate } from "../middlewares/validate-middleware";
-import { createUserScheme } from "../schemas/user.schema";
+import { createUserScheme, loginScheme, updateUserScheme } from "../schemas/user.schema";
 
 const router = Router();
 
-// rotas públicas — qualquer um pode acessar sem token
-// o validate() roda antes do controller e barra se os dados forem inválidos
+// 🔓 ROTAS PÚBLICAS — qualquer um pode acessar, sem precisar de token
 router.post("/cadastro", validate(createUserScheme), controller.cadastro);
-router.post("/login", validate(createUserScheme), controller.login);
+router.post("/login", validate(loginScheme), controller.login);
 
-// rotas protegidas — precisa passar pelo authMiddleware primeiro
-// se o token for inválido/ausente, o authMiddleware já retorna 401 e para tudo
-router.get("/listar", authMiddleware, controller.listar);
-router.get("/listar/:id", authMiddleware, controller.listarPorId);
-router.delete("/deletar/:id", authMiddleware, controller.deletar);
-router.put("/atualizar/:id", authMiddleware, controller.atualizar);
+// 🔒 ROTAS PROTEGIDAS — precisa estar logado (o authMiddleware checa o token)
+router.get("/perfil", authMiddleware, controller.listarPerfil);           // pega os dados do usuário logado
+router.put("/atualizar", authMiddleware, validate(updateUserScheme), controller.atualizar);  // atualiza dados do usuário logado
+router.delete("/deletar-conta", authMiddleware, controller.deletarConta); // deleta a conta do usuário logado
+
+// ⚠️ ROTAS ADMIN — só pra uso administrativo, ainda requer token
+router.get("/listar", authMiddleware, controller.listar);                   // lista todos os usuários
+router.get("/listar/:id", authMiddleware, controller.listarPorId);          // busca um usuário pelo id
+router.delete("/admin/deletar/:id", authMiddleware, controller.deletar);    // deleta qualquer usuário pelo id
 
 export default router;

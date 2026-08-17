@@ -1,27 +1,46 @@
 import { z } from 'zod';
 
-// schema de cadastro — valida email e senha com regras específicas
+// Schema de cadastro — define as regras que o body da requisição precisa seguir
+// O Zod valida tudo isso antes de chegar no controller
 export const createUserScheme = z.object({
+    nome: z.string()
+        .min(3, "Nome deve ter pelo menos 3 caracteres")
+        .max(100, "Nome muito longo"),
     email: z.string()
-        .email("Email inválido")       // tem que ter @ e domínio
-        .min(1, "Email é obrigatório"), // não pode ser vazio
+        .email("Email inválido")
+        .min(1, "Email é obrigatório"),
     senha: z.string()
-        .min(8, "Senha deve ter no mínimo 8 caracteres") // mínimo 8 chars
-        .max(100, "Senha muito longa")                   // máximo 100 chars
+        .min(8, "Senha deve ter no mínimo 8 caracteres")
+        .max(100, "Senha muito longa"),
+    confirmarSenha: z.string()
+        .min(1, "Confirme sua senha")
+// .refine é uma validação extra que compara dois campos — não dá pra fazer só com as regras de cima
+}).refine(data => data.senha === data.confirmarSenha, {
+    message: "Senhas não conferem",
+    path: ["confirmarSenha"] // aponta qual campo está com erro
 });
 
-// schema de login — senha pode ser qualquer coisa (não tem mínimo de chars)
-// porque o hash no banco tem tamanho diferente da senha original
+// Schema de login — bem simples, só valida o formato do email e que a senha não tá vazia
 export const loginScheme = z.object({
     email: z.string().email("Email inválido"),
     senha: z.string().min(1, "Senha é obrigatória")
 });
 
-// schema de atualização — os dois campos são opcionais
-// mas o .refine() no final garante que pelo menos um foi enviado
+// Schema de atualização — todos os campos são opcionais (o usuário pode mudar só o que quiser)
+// mas pelo menos um precisa ser enviado (o .refine lá embaixo garante isso)
 export const updateUserScheme = z.object({
-    email: z.string().email("Email inválido").optional(),
-    senha: z.string().min(8, "Senha deve ter no mínimo 8 caracteres").optional()
-}).refine(data => data.email || data.senha, {
+    nome: z.string()
+        .min(3, "Nome deve ter pelo menos 3 caracteres")
+        .max(100, "Nome muito longo")
+        .optional(),
+    email: z.string()
+        .email("Email inválido")
+        .optional(),
+    senha: z.string()
+        .min(8, "Senha deve ter no mínimo 8 caracteres")
+        .max(100, "Senha muito longa")
+        .optional()
+// garante que pelo menos um dos três campos foi enviado
+}).refine(data => data.nome || data.email || data.senha, {
     message: "Pelo menos um campo deve ser fornecido"
 });

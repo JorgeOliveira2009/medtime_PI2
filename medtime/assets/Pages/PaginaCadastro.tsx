@@ -12,21 +12,26 @@ import {
 } from 'react-native';
 import Input from '../Components/input';
 import Botao from '../Components/Botao';
-
 import logo from '../Pages/logo.png';
 
+const API_URL = 'http://172.20.86.189:3000'
+
 const PaginaCadastro = ({ navigation }: any) => {
+  const [nome, setNome] = useState('');
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
+  const [confirmarSenha, setConfirmarSenha] = useState('');
   const [loading, setLoading] = useState(false);
-
-  // URL do backend
-  const API_URL = 'http://172.20.86.189:3000';
 
   const handleCadastro = async () => {
     // Validações
-    if (!email || !senha) {
+    if (!nome || !email || !senha || !confirmarSenha) {
       Alert.alert('Atenção', 'Preencha todos os campos.');
+      return;
+    }
+
+    if (nome.length < 3) {
+      Alert.alert('Atenção', 'Nome deve ter pelo menos 3 caracteres.');
       return;
     }
 
@@ -35,40 +40,42 @@ const PaginaCadastro = ({ navigation }: any) => {
       return;
     }
 
+    if (senha !== confirmarSenha) {
+      Alert.alert('Atenção', 'As senhas não conferem.');
+      return;
+    }
+
     setLoading(true);
 
     try {
-      console.log('📤 Tentando cadastrar...');
-      console.log('🌐 URL:', `${API_URL}/user/cadastro`);
-      console.log('📧 Email:', email);
-
       const response = await fetch(`${API_URL}/user/cadastro`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
         },
-        body: JSON.stringify({ 
-          email: email.trim(), 
-          senha: senha 
+        body: JSON.stringify({
+          nome: nome.trim(),
+          email: email.trim(),
+          senha,
+          confirmarSenha,
         }),
       });
 
-      console.log('📥 Status:', response.status);
-
       const data = await response.json();
-      console.log('📦 Resposta:', data);
 
       if (data.sucesso) {
         Alert.alert(
-          '✅ Sucesso', 
+          '✅ Sucesso',
           'Cadastro realizado com sucesso!\n\nAgora faça login com suas credenciais.',
           [
             {
               text: 'OK',
               onPress: () => {
+                setNome('');
                 setEmail('');
                 setSenha('');
+                setConfirmarSenha('');
                 navigation.navigate('PaginaLogin');
               }
             }
@@ -78,16 +85,10 @@ const PaginaCadastro = ({ navigation }: any) => {
         Alert.alert('❌ Erro', data.message || 'Erro ao cadastrar');
       }
     } catch (error: any) {
-      console.error('❌ Erro detalhado:', error);
-
-      let mensagem = 'Não foi possível conectar ao servidor.\n\n';
-      mensagem += 'Verifique:\n';
-      mensagem += '1️⃣ O backend está rodando? (npm run dev)\n';
-      mensagem += '2️⃣ O IP está correto? 172.20.86.232:3000\n';
-      mensagem += '3️⃣ Dispositivo e computador estão na mesma rede Wi-Fi?\n';
-      mensagem += '4️⃣ Firewall está bloqueando a porta 3000?';
-
-      Alert.alert('❌ Erro de Conexão', mensagem);
+      Alert.alert(
+        '❌ Erro de Conexão',
+        'Não foi possível conectar ao servidor.\n\nVerifique sua conexão.'
+      );
     } finally {
       setLoading(false);
     }
@@ -98,11 +99,10 @@ const PaginaCadastro = ({ navigation }: any) => {
       style={styles.flex}
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
     >
-      <ScrollView 
-        contentContainerStyle={styles.scroll} 
+      <ScrollView
+        contentContainerStyle={styles.scroll}
         keyboardShouldPersistTaps="handled"
       >
-        {/* Header */}
         <View style={styles.header}>
           <View style={styles.logoBox}>
             <Image source={logo} style={styles.logoImg} />
@@ -113,9 +113,15 @@ const PaginaCadastro = ({ navigation }: any) => {
           </View>
         </View>
 
-        {/* Card de Cadastro */}
         <View style={styles.card}>
           <Text style={styles.cardTitle}>Cadastro</Text>
+
+          <Input
+            label="Nome completo"
+            placeholder="Digite seu nome"
+            value={nome}
+            onChangeText={setNome}
+          />
 
           <Input
             label="E-mail"
@@ -128,41 +134,25 @@ const PaginaCadastro = ({ navigation }: any) => {
 
           <Input
             label="Senha"
-            placeholder="Coloque sua senha aqui (mínimo 8 caracteres)"
+            placeholder="Mínimo 8 caracteres"
             isPassword
             value={senha}
             onChangeText={setSenha}
           />
 
-          <Botao 
-            title="Cadastrar" 
-            loading={loading} 
-            onPress={handleCadastro} 
+          <Input
+            label="Confirmar senha"
+            placeholder="Digite a senha novamente"
+            isPassword
+            value={confirmarSenha}
+            onChangeText={setConfirmarSenha}
           />
 
-          {/* Botão DEV - Pula cadastro */}
-          {__DEV__ && (
-            <TouchableOpacity
-              style={styles.devButton}
-              onPress={() => {
-                Alert.alert(
-                  '⚡ Modo DEV',
-                  'Pular cadastro e ir para o login?',
-                  [
-                    { text: 'Cancelar', style: 'cancel' },
-                    { 
-                      text: 'Sim', 
-                      onPress: () => navigation.navigate('PaginaLogin')
-                    }
-                  ]
-                );
-              }}
-            >
-              <Text style={styles.devText}>
-                Pular cadastro (DEV) ⚡
-              </Text>
-            </TouchableOpacity>
-          )}
+          <Botao
+            title="Cadastrar"
+            loading={loading}
+            onPress={handleCadastro}
+          />
 
           <View style={styles.loginRow}>
             <Text style={styles.loginText}>Já tem uma conta? </Text>
@@ -178,17 +168,10 @@ const PaginaCadastro = ({ navigation }: any) => {
 
 export default PaginaCadastro;
 
+// Styles (iguais aos seus)
 const styles = StyleSheet.create({
-  flex: {
-    flex: 1,
-    backgroundColor: '#E0F7FA',
-  },
-  scroll: {
-    flexGrow: 1,
-    paddingBottom: 40,
-  },
-
-  // Header
+  flex: { flex: 1, backgroundColor: '#E0F7FA' },
+  scroll: { flexGrow: 1, paddingBottom: 40 },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -227,8 +210,6 @@ const styles = StyleSheet.create({
     color: '#00838F',
     marginTop: 2,
   },
-
-  // Card
   card: {
     marginHorizontal: 20,
     backgroundColor: '#fff',
@@ -246,23 +227,6 @@ const styles = StyleSheet.create({
     color: '#263238',
     marginBottom: 24,
   },
-
-  // DEV Button
-  devButton: {
-    marginTop: 12,
-    backgroundColor: '#FF6B6B',
-    paddingVertical: 14,
-    borderRadius: 16,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  devText: {
-    color: '#fff',
-    fontWeight: '700',
-    fontSize: 14,
-  },
-
-  // Login link
   loginRow: {
     flexDirection: 'row',
     justifyContent: 'center',

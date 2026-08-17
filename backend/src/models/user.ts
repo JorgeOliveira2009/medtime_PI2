@@ -1,19 +1,32 @@
-import { Entity, Column, PrimaryGeneratedColumn } from "typeorm";
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from "typeorm";
 import "reflect-metadata";
 
-// @Entity diz pro TypeORM que essa classe é uma tabela no banco
-// o nome "usuarios" é o nome da tabela que vai ser criada no MySQL
+// @Entity diz pro TypeORM que essa classe representa uma tabela no banco
+// o nome "usuarios" é o nome que a tabela vai ter no MySQL
 @Entity("usuarios")
 export class Usuario {
-    // id gerado automaticamente pelo banco (AUTO_INCREMENT)
+
+    // chave primária que incrementa sozinha (1, 2, 3...)
     @PrimaryGeneratedColumn()
     id: number;
 
-    // coluna email — máximo 100 caracteres, único (não pode repetir), obrigatório
-    @Column({ length: 100, unique: true, nullable: false })
-    email: string; 
+    // coluna de texto com no máximo 100 caracteres, não pode ser vazia
+    @Column({ length: 100, nullable: false })
+    nome: string;
 
-    // coluna senha — máximo 255 caracteres (hash bcrypt tem ~60 chars)
+    // coluna de email — o unique: true garante que não vai ter dois iguais no banco
+    @Column({ length: 100, unique: true, nullable: false })
+    email: string;
+
+    // a senha vai ficar como hash (embaralhada), por isso 255 caracteres
     @Column({ length: 255, nullable: false })
     senha: string;
+
+    // preenchida automaticamente com a data/hora de quando o registro foi criado
+    @CreateDateColumn({ name: "created_at" })
+    createdAt: Date;
+
+    // atualizada automaticamente toda vez que o registro for salvo de novo
+    @UpdateDateColumn({ name: "updated_at" })
+    updatedAt: Date;
 }

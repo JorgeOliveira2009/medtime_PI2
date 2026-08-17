@@ -1,18 +1,19 @@
 import { Request, Response, NextFunction } from "express";
 import { z, ZodError } from "zod";
 
-// factory que recebe um schema zod e devolve um middleware
-// assim dá pra reusar pra qualquer rota passando schemas diferentes
+// Função que recebe um schema do Zod e devolve um middleware pronto
+// Assim dá pra validar qualquer rota só passando o schema dela, sem repetir código
 export const validate = (schema: z.ZodObject<any, any>) => {
     return async (req: Request, res: Response, next: NextFunction) => {
         try {
-            // valida e substitui o body pelo valor já parseado/limpo pelo zod
+            // valida o body da requisição contra o schema
+            // o parseAsync também limpa campos que não estão no schema (segurança extra)
             req.body = await schema.parseAsync(req.body);
-            next(); // tudo certo, passa pro controller
+            next(); // dados válidos, pode seguir pro controller
         } catch (error) {
             if (error instanceof ZodError) {
-                // pega só a primeira mensagem de erro (não precisa mandar todas)
-                // em zod v3+ usa error.issues em vez de error.errors
+                // pega só a primeira mensagem de erro pra não encher o app de texto
+                // no Zod v3+ as mensagens ficam em error.issues (antes era error.errors)
                 const primeiraMensagem = error.issues[0]?.message || "Dados inválidos";
                 
                 return res.status(400).json({
@@ -20,7 +21,7 @@ export const validate = (schema: z.ZodObject<any, any>) => {
                     message: primeiraMensagem
                 });
             }
-            // se não for erro do zod, passa pro middleware de erro global
+            // se não foi erro do Zod, repassa pro middleware de erro global tratar
             next(error);
         }
     };

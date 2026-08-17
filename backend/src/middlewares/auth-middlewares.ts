@@ -2,78 +2,79 @@ import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import { JWT_SECRET } from "../config/env-config";
 
-// extende o Request do Express pra guardar os dados do usuário logado
+// Extende o tipo Request do Express pra incluir os dados do usuário logado
+// Assim a gente consegue acessar req.user nos controllers das rotas protegidas
 export interface AuthRequest extends Request {
   user?: {
     id: number;
     email: string;
+    nome: string;
   };
 }
 
-export class Authmiddle {
-  // método estático = não precisa instanciar a classe pra usar
-  static verificarToken(req: AuthRequest, res: Response, next: NextFunction) {
-    try {
-      // pega o header Authorization da requisição
-      const authHeader = req.headers.authorization;
-      
-      // se não veio nenhum header, barra na porta
-      if (!authHeader) {
-        return res.status(401).json({
-          sucesso: false,
-          message: "Token não fornecido"
-        });
-      }
-
-      // o header vem assim: "Bearer eyJhbG..."
-      // o split(" ")[1] pega só a parte depois do "Bearer "
-      const token = authHeader.split(" ")[1];
-      
-      // se veio "Bearer" mas sem token depois, também barra
-      if (!token) {
-        return res.status(401).json({
-          sucesso: false,
-          message: "Token mal formatado"
-        });
-      }
-
-      // garante que o JWT_SECRET tá configurado no .env
-      if (!JWT_SECRET) {
-        console.error("❌ JWT_SECRET não configurado!");
-        return res.status(500).json({
-          sucesso: false,
-          message: "Erro interno na autenticação"
-        });
-      }
-
-      // verifica se o token é válido e decodifica o payload
-      const decoded = jwt.verify(token, JWT_SECRET) as { id: number; email: string };
-      
-      // salva os dados do usuário no req pra usar nos controllers
-      req.user = {
-        id: decoded.id,
-        email: decoded.email
-      };
-      
-      // tudo certo, passa pra próxima função
-      next();
-    } catch (error) {
-      // token expirou (passou das 24h)
-      if (error instanceof jwt.TokenExpiredError) {
-        return res.status(401).json({
-          sucesso: false,
-          message: "Token expirado, faça login novamente"
-        });
-      }
-      
-      // token inválido (adulterado ou gerado com secret errado)
+// Middleware que protege as rotas — roda antes do controller
+// Ele checa se o token JWT veio no cabeçalho e se é válido
+export const authMiddleware = (req: AuthRequest, res: Response, next: NextFunction) => {
+  try {
+    const authHeader = req.headers.authorization; // pega o cabeçalho "Authorization" da requisição
+    
+    if (!authHeader) {
+      // requisição chegou sem nenhum token
       return res.status(401).json({
         sucesso: false,
-        message: "Token inválido"
+        message: "Token não fornecido"
       });
     }
-  }
-}
 
-// exporta direto como função pra usar nas rotas sem precisar chamar Authmiddle.verificarToken
-export const authMiddleware = Authmiddle.verificarToken;
+    // o token vem no formato "Bearer SEU_TOKEN_AQUI"
+    // o split(" ")[1] pega só a parte depois de "Bearer "
+    const token = authHeader.split(" ")[1];
+    
+    if (!token) {
+      // o cabeçalho existia mas estava mal formatado (só tinha "Bearer" sem o token)
+      return res.status(401).json({
+        sucesso: false,
+        message: "Token mal formatado"
+      });
+    }
+
+    if (!JWT_SECRET) {
+      // segurança extra — não deveria acontecer porque o env-config já verifica isso na inicialização
+      console.error("❌ JWT_SECRET não configurado!");
+      return res.status(500).json({
+        sucesso: false,
+        message: "Erro interno na autenticação"
+      });
+    }
+
+    // verifica a assinatura do token e decodifica as informações dentro dele
+    const decoded = jwt.verify(token, JWT_SECRET) as { 
+      id: number; 
+      email: string;
+      nome: string;
+    };
+    
+    // coloca os dados do usuário no req pra o controller poder usar
+    req.user = {
+      id: decoded.id,
+      email: decoded.email,
+      nome: decoded.nome
+    };
+    
+    next(); // token válido! deixa passar pro controller
+  } catch (error) {
+    if (error instanceof jwt.TokenExpiredError) {
+      // token existia e era válido, mas o prazo de 7 dias passou
+      return res.status(401).json({
+        sucesso: false,
+        message: "Token expirado, faça login novamente"
+      });
+    }
+    
+    // qualquer outro problema com o token (adulterado, chave errada, etc)
+    return res.status(401).json({
+      sucesso: false,
+      message: "Token inválido"
+    });
+  }
+};
