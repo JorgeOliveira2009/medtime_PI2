@@ -13,7 +13,7 @@ import {
 
 import Input from '../Components/input';
 import Botao from '../Components/Botao';
-import logo from '../Pages/logo.png';
+import logo from './logo.png';
 import { useAuth } from '../Contexts/AuthContext';
 
 const API_URL = 'http://172.20.86.189:3000'

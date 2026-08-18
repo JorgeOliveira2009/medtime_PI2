@@ -17,7 +17,7 @@ import {
   TextInput,
 } from 'react-native';
 
-import logo from '../Pages/logo.png';
+import logo from './logo.png';
 import MenuLateral from '../Components/MenuLateral';
 import { useAuth } from '../Contexts/AuthContext';
 

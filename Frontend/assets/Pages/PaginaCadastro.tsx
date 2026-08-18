@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 import Input from '../Components/input';
 import Botao from '../Components/Botao';
-import logo from '../Pages/logo.png';
+import logo from './logo.png';
 
 const API_URL = 'http://172.20.86.189:3000'
 
