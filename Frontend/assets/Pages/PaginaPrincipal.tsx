@@ -19,14 +19,9 @@ import logo from './logo.png';
 import MenuLateral from '../Components/MenuLateral';
 import { useRemedios } from '../Contexts/RemediosContext';
 import { useAuth } from '../Contexts/AuthContext';
+import { useLanguage } from '../Contexts/LanguageContext';
 
 const API_URL = 'https://backend-or-main-production-2a36.up.railway.app';
-
-const MESES = [
-  'Janeiro','Fevereiro','Março','Abril','Maio','Junho',
-  'Julho','Agosto','Setembro','Outubro','Novembro','Dezembro',
-];
-const DIAS_SEMANA = ['D','S','T','Q','Q','S','S'];
 
 function getDiasNoMes(ano: number, mes: number) {
   return new Date(ano, mes + 1, 0).getDate();
@@ -37,6 +32,10 @@ function getPrimeiroDia(ano: number, mes: number) {
 
 const PaginaPrincipal = ({ navigation }: any) => {
   const hoje = new Date();
+  const { t } = useLanguage();
+  const MESES: string[] = t('common.meses');
+  const DIAS_SEMANA: string[] = t('common.diasSemana');
+
   const [mesSel, setMesSel] = useState(hoje.getMonth());
   const [anoSel, setAnoSel] = useState(hoje.getFullYear());
   const [diaSel, setDiaSel] = useState(hoje.getDate());
@@ -77,7 +76,7 @@ const PaginaPrincipal = ({ navigation }: any) => {
     let valido = true;
 
     if (!novoNome.trim()) {
-      setErroNome('Informe o nome do remédio');
+      setErroNome(t('principal.informeNome'));
       valido = false;
     } else {
       setErroNome('');
@@ -89,10 +88,10 @@ const PaginaPrincipal = ({ navigation }: any) => {
     const minuto = parseInt(partes[1] ?? '', 10);
 
     if (!novoHorario.trim()) {
-      setErroHorario('Informe o horário');
+      setErroHorario(t('principal.informeHorario'));
       valido = false;
     } else if (!horarioValido || hora > 23 || minuto > 59) {
-      setErroHorario('Horário inválido (00:00 até 23:59)');
+      setErroHorario(t('principal.horarioInvalido'));
       valido = false;
     } else {
       setErroHorario('');
@@ -118,14 +117,14 @@ const PaginaPrincipal = ({ navigation }: any) => {
       const json = await response.json();
 
       if (!response.ok) {
-        Alert.alert('Erro', json.message ?? 'Erro ao salvar remédio');
+        Alert.alert(t('common.erro'), json.message ?? 'Erro ao salvar remédio');
         return;
       }
 
       adicionarRemedio(json.data);
       setModalVisible(false);
     } catch (e) {
-      Alert.alert('Erro', 'Não foi possível conectar ao servidor');
+      Alert.alert(t('common.erro'), 'Não foi possível conectar ao servidor');
     } finally {
       setSalvando(false);
     }
@@ -146,8 +145,8 @@ const PaginaPrincipal = ({ navigation }: any) => {
             <Image source={logo} style={styles.logoImg} />
           </View>
           <View style={{ flex: 1 }}>
-            <Text style={styles.greeting}>Bom dia! 👋</Text>
-            <Text style={styles.headerSub}>Veja seus remédios de hoje</Text>
+            <Text style={styles.greeting}>{t('principal.bomDia')}</Text>
+            <Text style={styles.headerSub}>{t('principal.veja')}</Text>
           </View>
           <TouchableOpacity style={styles.menuBtn} onPress={() => setMenuVisible(true)}>
             <Text style={styles.menuIcon}>☰</Text>
@@ -156,7 +155,7 @@ const PaginaPrincipal = ({ navigation }: any) => {
 
         <View style={styles.progressCard}>
           <View style={styles.progressInfo}>
-            <Text style={styles.progressTitle}>Progresso de hoje</Text>
+            <Text style={styles.progressTitle}>{t('principal.progressoHoje')}</Text>
             <Text style={styles.progressCount}>
               <Text style={styles.progressDone}>{tomados}</Text>/{total}
             </Text>
@@ -171,10 +170,10 @@ const PaginaPrincipal = ({ navigation }: any) => {
           </View>
           <Text style={styles.progressLabel}>
             {total === 0
-              ? 'Nenhum remédio adicionado'
+              ? t('principal.nenhumAdicionado')
               : tomados === total
-              ? '✅ Todos tomados!'
-              : `${total - tomados} restante${total - tomados > 1 ? 's' : ''}`}
+              ? t('principal.todosTomados')
+              : `${total - tomados} ${total - tomados > 1 ? t('principal.restantes') : t('principal.restante')}`}
           </Text>
         </View>
 
@@ -227,15 +226,15 @@ const PaginaPrincipal = ({ navigation }: any) => {
         <View style={styles.card}>
           <View style={styles.sectionHeader}>
             <Text style={styles.sectionTitle}>
-              Remédios — {String(diaSel).padStart(2,'0')}/{String(mesSel+1).padStart(2,'0')}
+              {t('principal.remedios')} — {String(diaSel).padStart(2,'0')}/{String(mesSel+1).padStart(2,'0')}
             </Text>
           </View>
 
           {remedios.length === 0 && (
             <View style={styles.emptyState}>
               <Text style={styles.emptyIcon}>💊</Text>
-              <Text style={styles.emptyText}>Nenhum remédio cadastrado</Text>
-              <Text style={styles.emptySubtext}>Toque no botão abaixo para adicionar</Text>
+              <Text style={styles.emptyText}>{t('principal.nenhumCadastrado')}</Text>
+              <Text style={styles.emptySubtext}>{t('principal.toqueAdicionar')}</Text>
             </View>
           )}
 
@@ -269,7 +268,7 @@ const PaginaPrincipal = ({ navigation }: any) => {
           ))}
 
           <TouchableOpacity style={styles.addBtn} onPress={abrirModal}>
-            <Text style={styles.addBtnText}>+ Adicionar remédio</Text>
+            <Text style={styles.addBtnText}>{t('principal.adicionarRemedio')}</Text>
           </TouchableOpacity>
         </View>
 
@@ -287,26 +286,26 @@ const PaginaPrincipal = ({ navigation }: any) => {
           behavior={Platform.OS === 'ios' ? 'padding' : undefined}
         >
           <View style={styles.modalCard}>
-            <Text style={styles.modalTitle}>Novo remédio</Text>
+            <Text style={styles.modalTitle}>{t('principal.novoRemedio')}</Text>
 
-            <Text style={styles.inputLabel}>Nome do remédio</Text>
+            <Text style={styles.inputLabel}>{t('principal.nomeRemedio')}</Text>
             <TextInput
               style={[styles.input, erroNome ? styles.inputError : null]}
-              placeholder="Ex: Paracetamol 500mg"
+              placeholder={t('principal.nomeRemedioPlaceholder')}
               placeholderTextColor="#B0BEC5"
               value={novoNome}
               onChangeText={t => { setNovoNome(t); setErroNome(''); }}
             />
             {erroNome ? <Text style={styles.erroText}>{erroNome}</Text> : null}
 
-            <Text style={styles.inputLabel}>Horário</Text>
+            <Text style={styles.inputLabel}>{t('principal.horario')}</Text>
             <TextInput
               style={[styles.input, erroHorario ? styles.inputError : null]}
-              placeholder="Ex: 0830"
+              placeholder={t('principal.horarioPlaceholder')}
               placeholderTextColor="#B0BEC5"
               value={novoHorario}
-              onChangeText={t => {
-                const apenasNumeros = t.replace(/\D/g, '').slice(0, 4);
+              onChangeText={txt => {
+                const apenasNumeros = txt.replace(/\D/g, '').slice(0, 4);
                 if (apenasNumeros.length <= 2) {
                   setNovoHorario(apenasNumeros);
                 } else {
@@ -321,7 +320,6 @@ const PaginaPrincipal = ({ navigation }: any) => {
             />
             {erroHorario ? <Text style={styles.erroText}>{erroHorario}</Text> : null}
 
-            <Text style={styles.inputLabel}>Observações (opcional)</Text>
             <TextInput
               style={styles.input}
               placeholder="Ex: Tomar com água"
@@ -336,7 +334,7 @@ const PaginaPrincipal = ({ navigation }: any) => {
                 onPress={() => setModalVisible(false)}
                 disabled={salvando}
               >
-                <Text style={styles.modalBtnCancelText}>Cancelar</Text>
+                <Text style={styles.modalBtnCancelText}>{t('common.cancelar')}</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={styles.modalBtnSave}
@@ -344,7 +342,7 @@ const PaginaPrincipal = ({ navigation }: any) => {
                 disabled={salvando}
               >
                 <Text style={styles.modalBtnSaveText}>
-                  {salvando ? 'Salvando...' : 'Salvar'}
+                  {salvando ? '...' : t('common.salvar')}
                 </Text>
               </TouchableOpacity>
             </View>
