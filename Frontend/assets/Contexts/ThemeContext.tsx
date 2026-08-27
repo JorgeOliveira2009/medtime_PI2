@@ -1,4 +1,5 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 interface ThemeContextData {
   darkMode: boolean;
@@ -6,12 +7,23 @@ interface ThemeContextData {
 }
 
 const ThemeContext = createContext<ThemeContextData | undefined>(undefined);
+const STORAGE_KEY = '@medtime:darkMode';
 
 export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
   const [darkMode, setDarkMode] = useState(false);
 
+  useEffect(() => {
+    AsyncStorage.getItem(STORAGE_KEY).then((valor) => {
+      if (valor !== null) setDarkMode(valor === 'true');
+    });
+  }, []);
+
   function alternarTema() {
-    setDarkMode(prev => !prev);
+    setDarkMode(prev => {
+      const novo = !prev;
+      AsyncStorage.setItem(STORAGE_KEY, String(novo));
+      return novo;
+    });
   }
 
   return (
