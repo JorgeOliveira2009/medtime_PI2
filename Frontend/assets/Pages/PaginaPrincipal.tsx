@@ -10,16 +10,17 @@ import {
   SafeAreaView,
   Modal,
   TextInput,
-  Platform,           
+  Platform,
   KeyboardAvoidingView,
+  Alert,
 } from 'react-native';
 
 import logo from './logo.png';
 import MenuLateral from '../Components/MenuLateral';
 import { useRemedios } from '../Contexts/RemediosContext';
+import { useAuth } from '../Contexts/AuthContext';
 
-/* ─── Tipos ─── */
-
+const API_URL = 'https://backend-or-main-production-2a36.up.railway.app';
 
 const MESES = [
   'Janeiro','Fevereiro','Março','Abril','Maio','Junho',
@@ -34,20 +35,22 @@ function getPrimeiroDia(ano: number, mes: number) {
   return new Date(ano, mes, 1).getDay();
 }
 
-/* ─── Componente principal ─── */
 const PaginaPrincipal = ({ navigation }: any) => {
   const hoje = new Date();
   const [mesSel, setMesSel] = useState(hoje.getMonth());
   const [anoSel, setAnoSel] = useState(hoje.getFullYear());
   const [diaSel, setDiaSel] = useState(hoje.getDate());
   const { remedios, adicionarRemedio, toggleRemedio, removerRemedio } = useRemedios();
+  const { token } = useAuth();
   const [menuVisible, setMenuVisible] = useState(false);
 
   const [modalVisible, setModalVisible] = useState(false);
   const [novoNome, setNovoNome] = useState('');
   const [novoHorario, setNovoHorario] = useState('');
+  const [novaObs, setNovaObs] = useState('');
   const [erroNome, setErroNome] = useState('');
   const [erroHorario, setErroHorario] = useState('');
+  const [salvando, setSalvando] = useState(false);
 
   const tomados = remedios.filter(r => r.tomado).length;
   const total = remedios.length;
@@ -64,12 +67,13 @@ const PaginaPrincipal = ({ navigation }: any) => {
   function abrirModal() {
     setNovoNome('');
     setNovoHorario('');
+    setNovaObs('');
     setErroNome('');
     setErroHorario('');
     setModalVisible(true);
   }
 
-  function salvarRemedio() {
+  async function salvarRemedio() {
     let valido = true;
 
     if (!novoNome.trim()) {
@@ -83,13 +87,11 @@ const PaginaPrincipal = ({ navigation }: any) => {
     const partes = novoHorario.split(':');
     const hora = parseInt(partes[0], 10);
     const minuto = parseInt(partes[1] ?? '', 10);
-    const horaValida = hora >= 0 && hora <= 23;
-    const minutoValido = minuto >= 0 && minuto <= 59;
 
     if (!novoHorario.trim()) {
       setErroHorario('Informe o horário');
       valido = false;
-    } else if (!horarioValido || !horaValida || !minutoValido) {
+    } else if (!horarioValido || hora > 23 || minuto > 59) {
       setErroHorario('Horário inválido (00:00 até 23:59)');
       valido = false;
     } else {
@@ -98,12 +100,35 @@ const PaginaPrincipal = ({ navigation }: any) => {
 
     if (!valido) return;
 
-     adicionarRemedio({
-      nome: novoNome.trim(),
-      horario: novoHorario.trim(),
-    });
+    setSalvando(true);
+    try {
+      const response = await fetch(`${API_URL}/remedio`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          nome: novoNome.trim(),
+          horario: novoHorario.trim(),
+          ...(novaObs.trim() && { observacoes: novaObs.trim() }),
+        }),
+      });
 
-    setModalVisible(false);
+      const json = await response.json();
+
+      if (!response.ok) {
+        Alert.alert('Erro', json.message ?? 'Erro ao salvar remédio');
+        return;
+      }
+
+      adicionarRemedio(json.data);
+      setModalVisible(false);
+    } catch (e) {
+      Alert.alert('Erro', 'Não foi possível conectar ao servidor');
+    } finally {
+      setSalvando(false);
+    }
   }
 
   const celulas: (number | null)[] = [
@@ -116,7 +141,6 @@ const PaginaPrincipal = ({ navigation }: any) => {
       <StatusBar barStyle="dark-content" backgroundColor="#E0F7FA" />
       <ScrollView contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>
 
-        {/* ── Header ── */}
         <View style={styles.header}>
           <View style={styles.logoBox}>
             <Image source={logo} style={styles.logoImg} />
@@ -130,7 +154,6 @@ const PaginaPrincipal = ({ navigation }: any) => {
           </TouchableOpacity>
         </View>
 
-        {/* ── Progresso do dia ── */}
         <View style={styles.progressCard}>
           <View style={styles.progressInfo}>
             <Text style={styles.progressTitle}>Progresso de hoje</Text>
@@ -155,7 +178,6 @@ const PaginaPrincipal = ({ navigation }: any) => {
           </Text>
         </View>
 
-        {/* ── Calendário ── */}
         <View style={styles.card}>
           <View style={styles.calHeader}>
             <TouchableOpacity onPress={() => mudarMes(-1)} style={styles.calArrow}>
@@ -202,7 +224,6 @@ const PaginaPrincipal = ({ navigation }: any) => {
           </View>
         </View>
 
-        {/* ── Lista de remédios ── */}
         <View style={styles.card}>
           <View style={styles.sectionHeader}>
             <Text style={styles.sectionTitle}>
@@ -255,7 +276,6 @@ const PaginaPrincipal = ({ navigation }: any) => {
         <View style={{ height: 32 }} />
       </ScrollView>
 
-      {/* ── Modal adicionar remédio ── */}
       <Modal
         visible={modalVisible}
         transparent
@@ -301,25 +321,37 @@ const PaginaPrincipal = ({ navigation }: any) => {
             />
             {erroHorario ? <Text style={styles.erroText}>{erroHorario}</Text> : null}
 
+            <Text style={styles.inputLabel}>Observações (opcional)</Text>
+            <TextInput
+              style={styles.input}
+              placeholder="Ex: Tomar com água"
+              placeholderTextColor="#B0BEC5"
+              value={novaObs}
+              onChangeText={setNovaObs}
+            />
+
             <View style={styles.modalButtons}>
               <TouchableOpacity
                 style={styles.modalBtnCancel}
                 onPress={() => setModalVisible(false)}
+                disabled={salvando}
               >
                 <Text style={styles.modalBtnCancelText}>Cancelar</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={styles.modalBtnSave}
                 onPress={salvarRemedio}
+                disabled={salvando}
               >
-                <Text style={styles.modalBtnSaveText}>Salvar</Text>
+                <Text style={styles.modalBtnSaveText}>
+                  {salvando ? 'Salvando...' : 'Salvar'}
+                </Text>
               </TouchableOpacity>
             </View>
           </View>
         </KeyboardAvoidingView>
       </Modal>
 
-      {/* ── Menu lateral ── */}
       <MenuLateral
         visible={menuVisible}
         onClose={() => setMenuVisible(false)}
@@ -331,7 +363,6 @@ const PaginaPrincipal = ({ navigation }: any) => {
 
 export default PaginaPrincipal;
 
-/* ─── Estilos ─── */
 const TEAL = '#00BCD4';
 const TEAL_DARK = '#006064';
 const BG = '#E0F7FA';
@@ -343,7 +374,6 @@ const ERROR = '#E53935';
 const styles = StyleSheet.create({
   safe: { flex: 1, backgroundColor: BG },
   scroll: { paddingBottom: 24 },
-
   header: {
     flexDirection: 'row', alignItems: 'center', gap: 14,
     paddingHorizontal: 24, paddingTop: 20, paddingBottom: 16,
@@ -362,14 +392,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center', alignItems: 'center', elevation: 2,
   },
   menuIcon: { fontSize: 18, color: DARK },
-
   card: {
     marginHorizontal: 20, marginBottom: 16, backgroundColor: WHITE,
     borderRadius: 24, padding: 20,
     shadowColor: '#000', shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.07, shadowRadius: 16, elevation: 5,
   },
-
   progressCard: {
     marginHorizontal: 20, marginBottom: 16, backgroundColor: TEAL,
     borderRadius: 24, padding: 20,
@@ -383,7 +411,6 @@ const styles = StyleSheet.create({
   progressBarBg: { height: 8, backgroundColor: 'rgba(255,255,255,0.3)', borderRadius: 4, marginBottom: 8 },
   progressBarFill: { height: 8, backgroundColor: WHITE, borderRadius: 4 },
   progressLabel: { color: 'rgba(255,255,255,0.85)', fontSize: 12, fontWeight: '500' },
-
   calHeader: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14 },
   calArrow: { width: 32, height: 32, borderRadius: 10, backgroundColor: BG, justifyContent: 'center', alignItems: 'center' },
   calArrowText: { fontSize: 20, color: TEAL_DARK, fontWeight: '700', lineHeight: 24 },
@@ -397,15 +424,12 @@ const styles = StyleSheet.create({
   calDayText: { fontSize: 13, color: DARK, fontWeight: '500' },
   calDayTextSelected: { color: WHITE, fontWeight: '800' },
   calDayTextToday: { color: TEAL, fontWeight: '800' },
-
   sectionHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 },
   sectionTitle: { fontSize: 16, fontWeight: '800', color: DARK },
-
   emptyState: { alignItems: 'center', paddingVertical: 28 },
   emptyIcon: { fontSize: 40, marginBottom: 10 },
   emptyText: { fontSize: 15, fontWeight: '700', color: DARK, marginBottom: 4 },
   emptySubtext: { fontSize: 13, color: GRAY },
-
   remedioRow: {
     flexDirection: 'row', alignItems: 'center',
     paddingVertical: 10, borderBottomWidth: 1, borderBottomColor: '#F0F4F8', gap: 10,
@@ -425,14 +449,12 @@ const styles = StyleSheet.create({
   checkBtn: { width: 28, height: 28, borderRadius: 14, borderWidth: 2, borderColor: '#CFD8DC', justifyContent: 'center', alignItems: 'center' },
   checkBtnDone: { backgroundColor: '#43A047', borderColor: '#43A047' },
   checkIcon: { color: WHITE, fontSize: 14, fontWeight: '800' },
-
   addBtn: {
     marginTop: 14, height: 48, borderRadius: 14,
     borderWidth: 1.5, borderColor: TEAL, borderStyle: 'dashed',
     justifyContent: 'center', alignItems: 'center',
   },
   addBtnText: { color: TEAL, fontSize: 14, fontWeight: '700' },
-
   modalOverlay: {
     flex: 1, backgroundColor: 'rgba(0,0,0,0.4)', justifyContent: 'flex-end',
   },
