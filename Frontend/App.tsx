@@ -20,6 +20,7 @@ const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
+  <ThemeProvider>
     <AuthProvider>
       <RemediosProvider>
         <NavigationContainer>
@@ -71,5 +72,6 @@ export default function App() {
         </NavigationContainer>
       </RemediosProvider>
     </AuthProvider>
+    </ThemeProvider>
   );
 }
