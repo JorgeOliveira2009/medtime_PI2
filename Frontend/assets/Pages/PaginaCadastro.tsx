@@ -14,7 +14,7 @@ import Input from '../Components/input';
 import Botao from '../Components/Botao';
 import logo from './logo.png';
 
-const API_URL = 'http://172.20.86.189:3000'
+const API_URL = 'https://backend-or-main-production-2a36.up.railway.app'
 
 const PaginaCadastro = ({ navigation }: any) => {
   const [nome, setNome] = useState('');

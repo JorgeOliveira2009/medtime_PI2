@@ -16,7 +16,7 @@ import Botao from '../Components/Botao';
 import logo from './logo.png';
 import { useAuth } from '../Contexts/AuthContext';
 
-const API_URL = 'http://172.20.86.189:3000'
+const API_URL = 'https://backend-or-main-production-2a36.up.railway.app'
 
 const PaginaLogin = ({ navigation }: any) => {
   const { login } = useAuth();
