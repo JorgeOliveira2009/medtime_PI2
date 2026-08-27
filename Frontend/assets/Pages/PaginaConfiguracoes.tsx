@@ -21,17 +21,18 @@ import logo from './logo.png';
 import MenuLateral from '../Components/MenuLateral';
 import { useAuth } from '../Contexts/AuthContext';
 import { useTheme } from '../Contexts/ThemeContext';
+import { useLanguage } from '../Contexts/LanguageContext';
 
 const API_URL = 'https://backend-or-main-production-2a36.up.railway.app'
 
 const PaginaConfiguracoes = ({ navigation }: any) => {
   const { user, token, logout, updateUser } = useAuth();
   const { darkMode, alternarTema } = useTheme();
+  const { idioma, setIdioma, t } = useLanguage();
   const colors = darkMode ? coresEscuro : coresClaro; // ← cores dinâmicas
   const styles = getStyles(colors);                   // ← estilos dinâmicos
 
   const [menuVisible, setMenuVisible] = useState(false);
-  const [idioma, setIdioma] = useState<'pt' | 'en'>('pt');
   const [notificacoesAtivas, setNotificacoesAtivas] = useState(true);
   const [deletando, setDeletando] = useState(false);
 
@@ -52,10 +53,10 @@ const PaginaConfiguracoes = ({ navigation }: any) => {
   }, [user, modalEdicaoVisible]);
 
   function handleLogout() {
-    Alert.alert('Sair', 'Deseja sair da sua conta?', [
-      { text: 'Cancelar', style: 'cancel' },
+    Alert.alert(t('configuracoes.sairTitulo'), t('configuracoes.sairMsg'), [
+      { text: t('common.cancelar'), style: 'cancel' },
       {
-        text: 'Sair',
+        text: t('configuracoes.sair'),
         style: 'destructive',
         onPress: async () => {
           await logout();
@@ -67,17 +68,17 @@ const PaginaConfiguracoes = ({ navigation }: any) => {
 
   function handleDeletarConta() {
     Alert.alert(
-      '⚠️ Deletar Conta',
-      'Tem certeza que deseja deletar sua conta?\n\nEssa ação é IRREVERSÍVEL e todos os seus dados serão perdidos.',
+      t('configuracoes.deletarTitulo'),
+      t('configuracoes.deletarMsg'),
       [
-        { text: 'Cancelar', style: 'cancel' },
-        { text: 'Sim, deletar', style: 'destructive', onPress: confirmarDeletarConta },
+        { text: t('common.cancelar'), style: 'cancel' },
+        { text: t('configuracoes.simDeletar'), style: 'destructive', onPress: confirmarDeletarConta },
       ]
     );
   }
 
   const confirmarDeletarConta = async () => {
-    if (!user || !token) { Alert.alert('Erro', 'Usuário não autenticado'); return; }
+    if (!user || !token) { Alert.alert(t('common.erro'), 'Usuário não autenticado'); return; }
     setDeletando(true);
     try {
       const response = await fetch(`${API_URL}/user/deletar-conta`, {
@@ -87,13 +88,13 @@ const PaginaConfiguracoes = ({ navigation }: any) => {
       const data = await response.json();
       if (data.sucesso) {
         await logout();
-        Alert.alert('✅ Conta deletada', 'Sua conta foi removida com sucesso.');
+        Alert.alert(`✅ ${t('configuracoes.contaDeletada')}`, t('configuracoes.contaDeletadaMsg'));
         navigation.reset({ index: 0, routes: [{ name: 'PaginaLogin' }] });
       } else {
-        Alert.alert('❌ Erro', data.message || 'Erro ao deletar conta');
+        Alert.alert(t('common.erro'), data.message || 'Erro ao deletar conta');
       }
     } catch (error) {
-      Alert.alert('❌ Erro', 'Não foi possível deletar sua conta. Tente novamente.');
+      Alert.alert(t('common.erro'), t('configuracoes.erroDeletar'));
     } finally {
       setDeletando(false);
     }
@@ -102,10 +103,10 @@ const PaginaConfiguracoes = ({ navigation }: any) => {
   function handleAbrirEdicao() { setModalEdicaoVisible(true); }
 
   const handleSalvarEdicao = async () => {
-    if (!nome || !email) { Alert.alert('Atenção', 'Nome e email são obrigatórios.'); return; }
-    if (nome.length < 3) { Alert.alert('Atenção', 'Nome deve ter pelo menos 3 caracteres.'); return; }
-    if (senha && senha.length < 8) { Alert.alert('Atenção', 'A nova senha deve ter pelo menos 8 caracteres.'); return; }
-    if (senha && senha !== confirmarSenha) { Alert.alert('Atenção', 'As senhas não conferem.'); return; }
+    if (!nome || !email) { Alert.alert(t('common.atencao'), t('configuracoes.dadosObrigatorios')); return; }
+    if (nome.length < 3) { Alert.alert(t('common.atencao'), t('configuracoes.nomeMinimo')); return; }
+    if (senha && senha.length < 8) { Alert.alert(t('common.atencao'), t('configuracoes.senhaMinima')); return; }
+    if (senha && senha !== confirmarSenha) { Alert.alert(t('common.atencao'), t('configuracoes.senhasNaoConferem')); return; }
     setLoadingEdicao(true);
     try {
       const body: any = { nome: nome.trim(), email: email.trim() };
@@ -118,13 +119,13 @@ const PaginaConfiguracoes = ({ navigation }: any) => {
       const data = await response.json();
       if (data.sucesso) {
         await updateUser({ id: user!.id, nome: nome.trim(), email: email.trim() });
-        Alert.alert('✅ Sucesso', 'Dados atualizados com sucesso!');
+        Alert.alert(t('common.sucesso'), t('configuracoes.dadosAtualizados'));
         setModalEdicaoVisible(false);
       } else {
-        Alert.alert('❌ Erro', data.message || 'Erro ao atualizar dados');
+        Alert.alert(t('common.erro'), data.message || 'Erro ao atualizar dados');
       }
     } catch (error) {
-      Alert.alert('❌ Erro', 'Não foi possível atualizar seus dados.');
+      Alert.alert(t('common.erro'), 'Não foi possível atualizar seus dados.');
     } finally {
       setLoadingEdicao(false);
     }
@@ -140,8 +141,8 @@ const PaginaConfiguracoes = ({ navigation }: any) => {
             <Image source={logo} style={styles.logoImg} />
           </View>
           <View style={{ flex: 1 }}>
-            <Text style={styles.greeting}>Configurações</Text>
-            <Text style={styles.headerSub}>Personalize seu app</Text>
+            <Text style={styles.greeting}>{t('configuracoes.titulo')}</Text>
+            <Text style={styles.headerSub}>{t('configuracoes.subtitulo')}</Text>
           </View>
           <TouchableOpacity style={styles.menuBtn} onPress={() => setMenuVisible(true)}>
             <Text style={styles.menuIcon}>☰</Text>
@@ -149,12 +150,12 @@ const PaginaConfiguracoes = ({ navigation }: any) => {
         </View>
 
         <View style={styles.card}>
-          <Text style={styles.sectionTitle}>👤 Conta</Text>
+          <Text style={styles.sectionTitle}>{t('configuracoes.secaoConta')}</Text>
 
           <TouchableOpacity style={styles.settingRow} onPress={handleAbrirEdicao} activeOpacity={0.7}>
             <View style={styles.settingLeft}>
               <View style={styles.settingIconBox}><Text style={styles.settingIcon}>✏️</Text></View>
-              <Text style={styles.settingLabel}>Editar perfil</Text>
+              <Text style={styles.settingLabel}>{t('configuracoes.editarPerfil')}</Text>
             </View>
             <Text style={styles.settingArrow}>›</Text>
           </TouchableOpacity>
@@ -164,9 +165,33 @@ const PaginaConfiguracoes = ({ navigation }: any) => {
           <View style={styles.settingRow}>
             <View style={styles.settingLeft}>
               <View style={styles.settingIconBox}><Text style={styles.settingIcon}>🌙</Text></View>
-              <Text style={styles.settingLabel}>Modo escuro</Text>
+              <Text style={styles.settingLabel}>{t('configuracoes.modoEscuro')}</Text>
             </View>
             <Switch value={darkMode} onValueChange={alternarTema} />
+          </View>
+
+          <View style={styles.divider} />
+
+          {/* ── Seletor de idioma ── */}
+          <View style={styles.settingRow}>
+            <View style={styles.settingLeft}>
+              <View style={styles.settingIconBox}><Text style={styles.settingIcon}>🌐</Text></View>
+              <Text style={styles.settingLabel}>{t('configuracoes.idioma')}</Text>
+            </View>
+            <View style={styles.idiomaSwitchBox}>
+              <TouchableOpacity
+                style={[styles.idiomaBtn, idioma === 'pt' && styles.idiomaBtnAtivo]}
+                onPress={() => setIdioma('pt')}
+              >
+                <Text style={[styles.idiomaBtnText, idioma === 'pt' && styles.idiomaBtnTextAtivo]}>PT</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.idiomaBtn, idioma === 'en' && styles.idiomaBtnAtivo]}
+                onPress={() => setIdioma('en')}
+              >
+                <Text style={[styles.idiomaBtnText, idioma === 'en' && styles.idiomaBtnTextAtivo]}>EN</Text>
+              </TouchableOpacity>
+            </View>
           </View>
 
           <View style={styles.divider} />
@@ -174,7 +199,7 @@ const PaginaConfiguracoes = ({ navigation }: any) => {
           <TouchableOpacity style={styles.settingRow} onPress={handleLogout} activeOpacity={0.7}>
             <View style={styles.settingLeft}>
               <View style={styles.settingIconBox}><Text style={styles.settingIcon}>🚪</Text></View>
-              <Text style={styles.settingLabel}>Sair da conta</Text>
+              <Text style={styles.settingLabel}>{t('configuracoes.sairConta')}</Text>
             </View>
             <Text style={styles.settingArrow}>›</Text>
           </TouchableOpacity>
@@ -184,7 +209,7 @@ const PaginaConfiguracoes = ({ navigation }: any) => {
           <TouchableOpacity style={[styles.settingRow, styles.dangerRow]} onPress={handleDeletarConta} disabled={deletando} activeOpacity={0.7}>
             <View style={styles.settingLeft}>
               <View style={[styles.settingIconBox, styles.dangerIconBox]}><Text style={styles.settingIcon}>🗑️</Text></View>
-              <Text style={[styles.settingLabel, styles.dangerText]}>{deletando ? 'Deletando...' : 'Deletar conta'}</Text>
+              <Text style={[styles.settingLabel, styles.dangerText]}>{deletando ? t('configuracoes.deletando') : t('configuracoes.deletarConta')}</Text>
             </View>
             {deletando ? <ActivityIndicator size="small" color="#E53935" /> : <Text style={styles.settingArrow}>›</Text>}
           </TouchableOpacity>
@@ -196,29 +221,29 @@ const PaginaConfiguracoes = ({ navigation }: any) => {
       <Modal visible={modalEdicaoVisible} transparent animationType="slide" onRequestClose={() => setModalEdicaoVisible(false)}>
         <KeyboardAvoidingView style={styles.modalOverlay} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
           <View style={styles.modalCard}>
-            <Text style={styles.modalTitle}>✏️ Editar perfil</Text>
+            <Text style={styles.modalTitle}>{t('configuracoes.modalEditarTitulo')}</Text>
 
-            <Text style={styles.inputLabel}>Nome completo</Text>
-            <TextInput style={styles.input} placeholder="Seu nome completo" placeholderTextColor={colors.textSecondary} value={nome} onChangeText={setNome} />
+            <Text style={styles.inputLabel}>{t('configuracoes.nomeCompleto')}</Text>
+            <TextInput style={styles.input} placeholder={t('configuracoes.nomeCompletoPlaceholder')} placeholderTextColor={colors.textSecondary} value={nome} onChangeText={setNome} />
 
-            <Text style={styles.inputLabel}>E-mail</Text>
-            <TextInput style={styles.input} placeholder="Seu e-mail" placeholderTextColor={colors.textSecondary} value={email} onChangeText={setEmail} keyboardType="email-address" autoCapitalize="none" />
+            <Text style={styles.inputLabel}>{t('login.email')}</Text>
+            <TextInput style={styles.input} placeholder={t('configuracoes.seuEmail')} placeholderTextColor={colors.textSecondary} value={email} onChangeText={setEmail} keyboardType="email-address" autoCapitalize="none" />
 
             <View style={styles.modalDivider} />
-            <Text style={styles.modalSubtitle}>🔐 Alterar senha (opcional)</Text>
+            <Text style={styles.modalSubtitle}>{t('configuracoes.alterarSenhaOpcional')}</Text>
 
-            <Text style={styles.inputLabel}>Nova senha</Text>
-            <TextInput style={styles.input} placeholder="Deixe em branco para manter" placeholderTextColor={colors.textSecondary} value={senha} onChangeText={setSenha} secureTextEntry />
+            <Text style={styles.inputLabel}>{t('configuracoes.novaSenha')}</Text>
+            <TextInput style={styles.input} placeholder={t('configuracoes.novaSenhaPlaceholder')} placeholderTextColor={colors.textSecondary} value={senha} onChangeText={setSenha} secureTextEntry />
 
-            <Text style={styles.inputLabel}>Confirmar nova senha</Text>
-            <TextInput style={styles.input} placeholder="Digite a nova senha novamente" placeholderTextColor={colors.textSecondary} value={confirmarSenha} onChangeText={setConfirmarSenha} secureTextEntry />
+            <Text style={styles.inputLabel}>{t('configuracoes.confirmarSenha')}</Text>
+            <TextInput style={styles.input} placeholder={t('configuracoes.confirmarSenhaPlaceholder')} placeholderTextColor={colors.textSecondary} value={confirmarSenha} onChangeText={setConfirmarSenha} secureTextEntry />
 
             <View style={styles.modalButtons}>
               <TouchableOpacity style={styles.modalBtnCancel} onPress={() => setModalEdicaoVisible(false)} disabled={loadingEdicao}>
-                <Text style={styles.modalBtnCancelText}>Cancelar</Text>
+                <Text style={styles.modalBtnCancelText}>{t('common.cancelar')}</Text>
               </TouchableOpacity>
               <TouchableOpacity style={styles.modalBtnSave} onPress={handleSalvarEdicao} disabled={loadingEdicao}>
-                {loadingEdicao ? <ActivityIndicator size="small" color="#FFF" /> : <Text style={styles.modalBtnSaveText}>Salvar</Text>}
+                {loadingEdicao ? <ActivityIndicator size="small" color="#FFF" /> : <Text style={styles.modalBtnSaveText}>{t('common.salvar')}</Text>}
               </TouchableOpacity>
             </View>
           </View>
@@ -279,6 +304,11 @@ const getStyles = (colors: typeof coresClaro) => StyleSheet.create({
   dangerText: { color: DANGER },
   settingArrow: { fontSize: 22, color: colors.textSecondary },
   divider: { height: 1, backgroundColor: colors.border, marginVertical: 8 },
+  idiomaSwitchBox: { flexDirection: 'row', backgroundColor: colors.iconBox, borderRadius: 10, padding: 3, gap: 3 },
+  idiomaBtn: { paddingVertical: 6, paddingHorizontal: 14, borderRadius: 8 },
+  idiomaBtnAtivo: { backgroundColor: TEAL },
+  idiomaBtnText: { fontSize: 13, fontWeight: '700', color: colors.textSecondary },
+  idiomaBtnTextAtivo: { color: '#FFF' },
   modalOverlay: { flex: 1, backgroundColor: 'rgba(0,0,0,0.5)', justifyContent: 'flex-end' },
   modalCard: { backgroundColor: colors.card, borderTopLeftRadius: 28, borderTopRightRadius: 28, padding: 28, paddingBottom: 40, maxHeight: '90%' },
   modalTitle: { fontSize: 22, fontWeight: '800', color: colors.text, marginBottom: 20 },

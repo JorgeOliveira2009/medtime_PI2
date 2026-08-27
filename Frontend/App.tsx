@@ -1,6 +1,7 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
+import { LanguageProvider } from './assets/Contexts/LanguageContext';
 import { AuthProvider } from './assets/Contexts/AuthContext';
 import { RemediosProvider } from './assets/Contexts/RemediosContext';
 
@@ -20,6 +21,7 @@ const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
+  <LanguageProvider>
   <ThemeProvider>
     <AuthProvider>
       <RemediosProvider>
@@ -73,5 +75,6 @@ export default function App() {
       </RemediosProvider>
     </AuthProvider>
     </ThemeProvider>
+  </LanguageProvider>
   );
 }
