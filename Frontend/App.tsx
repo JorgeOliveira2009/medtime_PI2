@@ -14,6 +14,8 @@ import PaginaNotificacoes from './assets/Pages/PaginaNotificacoes';
 import PaginaAjuda from './assets/Pages/PaginaAjuda';
 import PaginaConfiguracoes from './assets/Pages/PaginaConfiguracoes';
 
+import { ThemeProvider } from './assets/Contexts/ThemeContext';
+
 const Stack = createNativeStackNavigator();
 
 export default function App() {
