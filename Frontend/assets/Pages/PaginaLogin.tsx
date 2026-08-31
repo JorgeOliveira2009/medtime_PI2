@@ -16,6 +16,7 @@ import Botao from '../Components/Botao';
 import logo from './logo.png';
 import { useAuth } from '../Contexts/AuthContext';
 import { useTheme } from '../Contexts/ThemeContext';
+import { useLanguage } from '../Contexts/LanguageContext';
 
 const API_URL = 'https://backend-or-main-production-2a36.up.railway.app'
 
@@ -53,6 +54,7 @@ const getStyles = (colors: typeof coresClaro) => StyleSheet.create({
 const PaginaLogin = ({ navigation }: any) => {
   const { login } = useAuth();
   const { darkMode } = useTheme();
+  const { t } = useLanguage();
   const colors = darkMode ? coresEscuro : coresClaro;
   const styles = getStyles(colors);
 
@@ -61,7 +63,7 @@ const PaginaLogin = ({ navigation }: any) => {
   const [loading, setLoading] = useState(false);
 
   const handleLogin = async () => {
-    if (!email || !senha) { Alert.alert('Atenção', 'Preencha email e senha'); return; }
+    if (!email || !senha) { Alert.alert(t('common.atencao'), t('login.preencherCampos')); return; }
 
     setLoading(true);
 
@@ -76,13 +78,13 @@ const PaginaLogin = ({ navigation }: any) => {
 
       if (data.sucesso) {
         await login(data.user, data.token);
-        Alert.alert('✅ Sucesso', `Bem-vindo(a), ${data.user.nome}!`);
+        Alert.alert(t('common.sucesso'), `${t('Bem Vindo Usuario')}, ${data.user.nome}!`);
         navigation.navigate('PaginaPrincipal');
       } else {
-        Alert.alert('❌ Erro', data.message || 'Email ou senha incorretos');
+        Alert.alert(t('common.erro'), data.message || t('login.loginErro'));
       }
     } catch (error: any) {
-      Alert.alert('❌ Erro de Conexão', 'Não foi possível conectar ao servidor.\n\nVerifique sua conexão com a internet.');
+      Alert.alert(t('login.erroConexaoTitulo'), t('login.erroConexaoMsg'));
     } finally {
       setLoading(false);
     }
@@ -96,23 +98,23 @@ const PaginaLogin = ({ navigation }: any) => {
             <Image source={logo} style={styles.logoImg} />
           </View>
           <View>
-            <Text style={styles.bemVindo}>Bem-vindo!!</Text>
-            <Text style={styles.subtitle}>Seu lembrete de medicamentos</Text>
+            <Text style={styles.bemVindo}>{t('login.bemVindo')}</Text>
+            <Text style={styles.subtitle}>{t('login.subtitulo')}</Text>
           </View>
         </View>
 
         <View style={styles.card}>
-          <Text style={styles.cardTitle}>Login</Text>
+          <Text style={styles.cardTitle}>{t('login.titulo')}</Text>
 
-          <Input label="E-mail" placeholder="Coloque seu e-mail aqui" keyboardType="email-address" autoCapitalize="none" value={email} onChangeText={setEmail} />
-          <Input label="Senha" placeholder="Coloque sua senha aqui" isPassword value={senha} onChangeText={setSenha} />
+          <Input label={t('login.email')} placeholder={t('login.emailPlaceholder')} keyboardType="email-address" autoCapitalize="none" value={email} onChangeText={setEmail} />
+          <Input label={t('login.senha')} placeholder={t('login.senhaPlaceholder')} isPassword value={senha} onChangeText={setSenha} />
 
-          <Botao title="Acessar" loading={loading} onPress={handleLogin} />
+          <Botao title={t('login.acessar')} loading={loading} onPress={handleLogin} />
 
           <View style={styles.registerRow}>
-            <Text style={styles.registerText}>Não tem uma conta? </Text>
+            <Text style={styles.registerText}>{t('login.semConta')}</Text>
             <TouchableOpacity onPress={() => navigation.navigate('PaginaCadastro')}>
-              <Text style={styles.registerLink}>Cadastrar-se</Text>
+              <Text style={styles.registerLink}>{t('login.cadastrar')}</Text>
             </TouchableOpacity>
           </View>
         </View>
