@@ -13,9 +13,11 @@ import {
 import logo from './logo.png';
 import MenuLateral from '../Components/MenuLateral';
 import { useAuth } from '../Contexts/AuthContext';
+import { useLanguage } from '../Contexts/LanguageContext';
 
 const PaginaPerfil = ({ navigation }: any) => {
   const { user } = useAuth();
+  const { t } = useLanguage();
   const [menuVisible, setMenuVisible] = useState(false);
 
   return (
@@ -28,8 +30,8 @@ const PaginaPerfil = ({ navigation }: any) => {
             <Image source={logo} style={styles.logoImg} />
           </View>
           <View style={{ flex: 1 }}>
-            <Text style={styles.greeting}>Meu Perfil</Text>
-            <Text style={styles.headerSub}>Suas informações pessoais</Text>
+            <Text style={styles.greeting}>{t('perfil.titulo')}</Text>
+            <Text style={styles.headerSub}>{t('perfil.subtitulo')}</Text>
           </View>
           <TouchableOpacity style={styles.menuBtn} onPress={() => setMenuVisible(true)}>
             <Text style={styles.menuIcon}>☰</Text>
@@ -43,10 +45,10 @@ const PaginaPerfil = ({ navigation }: any) => {
             </View>
             <View style={{ flex: 1 }}>
               <Text style={styles.nomeText}>
-                {user?.nome || 'Carregando...'}
+                {user?.nome || t('perfil.carregando')}
               </Text>
               <Text style={styles.emailText}>
-                📧 {user?.email || 'Carregando...'}
+                📧 {user?.email || t('perfil.carregando')}
               </Text>
             </View>
           </View>
@@ -56,7 +58,7 @@ const PaginaPerfil = ({ navigation }: any) => {
             style={styles.editProfileBtn}
             onPress={() => navigation.navigate('PaginaConfiguracoes')}
           >
-            <Text style={styles.editProfileBtnText}>⚙️ Ir para Configurações</Text>
+            <Text style={styles.editProfileBtnText}>{t('perfil.irConfiguracoes')}</Text>
           </TouchableOpacity>
         </View>
 
