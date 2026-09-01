@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 
 import logo from '../Pages/logo.png';
+import { useTheme } from '../Contexts/ThemeContext';
 
 interface MenuLateralProps {
   visible: boolean;
@@ -27,26 +28,61 @@ const ITENS = [
   { icon: '⚙️', label: 'Configurações',  rota: 'PaginaConfiguracoes' },
 ];
 
+const coresClaro = {
+  drawer: '#FFFFFF',
+  text: '#263238',
+  textSecondary: '#78909C',
+  iconBox: '#E0F7FA',
+  border: '#F0F4F8',
+};
+
+const coresEscuro = {
+  drawer: '#1E1E1E',
+  text: '#F5F5F5',
+  textSecondary: '#AAAAAA',
+  iconBox: '#2A2A2A',
+  border: '#2C2C2C',
+};
+
+const getStyles = (colors: typeof coresClaro) => StyleSheet.create({
+  overlay: { flex: 1, flexDirection: 'row' },
+  backdrop: { flex: 1, backgroundColor: 'rgba(0,0,0,0.45)' },
+  drawer: { width: 270, backgroundColor: colors.drawer, paddingTop: StatusBar.currentHeight ?? 0 },
+  drawerHeader: { flexDirection: 'row', alignItems: 'center', gap: 12, paddingHorizontal: 20, paddingTop: 20, paddingBottom: 20 },
+  logoBox: { width: 46, height: 46, borderRadius: 12, backgroundColor: colors.iconBox, justifyContent: 'center', alignItems: 'center' },
+  logoImg: { width: 36, height: 36, resizeMode: 'contain', borderRadius: 8 },
+  appName: { fontSize: 16, fontWeight: '800', color: colors.text },
+  appSub: { fontSize: 11, color: colors.textSecondary, marginTop: 1 },
+  closeBtn: { marginLeft: 'auto', width: 32, height: 32, borderRadius: 10, backgroundColor: colors.iconBox, justifyContent: 'center', alignItems: 'center' },
+  closeBtnText: { fontSize: 13, color: colors.text, fontWeight: '700' },
+  divider: { height: 1, backgroundColor: colors.border, marginHorizontal: 20, marginVertical: 8 },
+  itemList: { paddingHorizontal: 12, paddingVertical: 8 },
+  menuItem: { flexDirection: 'row', alignItems: 'center', gap: 12, paddingVertical: 12, paddingHorizontal: 12, borderRadius: 14, marginBottom: 2 },
+  menuIconBox: { width: 38, height: 38, borderRadius: 10, backgroundColor: colors.iconBox, justifyContent: 'center', alignItems: 'center' },
+  menuIcon: { fontSize: 18 },
+  menuLabel: { flex: 1, fontSize: 15, fontWeight: '600', color: colors.text },
+  menuArrow: { fontSize: 18, color: colors.textSecondary },
+  sairBtn: { flexDirection: 'row', alignItems: 'center', gap: 12, marginHorizontal: 12, marginTop: 8, paddingVertical: 12, paddingHorizontal: 12, borderRadius: 14 },
+  sairIconBox: { backgroundColor: '#FFEBEE' },
+  sairLabel: { fontSize: 15, fontWeight: '700', color: '#E53935' },
+});
+
 const MenuLateral = ({ visible, onClose, navigation }: MenuLateralProps) => {
+  const { darkMode } = useTheme();
+  const colors = darkMode ? coresEscuro : coresClaro;
+  const styles = getStyles(colors);
+
   function navegar(rota: string | null) {
     onClose();
     if (rota) navigation?.navigate(rota);
   }
 
   return (
-    <Modal
-      visible={visible}
-      transparent
-      animationType="fade"
-      onRequestClose={onClose}
-    >
+    <Modal visible={visible} transparent animationType="fade" onRequestClose={onClose}>
       <View style={styles.overlay}>
-        {/* Toque fora fecha */}
         <TouchableOpacity style={styles.backdrop} onPress={onClose} activeOpacity={1} />
 
-        {/* Drawer */}
         <SafeAreaView style={styles.drawer}>
-          {/* Header do menu */}
           <View style={styles.drawerHeader}>
             <View style={styles.logoBox}>
               <Image source={logo} style={styles.logoImg} />
@@ -62,15 +98,9 @@ const MenuLateral = ({ visible, onClose, navigation }: MenuLateralProps) => {
 
           <View style={styles.divider} />
 
-          {/* Itens do menu */}
           <View style={styles.itemList}>
             {ITENS.map((item, i) => (
-              <TouchableOpacity
-                key={i}
-                style={styles.menuItem}
-                onPress={() => navegar(item.rota)}
-                activeOpacity={0.7}
-              >
+              <TouchableOpacity key={i} style={styles.menuItem} onPress={() => navegar(item.rota)} activeOpacity={0.7}>
                 <View style={styles.menuIconBox}>
                   <Text style={styles.menuIcon}>{item.icon}</Text>
                 </View>
@@ -82,12 +112,7 @@ const MenuLateral = ({ visible, onClose, navigation }: MenuLateralProps) => {
 
           <View style={styles.divider} />
 
-          {/* Sair */}
-          <TouchableOpacity
-            style={styles.sairBtn}
-            onPress={() => { onClose(); navigation?.navigate('PaginaLogin'); }}
-            activeOpacity={0.7}
-          >
+          <TouchableOpacity style={styles.sairBtn} onPress={() => { onClose(); navigation?.navigate('PaginaLogin'); }} activeOpacity={0.7}>
             <View style={[styles.menuIconBox, styles.sairIconBox]}>
               <Text style={styles.menuIcon}>🚪</Text>
             </View>
@@ -100,138 +125,3 @@ const MenuLateral = ({ visible, onClose, navigation }: MenuLateralProps) => {
 };
 
 export default MenuLateral;
-
-/* ─── Estilos ─── */
-const TEAL = '#00BCD4';
-const TEAL_DARK = '#006064';
-const BG = '#E0F7FA';
-const WHITE = '#FFFFFF';
-const DARK = '#263238';
-const GRAY = '#78909C';
-
-const styles = StyleSheet.create({
-  overlay: {
-    flex: 1,
-    flexDirection: 'row',
-  },
-  backdrop: {
-    flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.45)',
-  },
-  drawer: {
-    width: 270,
-    backgroundColor: WHITE,
-    paddingTop: StatusBar.currentHeight ?? 0,
-  },
-
-  /* Header */
-  drawerHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 12,
-    paddingHorizontal: 20,
-    paddingTop: 20,
-    paddingBottom: 20,
-  },
-  logoBox: {
-    width: 46,
-    height: 46,
-    borderRadius: 12,
-    backgroundColor: BG,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  logoImg: {
-    width: 36,
-    height: 36,
-    resizeMode: 'contain',
-    borderRadius: 8,
-  },
-  appName: {
-    fontSize: 16,
-    fontWeight: '800',
-    color: TEAL_DARK,
-  },
-  appSub: {
-    fontSize: 11,
-    color: GRAY,
-    marginTop: 1,
-  },
-  closeBtn: {
-    marginLeft: 'auto',
-    width: 32,
-    height: 32,
-    borderRadius: 10,
-    backgroundColor: BG,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  closeBtnText: {
-    fontSize: 13,
-    color: DARK,
-    fontWeight: '700',
-  },
-
-  divider: {
-    height: 1,
-    backgroundColor: '#F0F4F8',
-    marginHorizontal: 20,
-    marginVertical: 8,
-  },
-
-  /* Itens */
-  itemList: {
-    paddingHorizontal: 12,
-    paddingVertical: 8,
-  },
-  menuItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 12,
-    paddingVertical: 12,
-    paddingHorizontal: 12,
-    borderRadius: 14,
-    marginBottom: 2,
-  },
-  menuIconBox: {
-    width: 38,
-    height: 38,
-    borderRadius: 10,
-    backgroundColor: BG,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  menuIcon: {
-    fontSize: 18,
-  },
-  menuLabel: {
-    flex: 1,
-    fontSize: 15,
-    fontWeight: '600',
-    color: DARK,
-  },
-  menuArrow: {
-    fontSize: 18,
-    color: '#B0BEC5',
-  },
-
-  /* Sair */
-  sairBtn: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 12,
-    marginHorizontal: 12,
-    marginTop: 8,
-    paddingVertical: 12,
-    paddingHorizontal: 12,
-    borderRadius: 14,
-  },
-  sairIconBox: {
-    backgroundColor: '#FFEBEE',
-  },
-  sairLabel: {
-    fontSize: 15,
-    fontWeight: '700',
-    color: '#E53935',
-  },
-});
