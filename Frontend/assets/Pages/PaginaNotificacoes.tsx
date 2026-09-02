@@ -13,6 +13,7 @@ import {
 import logo from './logo.png';
 import MenuLateral from '../Components/MenuLateral';
 import { useTheme } from '../Contexts/ThemeContext';
+import { useLanguage } from '../Contexts/LanguageContext';
 
 interface Notificacao {
   id: number;
@@ -82,6 +83,7 @@ const getStyles = (colors: typeof coresClaro) => StyleSheet.create({
 
 const PaginaNotificacoes = ({ navigation }: any) => {
   const { darkMode } = useTheme();
+  const { t } = useLanguage();
   const colors = darkMode ? coresEscuro : coresClaro;
   const styles = getStyles(colors);
 
@@ -112,9 +114,11 @@ const PaginaNotificacoes = ({ navigation }: any) => {
             <Image source={logo} style={styles.logoImg} />
           </View>
           <View style={{ flex: 1 }}>
-            <Text style={styles.greeting}>Notificações</Text>
+            <Text style={styles.greeting}>{t('notificacoes.titulo')}</Text>
             <Text style={styles.headerSub}>
-              {naoLidas > 0 ? `${naoLidas} não lida${naoLidas > 1 ? 's' : ''}` : 'Tudo em dia ✅'}
+              {naoLidas > 0
+                ? `${naoLidas} ${naoLidas > 1 ? t('notificacoes.naoLidasPlural') : t('notificacoes.naoLidaSingular')}`
+                : t('notificacoes.tudoEmDia')}
             </Text>
           </View>
           <TouchableOpacity style={styles.menuBtn} onPress={() => setMenuVisible(true)}>
@@ -125,23 +129,23 @@ const PaginaNotificacoes = ({ navigation }: any) => {
         {naoLidas > 0 && (
           <View style={styles.progressCard}>
             <View style={styles.progressInfo}>
-              <Text style={styles.progressTitle}>🔔 Lembretes pendentes</Text>
+              <Text style={styles.progressTitle}>{t('notificacoes.lembretesPendentes')}</Text>
               <Text style={styles.progressBadge}>{naoLidas}</Text>
             </View>
             <TouchableOpacity onPress={marcarTodasLidas}>
-              <Text style={styles.progressAction}>Marcar todas como lidas →</Text>
+              <Text style={styles.progressAction}>{t('notificacoes.marcarTodasLidas')}</Text>
             </TouchableOpacity>
           </View>
         )}
 
         <View style={styles.card}>
-          <Text style={styles.sectionTitle}>Hoje</Text>
+          <Text style={styles.sectionTitle}>{t('notificacoes.hoje')}</Text>
 
           {notificacoes.length === 0 && (
             <View style={styles.emptyState}>
               <Text style={styles.emptyIcon}>🔕</Text>
-              <Text style={styles.emptyText}>Sem notificações</Text>
-              <Text style={styles.emptySubtext}>Você está em dia com seus remédios!</Text>
+              <Text style={styles.emptyText}>{t('notificacoes.semNotificacoes')}</Text>
+              <Text style={styles.emptySubtext}>{t('notificacoes.emDia')}</Text>
             </View>
           )}
 
@@ -154,7 +158,7 @@ const PaginaNotificacoes = ({ navigation }: any) => {
                   <View style={[styles.horarioBadge, n.lida && styles.horarioBadgeLido]}>
                     <Text style={[styles.horarioText, n.lida && styles.horarioTextLido]}>⏰ {n.horario}</Text>
                   </View>
-                  {!n.lida && <Text style={styles.tapHint}>Toque para marcar como lida</Text>}
+                  {!n.lida && <Text style={styles.tapHint}>{t('notificacoes.tocarMarcar')}</Text>}
                 </View>
               </View>
               <TouchableOpacity style={styles.removeBtn} onPress={() => remover(n.id)}>
