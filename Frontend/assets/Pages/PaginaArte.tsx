@@ -10,6 +10,7 @@ import {
   Image,
 } from "react-native";
 import { useTheme } from "../Contexts/ThemeContext";
+import { useLanguage } from "../Contexts/LanguageContext";
 
 const { width, height } = Dimensions.get("window");
 
@@ -64,6 +65,7 @@ function MedInfoCard({ icon, label, value, styles }: { icon: string; label: stri
 
 export default function PaginaArte({ navigation }: any) {
   const { darkMode } = useTheme();
+  const { t } = useLanguage();
   const colors = darkMode ? coresEscuro : coresClaro;
   const styles = getStyles(colors);
 
@@ -103,21 +105,21 @@ export default function PaginaArte({ navigation }: any) {
         </View>
         <Text style={styles.appName}>MedTime</Text>
         <View style={styles.underline} />
-        <Text style={styles.tagline}>Seus remédios. No horário certo.</Text>
+        <Text style={styles.tagline}>{t('arte.tagline')}</Text>
       </Animated.View>
 
       <Animated.View style={[styles.cardsRow, { opacity: fadeAnim, transform: [{ translateY: slideAnim }] }]}>
-        <MedInfoCard icon="💊" label="Medicamentos" value="Organize" styles={styles} />
-        <MedInfoCard icon="🔔" label="Lembretes" value="No horário" styles={styles} />
-        <MedInfoCard icon="📋" label="Histórico" value="Completo" styles={styles} />
+        <MedInfoCard icon="💊" label={t('arte.medicamentos')} value={t('arte.organize')} styles={styles} />
+        <MedInfoCard icon="🔔" label={t('arte.lembretes')} value={t('arte.noHorario')} styles={styles} />
+        <MedInfoCard icon="📋" label={t('arte.historico')} value={t('arte.completo')} styles={styles} />
       </Animated.View>
 
       <Animated.View style={{ opacity: fadeAnim, width: "100%" }}>
         <TouchableOpacity style={styles.button} activeOpacity={0.85} onPress={() => navigation?.navigate("PaginaLogin")}>
-          <Text style={styles.buttonText}>Começar agora</Text>
+          <Text style={styles.buttonText}>{t('arte.comecarAgora')}</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.linkButton} onPress={() => navigation?.navigate("PaginaCadastro")}>
-          <Text style={styles.linkText}>Criar uma conta</Text>
+          <Text style={styles.linkText}>{t('arte.criarConta')}</Text>
         </TouchableOpacity>
       </Animated.View>
     </View>
