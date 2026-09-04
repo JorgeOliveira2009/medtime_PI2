@@ -15,12 +15,14 @@ import MenuLateral from '../Components/MenuLateral';
 import { useAuth } from '../Contexts/AuthContext';
 import { useLanguage } from '../Contexts/LanguageContext';
 import { useTheme } from '../Contexts/ThemeContext';
+import { useRemedios } from '../Contexts/RemediosContext';
 
 const coresClaro = {
   background: '#E0F7FA',
   card: '#FFFFFF',
   text: '#263238',
   textSecondary: '#78909C',
+  border: '#F0F4F8',
   iconBox: '#E0F7FA',
 };
 
@@ -29,6 +31,7 @@ const coresEscuro = {
   card: '#1E1E1E',
   text: '#F5F5F5',
   textSecondary: '#AAAAAA',
+  border: '#2C2C2C',
   iconBox: '#2A2A2A',
 };
 
@@ -52,16 +55,29 @@ const getStyles = (colors: typeof coresClaro) => StyleSheet.create({
   emailText: { fontSize: 14, color: colors.textSecondary, marginTop: 4 },
   editProfileBtn: { marginTop: 16, backgroundColor: TEAL, paddingVertical: 12, borderRadius: 12, alignItems: 'center' },
   editProfileBtnText: { color: '#FFF', fontSize: 15, fontWeight: '700' },
+
+  sectionTitle: { fontSize: 16, fontWeight: '800', color: colors.text, marginBottom: 12 },
+  emptyState: { alignItems: 'center', paddingVertical: 20 },
+  emptyText: { fontSize: 14, fontWeight: '700', color: colors.text, marginBottom: 4 },
+  emptySubtext: { fontSize: 12, color: colors.textSecondary },
+  tomadoRow: {
+    flexDirection: 'row', alignItems: 'center', gap: 10,
+    paddingVertical: 8, borderBottomWidth: 1, borderBottomColor: colors.border,
+  },
+  tomadoHorario: { fontSize: 12, fontWeight: '700', color: TEAL, minWidth: 44 },
+  tomadoNome: { fontSize: 14, color: colors.text, fontWeight: '600' },
 });
 
 const PaginaPerfil = ({ navigation }: any) => {
   const { user } = useAuth();
   const { t } = useLanguage();
   const { darkMode } = useTheme();
+  const { remedios } = useRemedios();
   const colors = darkMode ? coresEscuro : coresClaro;
   const styles = getStyles(colors);
 
   const [menuVisible, setMenuVisible] = useState(false);
+  const tomadosHoje = remedios.filter(r => r.tomado);
 
   return (
     <SafeAreaView style={styles.safe}>
@@ -95,6 +111,25 @@ const PaginaPerfil = ({ navigation }: any) => {
           <TouchableOpacity style={styles.editProfileBtn} onPress={() => navigation.navigate('PaginaConfiguracoes')}>
             <Text style={styles.editProfileBtnText}>{t('perfil.irConfiguracoes')}</Text>
           </TouchableOpacity>
+        </View>
+
+        {/* ── Remédios tomados hoje ── */}
+        <View style={styles.card}>
+          <Text style={styles.sectionTitle}>{t('perfil.remediosHoje')}</Text>
+
+          {tomadosHoje.length === 0 ? (
+            <View style={styles.emptyState}>
+              <Text style={styles.emptyText}>{t('perfil.nenhumRegistrado')}</Text>
+              <Text style={styles.emptySubtext}>{t('perfil.apareceraoAqui')}</Text>
+            </View>
+          ) : (
+            tomadosHoje.map(r => (
+              <View key={r.id} style={styles.tomadoRow}>
+                <Text style={styles.tomadoHorario}>{r.horario}</Text>
+                <Text style={styles.tomadoNome}>{r.nome}</Text>
+              </View>
+            ))
+          )}
         </View>
 
         <View style={{ height: 32 }} />
