@@ -1,6 +1,12 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useAuth } from './AuthContext';
+import {
+  configurarCanalNotificacoes,
+  solicitarPermissaoNotificacoes,
+  agendarNotificacaoRemedio,
+  cancelarNotificacaoRemedio,
+} from '../utils/notifications';
 
 /* ─── Tipos ─── */
 export interface Remedio {
@@ -9,12 +15,13 @@ export interface Remedio {
   horario: string;
   tomado: boolean;
   observacoes?: string;
+  notificationId?: string;
 }
 
 interface RemediosContextType {
   remedios: Remedio[];
   carregado: boolean;
-  adicionarRemedio: (r: Omit<Remedio, 'id' | 'tomado'>) => void;
+  adicionarRemedio: (r: Omit<Remedio, 'id' | 'tomado'>) => Promise<void>;
   toggleRemedio: (id: number) => void;
   removerRemedio: (id: number) => void;
 }
@@ -26,6 +33,12 @@ export function RemediosProvider({ children }: { children: React.ReactNode }) {
   const { user, carregado: authCarregado } = useAuth();
   const [remedios, setRemedios] = useState<Remedio[]>([]);
   const [carregado, setCarregado] = useState(false);
+
+  // Configura o canal do Android e pede permissão assim que o app carrega
+  useEffect(() => {
+    configurarCanalNotificacoes();
+    solicitarPermissaoNotificacoes();
+  }, []);
 
   // Chave única por usuário — cada conta tem seu próprio "balde" de remédios
   const storageKey = user ? `@medtime:remedios:${user.id}` : null;
@@ -55,10 +68,11 @@ export function RemediosProvider({ children }: { children: React.ReactNode }) {
     );
   }, [remedios, carregado, storageKey]);
 
-  function adicionarRemedio(dados: Omit<Remedio, 'id' | 'tomado'>) {
+  async function adicionarRemedio(dados: Omit<Remedio, 'id' | 'tomado'>) {
+    const notificationId = await agendarNotificacaoRemedio(dados.nome, dados.horario);
     setRemedios(prev => [
       ...prev,
-      { ...dados, id: Date.now(), tomado: false },
+      { ...dados, id: Date.now(), tomado: false, notificationId: notificationId ?? undefined },
     ]);
   }
 
@@ -69,7 +83,13 @@ export function RemediosProvider({ children }: { children: React.ReactNode }) {
   }
 
   function removerRemedio(id: number) {
-    setRemedios(prev => prev.filter(r => r.id !== id));
+    setRemedios(prev => {
+      const alvo = prev.find(r => r.id === id);
+      if (alvo?.notificationId) {
+        cancelarNotificacaoRemedio(alvo.notificationId);
+      }
+      return prev.filter(r => r.id !== id);
+    });
   }
 
   return (
