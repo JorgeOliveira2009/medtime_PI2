@@ -8,6 +8,7 @@ export interface Remedio {
   nome: string;
   horario: string;
   tomado: boolean;
+  observacoes?: string;
 }
 
 interface RemediosContextType {

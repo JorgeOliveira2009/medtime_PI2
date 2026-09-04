@@ -95,7 +95,8 @@ const getStyles = (colors: typeof coresClaro) => StyleSheet.create({
   horarioBadgeDone: { backgroundColor: '#E8F5E9' },
   horarioText: { fontSize: 11, fontWeight: '700', color: TEAL },
   horarioTextDone: { color: '#43A047' },
-  remedioNome: { flex: 1, fontSize: 13, fontWeight: '600', color: colors.text },
+  remedioNomeTouch: { flex: 1 },
+  remedioNome: { fontSize: 13, fontWeight: '600', color: colors.text },
   remedioNomeDone: { color: colors.textSecondary, textDecorationLine: 'line-through' },
   remedioActions: { flexDirection: 'row', alignItems: 'center', gap: 6 },
   deleteBtn: { width: 28, height: 28, borderRadius: 8, backgroundColor: '#FFEBEE', justifyContent: 'center', alignItems: 'center' },
@@ -103,6 +104,8 @@ const getStyles = (colors: typeof coresClaro) => StyleSheet.create({
   checkBtn: { width: 28, height: 28, borderRadius: 14, borderWidth: 2, borderColor: '#CFD8DC', justifyContent: 'center', alignItems: 'center' },
   checkBtnDone: { backgroundColor: '#43A047', borderColor: '#43A047' },
   checkIcon: { color: '#FFF', fontSize: 14, fontWeight: '800' },
+  obsBox: { backgroundColor: colors.iconBox, borderRadius: 12, padding: 10, marginTop: -4, marginBottom: 8 },
+  obsText: { fontSize: 12, color: colors.text, lineHeight: 18 },
   addBtn: { marginTop: 14, height: 48, borderRadius: 14, borderWidth: 1.5, borderColor: TEAL, borderStyle: 'dashed', justifyContent: 'center', alignItems: 'center' },
   addBtnText: { color: TEAL, fontSize: 14, fontWeight: '700' },
   modalOverlay: { flex: 1, backgroundColor: 'rgba(0,0,0,0.5)', justifyContent: 'flex-end' },
@@ -143,6 +146,9 @@ const PaginaPrincipal = ({ navigation }: any) => {
   const [erroHorario, setErroHorario] = useState('');
   const [salvando, setSalvando] = useState(false);
 
+  // Id do remédio cuja observação está expandida na lista (null = nenhum)
+  const [expandidoId, setExpandidoId] = useState<number | null>(null);
+
   const tomados = remedios.filter(r => r.tomado).length;
   const total = remedios.length;
 
@@ -159,6 +165,10 @@ const PaginaPrincipal = ({ navigation }: any) => {
     setNovoNome(''); setNovoHorario(''); setNovaObs('');
     setErroNome(''); setErroHorario('');
     setModalVisible(true);
+  }
+
+  function toggleObservacao(id: number) {
+    setExpandidoId(prev => (prev === id ? null : id));
   }
 
   async function salvarRemedio() {
@@ -268,22 +278,44 @@ const PaginaPrincipal = ({ navigation }: any) => {
             </View>
           )}
 
-          {remedios.map(r => (
-            <View key={r.id} style={styles.remedioRow}>
-              <View style={[styles.horarioBadge, r.tomado && styles.horarioBadgeDone]}>
-                <Text style={[styles.horarioText, r.tomado && styles.horarioTextDone]}>{r.horario}</Text>
+          {remedios.map(r => {
+            const expandido = expandidoId === r.id;
+            return (
+              <View key={r.id}>
+                <View style={styles.remedioRow}>
+                  <View style={[styles.horarioBadge, r.tomado && styles.horarioBadgeDone]}>
+                    <Text style={[styles.horarioText, r.tomado && styles.horarioTextDone]}>{r.horario}</Text>
+                  </View>
+
+                  <TouchableOpacity
+                    style={styles.remedioNomeTouch}
+                    onPress={() => toggleObservacao(r.id)}
+                    disabled={!r.observacoes}
+                    activeOpacity={r.observacoes ? 0.6 : 1}
+                  >
+                    <Text style={[styles.remedioNome, r.tomado && styles.remedioNomeDone]} numberOfLines={1}>
+                      {r.nome}{r.observacoes ? ' 💬' : ''}
+                    </Text>
+                  </TouchableOpacity>
+
+                  <View style={styles.remedioActions}>
+                    <TouchableOpacity style={styles.deleteBtn} onPress={() => removerRemedio(r.id)}>
+                      <Text style={styles.deleteBtnText}>✕</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={[styles.checkBtn, r.tomado && styles.checkBtnDone]} onPress={() => toggleRemedio(r.id)}>
+                      <Text style={styles.checkIcon}>{r.tomado ? '✓' : ''}</Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+
+                {expandido && r.observacoes && (
+                  <View style={styles.obsBox}>
+                    <Text style={styles.obsText}>💬 {r.observacoes}</Text>
+                  </View>
+                )}
               </View>
-              <Text style={[styles.remedioNome, r.tomado && styles.remedioNomeDone]} numberOfLines={1}>{r.nome}</Text>
-              <View style={styles.remedioActions}>
-                <TouchableOpacity style={styles.deleteBtn} onPress={() => removerRemedio(r.id)}>
-                  <Text style={styles.deleteBtnText}>✕</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={[styles.checkBtn, r.tomado && styles.checkBtnDone]} onPress={() => toggleRemedio(r.id)}>
-                  <Text style={styles.checkIcon}>{r.tomado ? '✓' : ''}</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-          ))}
+            );
+          })}
 
           <TouchableOpacity style={styles.addBtn} onPress={abrirModal}>
             <Text style={styles.addBtnText}>{t('principal.adicionarRemedio')}</Text>
@@ -299,7 +331,7 @@ const PaginaPrincipal = ({ navigation }: any) => {
             <Text style={styles.modalTitle}>{t('principal.novoRemedio')}</Text>
 
             <Text style={styles.inputLabel}>{t('principal.nomeRemedio')}</Text>
-            <TextInput style={[styles.input, erroNome ? styles.inputError : null]} placeholder={t('principal.nomeRemedioPlaceholder')} placeholderTextColor={colors.textSecondary} value={novoNome} onChangeText={t => { setNovoNome(t); setErroNome(''); }} />
+            <TextInput style={[styles.input, erroNome ? styles.inputError : null]} placeholder={t('principal.nomeRemedioPlaceholder')} placeholderTextColor={colors.textSecondary} value={novoNome} onChangeText={txt => { setNovoNome(txt); setErroNome(''); }} />
             {erroNome ? <Text style={styles.erroText}>{erroNome}</Text> : null}
 
             <Text style={styles.inputLabel}>{t('principal.horario')}</Text>
