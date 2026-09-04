@@ -125,7 +125,7 @@ export const marcarTomado = async (req: AuthRequest, res: Response) => {
 
         const resultado = await service.marcarTomado(id, usuarioId);
         // essa é a função específica do MedTime — marca que o usuário tomou o remédio
-        // provavelmente salva um registro de histórico no banco
+        // salva um registro de histórico no banco
 
         res.json({ sucesso: true, data: resultado });
     } catch (error: any) {
