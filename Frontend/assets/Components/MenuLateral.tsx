@@ -21,7 +21,6 @@ interface MenuLateralProps {
 }
 
 const ITENS = [
-  { icon: '🏠', labelKey: 'menu.inicio',         rota: 'PaginaPrincipal' },
   { icon: '💊', labelKey: 'menu.remedios',       rota: 'PaginaPrincipal' },
   { icon: '👤', labelKey: 'menu.perfil',         rota: 'PaginaPerfil' },
   { icon: '🔔', labelKey: 'menu.notificacoes',   rota: 'PaginaNotificacoes' },
