@@ -13,45 +13,9 @@ import {
 import logo from './logo.png';
 import MenuLateral from '../Components/MenuLateral';
 import { useTheme } from '../Contexts/ThemeContext';
+import { useLanguage } from '../Contexts/LanguageContext';
 
-interface FAQ {
-  id: number;
-  pergunta: string;
-  resposta: string;
-}
-
-const FAQS: FAQ[] = [
-  {
-    id: 1,
-    pergunta: 'Qual o objetivo do MedTime?',
-    resposta:
-      'O app "MedTime" serve para lembrar o usuário de tomar suas medicações no devido tempo. Uma medicação fora de hora pode ser prejudicial à saúde.',
-  },
-  {
-    id: 2,
-    pergunta: 'Como adicionar um remédio?',
-    resposta:
-      'Na tela principal, toque no botão "+ Adicionar remédio". Preencha o nome do remédio e o horário, depois toque em Salvar. Ele aparecerá na sua lista do dia.',
-  },
-  {
-    id: 3,
-    pergunta: 'Como confirmar que tomei o remédio?',
-    resposta:
-      'Toque no círculo ✓ ao lado do remédio na lista. Ele ficará verde e o nome será riscado, indicando que a medicação foi tomada com sucesso.',
-  },
-  {
-    id: 4,
-    pergunta: 'Como editar ou remover um remédio?',
-    resposta:
-      'Toque no botão ✕ vermelho ao lado do remédio para removê-lo da lista. Em breve, a edição completa estará disponível.',
-  },
-  {
-    id: 5,
-    pergunta: 'As notificações funcionam automaticamente?',
-    resposta:
-      'A funcionalidade de notificações automáticas está em desenvolvimento. Em breve você receberá alertas no horário exato dos seus remédios.',
-  },
-];
+const FAQ_IDS = [1, 2, 3, 4, 5];
 
 const coresClaro = {
   background: '#E0F7FA',
@@ -107,6 +71,7 @@ const getStyles = (colors: typeof coresClaro) => StyleSheet.create({
 
 const PaginaAjuda = ({ navigation }: any) => {
   const { darkMode } = useTheme();
+  const { t } = useLanguage();
   const colors = darkMode ? coresEscuro : coresClaro;
   const styles = getStyles(colors);
 
@@ -127,8 +92,8 @@ const PaginaAjuda = ({ navigation }: any) => {
             <Image source={logo} style={styles.logoImg} />
           </View>
           <View style={{ flex: 1 }}>
-            <Text style={styles.greeting}>Ajuda</Text>
-            <Text style={styles.headerSub}>Tire suas dúvidas sobre o app</Text>
+            <Text style={styles.greeting}>{t('ajuda.titulo')}</Text>
+            <Text style={styles.headerSub}>{t('ajuda.subtitulo')}</Text>
           </View>
           <TouchableOpacity style={styles.menuBtn} onPress={() => setMenuVisible(true)}>
             <Text style={styles.menuIcon}>☰</Text>
@@ -136,41 +101,41 @@ const PaginaAjuda = ({ navigation }: any) => {
         </View>
 
         <View style={styles.progressCard}>
-          <Text style={styles.welcomeTitle}>❓ Como podemos ajudar?</Text>
-          <Text style={styles.welcomeText}>
-            Abaixo você encontra as perguntas mais frequentes sobre o MedTime. Toque em uma pergunta para ver a resposta.
-          </Text>
+          <Text style={styles.welcomeTitle}>{t('ajuda.comoAjudar')}</Text>
+          <Text style={styles.welcomeText}>{t('ajuda.introTexto')}</Text>
         </View>
 
         <View style={styles.card}>
-          <Text style={styles.sectionTitle}>Perguntas frequentes</Text>
+          <Text style={styles.sectionTitle}>{t('ajuda.perguntasFrequentes')}</Text>
 
-          {FAQS.map((faq, i) => (
-            <View key={faq.id}>
-              <TouchableOpacity style={styles.faqRow} onPress={() => toggleFaq(faq.id)} activeOpacity={0.7}>
+          {FAQ_IDS.map((id, i) => (
+            <View key={id}>
+              <TouchableOpacity style={styles.faqRow} onPress={() => toggleFaq(id)} activeOpacity={0.7}>
                 <View style={styles.faqLeft}>
-                  <View style={[styles.faqNumBox, aberto === faq.id && styles.faqNumBoxAtivo]}>
-                    <Text style={[styles.faqNum, aberto === faq.id && styles.faqNumAtivo]}>{faq.id}</Text>
+                  <View style={[styles.faqNumBox, aberto === id && styles.faqNumBoxAtivo]}>
+                    <Text style={[styles.faqNum, aberto === id && styles.faqNumAtivo]}>{id}</Text>
                   </View>
-                  <Text style={[styles.faqPergunta, aberto === faq.id && styles.faqPerguntaAtiva]}>{faq.pergunta}</Text>
+                  <Text style={[styles.faqPergunta, aberto === id && styles.faqPerguntaAtiva]}>
+                    {t(`ajuda.faq.${id}.pergunta`)}
+                  </Text>
                 </View>
-                <Text style={styles.faqArrow}>{aberto === faq.id ? '▲' : '▼'}</Text>
+                <Text style={styles.faqArrow}>{aberto === id ? '▲' : '▼'}</Text>
               </TouchableOpacity>
 
-              {aberto === faq.id && (
+              {aberto === id && (
                 <View style={styles.faqResposta}>
-                  <Text style={styles.faqRespostaText}>{faq.resposta}</Text>
+                  <Text style={styles.faqRespostaText}>{t(`ajuda.faq.${id}.resposta`)}</Text>
                 </View>
               )}
 
-              {i < FAQS.length - 1 && <View style={styles.divider} />}
+              {i < FAQ_IDS.length - 1 && <View style={styles.divider} />}
             </View>
           ))}
         </View>
 
         <View style={styles.card}>
-          <Text style={styles.sectionTitle}>📬 Ainda com dúvidas?</Text>
-          <Text style={styles.contatoText}>Entre em contato com nossa equipe pelo e-mail:</Text>
+          <Text style={styles.sectionTitle}>{t('ajuda.aindaDuvidas')}</Text>
+          <Text style={styles.contatoText}>{t('ajuda.contato')}</Text>
           <View style={styles.emailBox}>
             <Text style={styles.emailText}>suporte@medtime.app</Text>
           </View>

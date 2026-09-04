@@ -128,3 +128,4 @@ const PaginaCadastro = ({ navigation }: any) => {
 };
 
 export default PaginaCadastro;
+  

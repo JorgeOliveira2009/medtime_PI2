@@ -186,6 +186,16 @@ export const translations = {
       comecarAgora: 'Começar agora',
       criarConta: 'Criar uma conta',
     },
+    menu: {
+      appSub: 'Seus remédios em dia',
+      inicio: 'Início',
+      remedios: 'Remédios',
+      perfil: 'Perfil',
+      notificacoes: 'Notificações',
+      ajuda: 'Ajuda',
+      configuracoes: 'Configurações',
+      sair: 'Sair',
+    },
   },
   en: {
     common: {
@@ -373,6 +383,16 @@ export const translations = {
       completo: 'Complete',
       comecarAgora: 'Get started',
       criarConta: 'Create an account',
+    },
+    menu: {
+      appSub: 'Your medications, on track',
+      inicio: 'Home',
+      remedios: 'Medications',
+      perfil: 'Profile',
+      notificacoes: 'Notifications',
+      ajuda: 'Help',
+      configuracoes: 'Settings',
+      sair: 'Log out',
     },
   },
 } as const;

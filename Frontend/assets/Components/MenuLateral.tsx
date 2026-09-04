@@ -12,6 +12,7 @@ import {
 
 import logo from '../Pages/logo.png';
 import { useTheme } from '../Contexts/ThemeContext';
+import { useLanguage } from '../Contexts/LanguageContext';
 
 interface MenuLateralProps {
   visible: boolean;
@@ -20,12 +21,12 @@ interface MenuLateralProps {
 }
 
 const ITENS = [
-  { icon: '🏠', label: 'Início',         rota: 'PaginaPrincipal' },
-  { icon: '💊', label: 'Remédios',       rota: 'PaginaPrincipal' },
-  { icon: '👤', label: 'Perfil',         rota: 'PaginaPerfil' },
-  { icon: '🔔', label: 'Notificações',   rota: 'PaginaNotificacoes' },
-  { icon: '❓', label: 'Ajuda',          rota: 'PaginaAjuda' },
-  { icon: '⚙️', label: 'Configurações',  rota: 'PaginaConfiguracoes' },
+  { icon: '🏠', labelKey: 'menu.inicio',         rota: 'PaginaPrincipal' },
+  { icon: '💊', labelKey: 'menu.remedios',       rota: 'PaginaPrincipal' },
+  { icon: '👤', labelKey: 'menu.perfil',         rota: 'PaginaPerfil' },
+  { icon: '🔔', labelKey: 'menu.notificacoes',   rota: 'PaginaNotificacoes' },
+  { icon: '❓', labelKey: 'menu.ajuda',          rota: 'PaginaAjuda' },
+  { icon: '⚙️', labelKey: 'menu.configuracoes',  rota: 'PaginaConfiguracoes' },
 ];
 
 const coresClaro = {
@@ -69,6 +70,7 @@ const getStyles = (colors: typeof coresClaro) => StyleSheet.create({
 
 const MenuLateral = ({ visible, onClose, navigation }: MenuLateralProps) => {
   const { darkMode } = useTheme();
+  const { t } = useLanguage();
   const colors = darkMode ? coresEscuro : coresClaro;
   const styles = getStyles(colors);
 
@@ -89,7 +91,7 @@ const MenuLateral = ({ visible, onClose, navigation }: MenuLateralProps) => {
             </View>
             <View>
               <Text style={styles.appName}>MedTime</Text>
-              <Text style={styles.appSub}>Seus remédios em dia</Text>
+              <Text style={styles.appSub}>{t('menu.appSub')}</Text>
             </View>
             <TouchableOpacity style={styles.closeBtn} onPress={onClose}>
               <Text style={styles.closeBtnText}>✕</Text>
@@ -104,7 +106,7 @@ const MenuLateral = ({ visible, onClose, navigation }: MenuLateralProps) => {
                 <View style={styles.menuIconBox}>
                   <Text style={styles.menuIcon}>{item.icon}</Text>
                 </View>
-                <Text style={styles.menuLabel}>{item.label}</Text>
+                <Text style={styles.menuLabel}>{t(item.labelKey)}</Text>
                 <Text style={styles.menuArrow}>›</Text>
               </TouchableOpacity>
             ))}
@@ -116,7 +118,7 @@ const MenuLateral = ({ visible, onClose, navigation }: MenuLateralProps) => {
             <View style={[styles.menuIconBox, styles.sairIconBox]}>
               <Text style={styles.menuIcon}>🚪</Text>
             </View>
-            <Text style={styles.sairLabel}>Sair</Text>
+            <Text style={styles.sairLabel}>{t('menu.sair')}</Text>
           </TouchableOpacity>
         </SafeAreaView>
       </View>
