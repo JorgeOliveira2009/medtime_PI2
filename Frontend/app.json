@@ -27,13 +27,8 @@
       "favicon": "./assets/favicon.png"
     },
     "plugins": [
-      [
-        "expo-notifications",
-        {
-          "icon": "./assets/Pages/logo.png",
-          "color": "#00BCD4"
-        }
-      ]
+
+      "expo-status-bar"
     ]
   }
 }
