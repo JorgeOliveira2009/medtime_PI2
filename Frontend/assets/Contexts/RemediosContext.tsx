@@ -1,111 +1,148 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useAuth } from './AuthContext';
 
-const API_URL = 'https://backend-or-main-production-2a36.up.railway.app';
-
+/* ─── Tipos ─── */
 export interface Remedio {
   id: number;
   nome: string;
   horario: string;
   tomado: boolean;
   observacoes?: string;
+  notificationId?: string;
+
+  // Data em que o remédio foi cadastrado
+  data: string;
 }
 
 interface RemediosContextType {
   remedios: Remedio[];
   carregado: boolean;
-  adicionarRemedio: (r: Remedio) => void;
+
+  adicionarRemedio: (
+    r: Omit<Remedio, 'id' | 'tomado'>
+  ) => void;
+
   toggleRemedio: (id: number) => void;
   removerRemedio: (id: number) => void;
 }
 
-const RemediosContext = createContext<RemediosContextType | undefined>(undefined);
+const RemediosContext = createContext<RemediosContextType | undefined>(
+  undefined
+);
 
-export function RemediosProvider({ children }: { children: React.ReactNode }) {
-  const { user, token, carregado: authCarregado } = useAuth();
+/* ─── Provider ─── */
+export function RemediosProvider({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  const { user, carregado: authCarregado } = useAuth();
   const [remedios, setRemedios] = useState<Remedio[]>([]);
   const [carregado, setCarregado] = useState(false);
 
-  // Carrega do banco quando o usuário loga
+  // Chave única por usuário
+  const storageKey = user
+    ? `@medtime:remedios:${user.id}`
+    : null;
+
+  // Carrega os remédios do usuário
   useEffect(() => {
     if (!authCarregado) return;
 
-    if (!user || !token) {
+    if (!storageKey) {
       setRemedios([]);
       setCarregado(true);
       return;
     }
 
     setCarregado(false);
-    fetch(`${API_URL}/remedio`, {
-      headers: { Authorization: `Bearer ${token}` },
-    })
-      .then(res => res.json())
-      .then(json => setRemedios(json.data ?? []))
-      .catch(err => console.error('Erro ao carregar remédios:', err))
+    AsyncStorage.getItem(storageKey)
+      .then(json => {
+        if (json) {
+          const dados = JSON.parse(json);
+
+          // Compatibilidade com remédios antigos
+          // que ainda não possuem data
+          setRemedios(
+            dados.map((r: any) => ({
+              ...r,
+              data: r.data ?? '',
+            }))
+          );
+        } else {
+          setRemedios([]);
+        }
+      })
+      .catch(err =>
+        console.error('Erro ao carregar remédios:', err)
+      )
       .finally(() => setCarregado(true));
-  }, [user, token, authCarregado]);
+  }, [storageKey, authCarregado]);
 
-  // Chamada pelo PaginaPrincipal depois que o POST já retornou o remédio criado
-  function adicionarRemedio(remedio: Remedio) {
-    setRemedios(prev => [...prev, remedio]);
-  }
+  // Salva sempre que a lista mudar
+  useEffect(() => {
+    if (!carregado || !storageKey) return;
 
-  async function toggleRemedio(id: number) {
-    const remedio = remedios.find(r => r.id === id);
-    if (!remedio) return;
-
-    // Otimista: atualiza a tela na hora
-    setRemedios(prev =>
-      prev.map(r => (r.id === id ? { ...r, tomado: !r.tomado } : r))
+    AsyncStorage.setItem(
+      storageKey,
+      JSON.stringify(remedios)
+    ).catch(err =>
+      console.error('Erro ao salvar remédios:', err)
     );
+  }, [remedios, carregado, storageKey]);
 
-    try {
-      const res = await fetch(`${API_URL}/remedio/${id}`, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ tomado: !remedio.tomado }),
-      });
-      if (!res.ok) throw new Error();
-    } catch {
-      // Reverte se falhar
-      setRemedios(prev =>
-        prev.map(r => (r.id === id ? { ...r, tomado: remedio.tomado } : r))
-      );
-    }
+  function adicionarRemedio(
+    dados: Omit<Remedio, 'id' | 'tomado'>
+  ) {
+    setRemedios(prev => [
+      ...prev,
+      {
+        ...dados,
+        id: Date.now(),
+        tomado: false,
+      },
+    ]);
   }
 
-  async function removerRemedio(id: number) {
-    // Otimista: remove da tela na hora
-    setRemedios(prev => prev.filter(r => r.id !== id));
+  function toggleRemedio(id: number) {
+    setRemedios(prev =>
+      prev.map(r =>
+        r.id === id
+          ? { ...r, tomado: !r.tomado }
+          : r
+      )
+    );
+  }
 
-    try {
-      const res = await fetch(`${API_URL}/remedio/${id}`, {
-        method: 'DELETE',
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      if (!res.ok) throw new Error();
-    } catch {
-      // Reverte se falhar
-      const removido = remedios.find(r => r.id === id);
-      if (removido) setRemedios(prev => [...prev, removido]);
-    }
+  function removerRemedio(id: number) {
+    setRemedios(prev =>
+      prev.filter(r => r.id !== id)
+    );
   }
 
   return (
     <RemediosContext.Provider
-      value={{ remedios, carregado, adicionarRemedio, toggleRemedio, removerRemedio }}
+      value={{
+        remedios,
+        carregado,
+        adicionarRemedio,
+        toggleRemedio,
+        removerRemedio,
+      }}
     >
       {children}
     </RemediosContext.Provider>
   );
 }
 
+/* ─── Hook de acesso ─── */
 export function useRemedios() {
   const ctx = useContext(RemediosContext);
-  if (!ctx) throw new Error('useRemedios deve ser usado dentro de um <RemediosProvider>');
+  if (!ctx) {
+    throw new Error(
+      'useRemedios deve ser usado dentro de um <RemediosProvider>'
+    );
+  }
   return ctx;
 }
