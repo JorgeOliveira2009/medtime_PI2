@@ -11,6 +11,3 @@ Body:
   "senha": "12345678",
   "confirmarSenha": "12345678"
 }
-
-eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwiZW1haWwiOiJqb2FvQGVtYWlsLmNvbSIsIm5vbWUiOiJKb8OjbyBTaWx2YSIsImlhdCI6MTc4ODU0NTU5NSwiZXhwIjoxNzg5MTUwMzk1fQ.Eoq67NA-8BEriwD6eZMWQ50gzS6WuViqTg74ECESSWs Token
-
