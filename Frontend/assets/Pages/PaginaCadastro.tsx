@@ -16,7 +16,7 @@ import logo from './logo.png';
 import { useTheme } from '../Contexts/ThemeContext';
 import { useLanguage } from '../Contexts/LanguageContext';
 
-const API_URL = 'https://backend-or-main-production-2a36.up.railway.app'
+const API_URL = 'http://172.20.86.110:3000'
 
 const coresClaro = {
   background: '#E0F7FA',

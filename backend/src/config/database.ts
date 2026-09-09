@@ -13,7 +13,7 @@ export const AppDataSource = new DataSource({
     username: DB_USER,          // usuário do banco
     password: DB_PASSWORD,          // senha do banco
     database: DB_DATABASE,   // nome do banco de dados
-    synchronize: false, // isso cria/atualiza as tabelas automaticamente — CUIDADO: em produção coloca false pra não perder dados!
+    synchronize: true, // isso cria/atualiza as tabelas automaticamente — CUIDADO: em produção coloca false pra não perder dados!
     logging: false,                        // mostra no terminal todas as queries SQL que rodam
     entities: [Usuario,Remedio],                  // lista de "tabelas" que o sistema vai gerenciar
 });
