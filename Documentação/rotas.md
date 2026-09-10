@@ -11,3 +11,27 @@ Body:
   "senha": "12345678",
   "confirmarSenha": "12345678"
 }
+
+| Método | Rota |
+|--------|------|
+| POST | /user/cadastro |
+| POST | /user/login |
+| GET | /user/perfil |
+| PUT | /user/atualizar |
+| DELETE | /user/deletar-conta |
+| GET | /user/listar |
+| GET | /user/listar/:id |
+| DELETE | /user/admin/deletar/:id |
+
+---
+
+## Remédio
+
+| Método | Rota |
+|--------|------|
+| POST | /remedio |
+| GET | /remedio |
+| GET | /remedio/:id |
+| PUT | /remedio/:id |
+| DELETE | /remedio/:id |
+| PATCH | /remedio/:id/tomado |
