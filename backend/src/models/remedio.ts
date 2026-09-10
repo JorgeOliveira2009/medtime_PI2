@@ -20,6 +20,9 @@ export class Remedio {
     // chave primária da tabela — gerada automaticamente pelo banco (1, 2, 3...)
     // todo registro tem um id único
 
+    @Column({ type: "date", nullable: true })
+data: string;
+
     @Column({ length: 100, nullable: false })
     nome: string;
     // coluna normal, texto de até 100 caracteres
