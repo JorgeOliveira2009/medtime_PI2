@@ -41,6 +41,7 @@ export const errorMiddleware = (
   }
 
   // nome de coluna que não existe na tabela foi usado numa query
+ if (error.code === "ER_BAD_FIELD_ERROR") {
     return res.status(400).json({
       sucesso: false,
       message: "Campo inválido na requisição"
