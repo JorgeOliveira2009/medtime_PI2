@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -14,6 +14,7 @@ import {
   KeyboardAvoidingView,
   Alert,
 } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import logo from './logo.png';
 import MenuLateral from '../Components/MenuLateral';
@@ -22,7 +23,7 @@ import { useAuth } from '../Contexts/AuthContext';
 import { useLanguage } from '../Contexts/LanguageContext';
 import { useTheme } from '../Contexts/ThemeContext';
 
-const API_URL = 'http://172.20.86.230:3000'
+const API_URL = 'http://172.20.86.107:3000'
 
 function getDiasNoMes(ano: number, mes: number) {
   return new Date(ano, mes + 1, 0).getDate();
@@ -34,6 +35,113 @@ function getPrimeiroDia(ano: number, mes: number) {
 // Formato YYYY-MM-DD
 function criarData(ano: number, mes: number, dia: number) {
   return `${ano}-${String(mes + 1).padStart(2, '0')}-${String(dia).padStart(2, '0')}`;
+}
+
+// Gera todas as doses (real + virtuais) de um remédio que caem no dia selecionado
+interface DoseExibida {
+  chave: string;
+  remedioId: number;
+  nome: string;
+  horario: string;
+  observacoes?: string;
+  tomado: boolean;
+  ehVirtual: boolean;
+}
+
+function gerarDosesDoDia(
+  remedio: any,
+  dataSelecionada: string,
+  dosesTomadas: Set<string>,
+  dosesIgnoradas: Set<string>,
+): DoseExibida[] {
+  const doses: DoseExibida[] = [];
+
+  // dose "raiz", a que foi de fato cadastrada nesse dia/horário
+  if (remedio.data === dataSelecionada) {
+    doses.push({
+      chave: `${remedio.id}-raiz`,
+      remedioId: remedio.id,
+      nome: remedio.nome,
+      horario: remedio.horario,
+      observacoes: remedio.observacoes,
+      tomado: remedio.tomado,
+      ehVirtual: false,
+    });
+  }
+
+  // doses geradas pela frequência + duração (só existem no front)
+  if (remedio.frequenciaHoras && remedio.duracaoDias) {
+    const ancora = new Date(`${remedio.data}T${remedio.horario}:00`);
+    const fim = new Date(ancora);
+    fim.setDate(fim.getDate() + remedio.duracaoDias);
+
+    let proxima = new Date(ancora.getTime() + remedio.frequenciaHoras * 60 * 60 * 1000);
+
+    while (proxima < fim) {
+      const dataDose = criarData(proxima.getFullYear(), proxima.getMonth(), proxima.getDate());
+      if (dataDose === dataSelecionada) {
+        const chave = `${remedio.id}-${proxima.toISOString()}`;
+        if (!dosesIgnoradas.has(chave)) {
+          doses.push({
+            chave,
+            remedioId: remedio.id,
+            nome: remedio.nome,
+            horario: `${String(proxima.getHours()).padStart(2, '0')}:${String(proxima.getMinutes()).padStart(2, '0')}`,
+            observacoes: remedio.observacoes,
+            tomado: dosesTomadas.has(chave),
+            ehVirtual: true,
+          });
+        }
+      }
+      proxima = new Date(proxima.getTime() + remedio.frequenciaHoras * 60 * 60 * 1000);
+    }
+  }
+
+  return doses.sort((a, b) => a.horario.localeCompare(b.horario));
+}
+
+// frequenciaHoras/duracaoDias não vêm do backend, então guardamos localmente
+// no dispositivo (por id do remédio) pra sobreviver a fechar/abrir o app
+const PREFIXO_EXTRA = 'medtime:extra:';
+
+type ExtraRemedio = { frequenciaHoras?: number; duracaoDias?: number };
+
+async function carregarTodosExtras(): Promise<Record<number, ExtraRemedio>> {
+  try {
+    const todasChaves = await AsyncStorage.getAllKeys();
+    const chavesExtras = todasChaves.filter(k => k.startsWith(PREFIXO_EXTRA));
+    if (chavesExtras.length === 0) return {};
+    const pares = await AsyncStorage.multiGet(chavesExtras);
+    const mapa: Record<number, ExtraRemedio> = {};
+    pares.forEach(([chave, valor]) => {
+      if (!valor) return;
+      const id = Number(chave.replace(PREFIXO_EXTRA, ''));
+      try {
+        mapa[id] = JSON.parse(valor);
+      } catch {
+        // ignora entrada corrompida
+      }
+    });
+    return mapa;
+  } catch {
+    return {};
+  }
+}
+
+async function salvarExtraStorage(id: number, extra: ExtraRemedio) {
+  try {
+    await AsyncStorage.setItem(`${PREFIXO_EXTRA}${id}`, JSON.stringify(extra));
+  } catch {
+    // se falhar, a repetição só não sobrevive a um fechar/abrir; não é crítico
+  }
+}
+
+async function removerExtraStorage(id: number) {
+  try {
+    await AsyncStorage.removeItem(`${PREFIXO_EXTRA}${id}`);
+  } catch {
+    // ok ignorar
+  }
 }
 
 const coresClaro = {
@@ -152,16 +260,31 @@ const PaginaPrincipal = ({ navigation }: any) => {
   const [novoHorario, setNovoHorario] = useState('');
   const [novaObs, setNovaObs] = useState('');
   const [novaFrequencia, setNovaFrequencia] = useState('');
+  const [novaDuracaoDias, setNovaDuracaoDias] = useState('');
   const [erroNome, setErroNome] = useState('');
   const [erroHorario, setErroHorario] = useState('');
   const [salvando, setSalvando] = useState(false);
-  const [expandidoId, setExpandidoId] = useState<number | null>(null);
+  const [expandidoId, setExpandidoId] = useState<string | null>(null);
+
+  // doses "virtuais" (geradas por frequência) marcadas como tomadas ou ignoradas,
+  // guardadas só no front (não existem como registro no backend)
+  const [dosesTomadas, setDosesTomadas] = useState<Set<string>>(new Set());
+  const [dosesIgnoradas, setDosesIgnoradas] = useState<Set<string>>(new Set());
+
+  // frequenciaHoras/duracaoDias carregados do AsyncStorage (sobrevivem a fechar/abrir o app)
+  const [extras, setExtras] = useState<Record<number, ExtraRemedio>>({});
+
+  useEffect(() => {
+    carregarTodosExtras().then(setExtras);
+  }, []);
 
   const dataSelecionada = criarData(anoSel, mesSel, diaSel);
 
-  const remediosDoDia = remedios.filter(r => r.data === dataSelecionada);
+  const remediosDoDia = remedios.flatMap((r: any) =>
+    gerarDosesDoDia({ ...r, ...extras[r.id] }, dataSelecionada, dosesTomadas, dosesIgnoradas)
+  );
 
-  const tomados = remediosDoDia.filter(r => r.tomado).length;
+  const tomados = remediosDoDia.filter(d => d.tomado).length;
   const total = remediosDoDia.length;
 
   function mudarMes(delta: number) {
@@ -181,13 +304,42 @@ const PaginaPrincipal = ({ navigation }: any) => {
   }
 
   function abrirModal() {
-    setNovoNome(''); setNovoHorario(''); setNovaObs(''); setNovaFrequencia('');
+    setNovoNome(''); setNovoHorario(''); setNovaObs(''); setNovaFrequencia(''); setNovaDuracaoDias('');
     setErroNome(''); setErroHorario('');
     setModalVisible(true);
   }
 
-  function toggleObservacao(id: number) {
-    setExpandidoId(prev => prev === id ? null : id);
+  function toggleObservacao(chave: string) {
+    setExpandidoId(prev => prev === chave ? null : chave);
+  }
+
+  function alternarDose(dose: DoseExibida) {
+    if (!dose.ehVirtual) {
+      toggleRemedio(dose.remedioId);
+      return;
+    }
+    setDosesTomadas(prev => {
+      const novo = new Set(prev);
+      if (novo.has(dose.chave)) novo.delete(dose.chave);
+      else novo.add(dose.chave);
+      return novo;
+    });
+  }
+
+  function removerDose(dose: DoseExibida) {
+    if (!dose.ehVirtual) {
+      // remove o tratamento inteiro (a dose raiz e todas as futuras doses geradas)
+      removerRemedio(dose.remedioId);
+      removerExtraStorage(dose.remedioId);
+      setExtras(prev => {
+        const novo = { ...prev };
+        delete novo[dose.remedioId];
+        return novo;
+      });
+      return;
+    }
+    // ignora só essa ocorrência específica
+    setDosesIgnoradas(prev => new Set(prev).add(dose.chave));
   }
 
   async function salvarRemedio() {
@@ -208,6 +360,7 @@ const PaginaPrincipal = ({ navigation }: any) => {
     if (!valido) return;
 
     const frequenciaNum = novaFrequencia.trim() ? Number(novaFrequencia) : undefined;
+    const duracaoDiasNum = novaDuracaoDias.trim() ? Number(novaDuracaoDias) : undefined;
 
     setSalvando(true);
     try {
@@ -235,6 +388,15 @@ const PaginaPrincipal = ({ navigation }: any) => {
 
       // garante o campo data com a data selecionada no calendário
       adicionarRemedio({ ...json.data, data: dataSelecionada });
+
+      // frequência/duração não vêm do backend: persiste no AsyncStorage
+      // pra sobreviver a fechar/abrir o app, e atualiza o estado em memória
+      if (frequenciaNum && duracaoDiasNum) {
+        const extra = { frequenciaHoras: frequenciaNum, duracaoDias: duracaoDiasNum };
+        await salvarExtraStorage(json.data.id, extra);
+        setExtras(prev => ({ ...prev, [json.data.id]: extra }));
+      }
+
       setModalVisible(false);
     } catch (e) {
       Alert.alert(t('common.erro'), 'Não foi possível conectar ao servidor');
@@ -318,34 +480,34 @@ const PaginaPrincipal = ({ navigation }: any) => {
             </View>
           )}
 
-          {remediosDoDia.map(r => {
-            const expandido = expandidoId === r.id;
+          {remediosDoDia.map(dose => {
+            const expandido = expandidoId === dose.chave;
             return (
-              <View key={r.id}>
+              <View key={dose.chave}>
                 <View style={styles.remedioRow}>
-                  <View style={[styles.horarioBadge, r.tomado && styles.horarioBadgeDone]}>
-                    <Text style={[styles.horarioText, r.tomado && styles.horarioTextDone]}>{r.horario}</Text>
+                  <View style={[styles.horarioBadge, dose.tomado && styles.horarioBadgeDone]}>
+                    <Text style={[styles.horarioText, dose.tomado && styles.horarioTextDone]}>{dose.horario}</Text>
                   </View>
 
-                  <TouchableOpacity style={styles.remedioNomeTouch} onPress={() => toggleObservacao(r.id)} disabled={!r.observacoes} activeOpacity={r.observacoes ? 0.6 : 1}>
-                    <Text style={[styles.remedioNome, r.tomado && styles.remedioNomeDone]} numberOfLines={1}>
-                      {r.nome}{r.observacoes ? ' 💬' : ''}
+                  <TouchableOpacity style={styles.remedioNomeTouch} onPress={() => toggleObservacao(dose.chave)} disabled={!dose.observacoes} activeOpacity={dose.observacoes ? 0.6 : 1}>
+                    <Text style={[styles.remedioNome, dose.tomado && styles.remedioNomeDone]} numberOfLines={1}>
+                      {dose.nome}{dose.observacoes ? ' 💬' : ''}{dose.ehVirtual ? ' 🔁' : ''}
                     </Text>
                   </TouchableOpacity>
 
                   <View style={styles.remedioActions}>
-                    <TouchableOpacity style={styles.deleteBtn} onPress={() => removerRemedio(r.id)}>
+                    <TouchableOpacity style={styles.deleteBtn} onPress={() => removerDose(dose)}>
                       <Text style={styles.deleteBtnText}>✕</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={[styles.checkBtn, r.tomado && styles.checkBtnDone]} onPress={() => toggleRemedio(r.id)}>
-                      <Text style={styles.checkIcon}>{r.tomado ? '✓' : ''}</Text>
+                    <TouchableOpacity style={[styles.checkBtn, dose.tomado && styles.checkBtnDone]} onPress={() => alternarDose(dose)}>
+                      <Text style={styles.checkIcon}>{dose.tomado ? '✓' : ''}</Text>
                     </TouchableOpacity>
                   </View>
                 </View>
 
-                {expandido && r.observacoes && (
+                {expandido && dose.observacoes && (
                   <View style={styles.obsBox}>
-                    <Text style={styles.obsText}>💬 {r.observacoes}</Text>
+                    <Text style={styles.obsText}>💬 {dose.observacoes}</Text>
                   </View>
                 )}
               </View>
@@ -397,6 +559,18 @@ const PaginaPrincipal = ({ navigation }: any) => {
               maxLength={2}
             />
             <Text style={styles.inputHint}>Deixe em branco se for horário fixo</Text>
+
+            <Text style={styles.inputLabel}>Repetir por quantos dias (opcional)</Text>
+            <TextInput
+              style={styles.input}
+              placeholder="Ex: 5 (repete por 5 dias)"
+              placeholderTextColor={colors.textSecondary}
+              value={novaDuracaoDias}
+              onChangeText={txt => setNovaDuracaoDias(txt.replace(/\D/g, ''))}
+              keyboardType="numeric"
+              maxLength={2}
+            />
+            <Text style={styles.inputHint}>Só funciona junto com a frequência acima</Text>
 
             <TextInput style={styles.input} placeholder="Ex: Tomar com água" placeholderTextColor={colors.textSecondary} value={novaObs} onChangeText={setNovaObs} />
 
