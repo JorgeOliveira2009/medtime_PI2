@@ -11,7 +11,7 @@ const rateLimitResponse = (message: string) => ({
 // evita brute force de senha
 export const loginRateLimit = rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutos
-    limit: 5,
+    limit: 500,
     standardHeaders: "draft-8",
     legacyHeaders: false,
     message: rateLimitResponse("Muitas tentativas de login. Tente novamente em 15 minutos."),
@@ -22,7 +22,7 @@ export const loginRateLimit = rateLimit({
 // evita criação em massa de contas
 export const cadastroRateLimit = rateLimit({
     windowMs: 60 * 60 * 1000, // 1 hora
-    limit: 10,
+    limit: 500,
     standardHeaders: "draft-8",
     legacyHeaders: false,
     message: rateLimitResponse("Muitos cadastros realizados. Tente novamente em 1 hora."),

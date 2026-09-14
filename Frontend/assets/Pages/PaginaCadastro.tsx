@@ -16,7 +16,7 @@ import logo from './logo.png';
 import { useTheme } from '../Contexts/ThemeContext';
 import { useLanguage } from '../Contexts/LanguageContext';
 
-const API_URL = 'http://172.20.86.110:3000'
+const API_URL = 'http://172.20.86.230:3000'
 
 const coresClaro = {
   background: '#E0F7FA',

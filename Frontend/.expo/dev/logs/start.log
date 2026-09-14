@@ -423,3 +423,10 @@
 {"_e":"metro:bundling:progress","_t":1789068382996,"id":"w","progress":0,"total":1,"current":0}
 {"_e":"metro:bundling:done","_t":1789068383032,"id":"w","total":1,"ms":36.1473}
 {"_e":"metro:client_log","_t":1789068408938,"level":"warn","data":["SafeAreaView has been deprecated and will be removed in a future release. Please use 'react-native-safe-area-context' instead. See https://github.com/AppAndFlow/react-native-safe-area-context"]}
+{"_e":"root:init","_t":1789404380796,"format":"v0-jsonl","version":"57.0.23"}
+{"_e":"env:mode","_t":1789404380812,"nodeEnv":"development","babelEnv":"development","mode":"development"}
+{"_e":"env:load","_t":1789404380827,"mode":"development","files":[],"env":{}}
+{"_e":"devserver:start","_t":1789404385786,"mode":"development","web":true,"baseUrl":"","asyncRoutes":false,"routerRoot":"../..\\..\\app","serverComponents":false,"serverActions":false,"serverRendering":false,"apiRoutes":false,"exporting":false}
+{"_e":"metro:config","_t":1789404392238,"serverRoot":"../..\\..","projectRoot":"../..\\..","exporting":false,"flags":{"autolinkingModuleResolution":false,"serverActions":false,"serverComponents":false,"reactCompiler":false,"optimizeGraph":false,"treeshaking":false,"logbox":false}}
+{"_e":"expo:dev-tools-plugin:load","_t":1789404395068,"plugins":[]}
+{"_e":"metro:instantiate","_t":1789404403039,"atlas":false,"workers":8,"host":"::","port":8081}

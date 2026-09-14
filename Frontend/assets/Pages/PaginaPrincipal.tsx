@@ -22,7 +22,7 @@ import { useAuth } from '../Contexts/AuthContext';
 import { useLanguage } from '../Contexts/LanguageContext';
 import { useTheme } from '../Contexts/ThemeContext';
 
-const API_URL = 'http://172.20.86.110:3000'
+const API_URL = 'http://172.20.86.230:3000'
 
 function getDiasNoMes(ano: number, mes: number) {
   return new Date(ano, mes + 1, 0).getDate();
