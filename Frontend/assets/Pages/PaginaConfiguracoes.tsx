@@ -15,7 +15,9 @@ import {
   KeyboardAvoidingView,
   Platform,
   TextInput,
+  Linking,
 } from 'react-native';
+import { useCameraPermissions } from 'expo-camera';
 
 import logo from './logo.png';
 import MenuLateral from '../Components/MenuLateral';
@@ -31,6 +33,8 @@ const PaginaConfiguracoes = ({ navigation }: any) => {
   const { idioma, setIdioma, t } = useLanguage();
   const colors = darkMode ? coresEscuro : coresClaro; // ← cores dinâmicas
   const styles = getStyles(colors);                   // ← estilos dinâmicos
+
+  const [permissaoCamera, pedirPermissaoCamera] = useCameraPermissions();
 
   const [menuVisible, setMenuVisible] = useState(false);
   const [notificacoesAtivas, setNotificacoesAtivas] = useState(true);
@@ -99,6 +103,25 @@ const PaginaConfiguracoes = ({ navigation }: any) => {
       setDeletando(false);
     }
   };
+
+  async function handlePermissaoCamera() {
+    if (permissaoCamera?.granted) return; // já tem, nada a fazer
+
+    if (!permissaoCamera?.canAskAgain) {
+      // usuário negou e marcou "não perguntar de novo" — só o app de Ajustes resolve
+      Alert.alert(
+        t('configuracoes.cameraNegadaTitulo'),
+        t('configuracoes.cameraNegadaMsg'),
+        [
+          { text: t('common.cancelar'), style: 'cancel' },
+          { text: t('configuracoes.abrirAjustes'), onPress: () => Linking.openSettings() },
+        ]
+      );
+      return;
+    }
+
+    await pedirPermissaoCamera();
+  }
 
   function handleAbrirEdicao() { setModalEdicaoVisible(true); }
 
@@ -215,6 +238,32 @@ const PaginaConfiguracoes = ({ navigation }: any) => {
           </TouchableOpacity>
         </View>
 
+        <View style={styles.card}>
+          <Text style={styles.sectionTitle}>{t('configuracoes.secaoPermissoes')}</Text>
+
+          <View style={styles.settingRow}>
+            <View style={styles.settingLeft}>
+              <View style={styles.settingIconBox}><Text style={styles.settingIcon}>📷</Text></View>
+              <View>
+                <Text style={styles.settingLabel}>{t('configuracoes.permissaoCamera')}</Text>
+                <Text style={styles.settingSubLabel}>
+                  {permissaoCamera?.granted
+                    ? t('configuracoes.permissaoConcedida')
+                    : t('configuracoes.permissaoNaoConcedida')}
+                </Text>
+              </View>
+            </View>
+
+            {permissaoCamera?.granted ? (
+              <Text style={styles.permissaoOkIcon}>✓</Text>
+            ) : (
+              <TouchableOpacity style={styles.permissaoBtn} onPress={handlePermissaoCamera}>
+                <Text style={styles.permissaoBtnText}>{t('configuracoes.permitir')}</Text>
+              </TouchableOpacity>
+            )}
+          </View>
+        </View>
+
         <View style={{ height: 32 }} />
       </ScrollView>
 
@@ -301,6 +350,10 @@ const getStyles = (colors: typeof coresClaro) => StyleSheet.create({
   dangerIconBox: { backgroundColor: colors.background === '#121212' ? '#5C1A1A' : '#FFCDD2' },
   settingIcon: { fontSize: 18 },
   settingLabel: { fontSize: 15, fontWeight: '600', color: colors.text },
+  settingSubLabel: { fontSize: 12, color: colors.textSecondary, marginTop: 2 },
+  permissaoOkIcon: { fontSize: 16, fontWeight: '800', color: '#43A047' },
+  permissaoBtn: { paddingVertical: 8, paddingHorizontal: 16, borderRadius: 10, backgroundColor: TEAL },
+  permissaoBtnText: { fontSize: 13, fontWeight: '700', color: '#FFF' },
   dangerText: { color: DANGER },
   settingArrow: { fontSize: 22, color: colors.textSecondary },
   divider: { height: 1, backgroundColor: colors.border, marginVertical: 8 },

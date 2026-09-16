@@ -23,7 +23,7 @@ import { useAuth } from '../Contexts/AuthContext';
 import { useLanguage } from '../Contexts/LanguageContext';
 import { useTheme } from '../Contexts/ThemeContext';
 
-const API_URL = 'http://172.20.86.107:3000'
+const API_URL = 'https://ideal-creation-production-a192.up.railway.app'
 
 function getDiasNoMes(ano: number, mes: number) {
   return new Date(ano, mes + 1, 0).getDate();
@@ -220,11 +220,16 @@ const getStyles = (colors: typeof coresClaro) =>
     checkIcon: { color: '#FFF', fontSize: 14, fontWeight: '800' },
     obsBox: { backgroundColor: colors.iconBox, borderRadius: 12, padding: 10, marginTop: -4, marginBottom: 8 },
     obsText: { fontSize: 12, color: colors.text, lineHeight: 18 },
-    addBtn: { marginTop: 14, height: 48, borderRadius: 14, borderWidth: 1.5, borderColor: TEAL, borderStyle: 'dashed', justifyContent: 'center', alignItems: 'center' },
+    addRow: { flexDirection: 'row', gap: 10, marginTop: 14 },
+    addBtn: { flex: 1, height: 48, borderRadius: 14, borderWidth: 1.5, borderColor: TEAL, borderStyle: 'dashed', justifyContent: 'center', alignItems: 'center' },
     addBtnText: { color: TEAL, fontSize: 14, fontWeight: '700' },
+    scanBtn: { width: 48, height: 48, borderRadius: 14, backgroundColor: TEAL, justifyContent: 'center', alignItems: 'center' },
+    scanBtnText: { fontSize: 20 },
     modalOverlay: { flex: 1, backgroundColor: 'rgba(0,0,0,0.5)', justifyContent: 'flex-end' },
     modalCard: { backgroundColor: colors.card, borderTopLeftRadius: 28, borderTopRightRadius: 28, padding: 28, paddingBottom: 40 },
     modalTitle: { fontSize: 20, fontWeight: '800', color: colors.text, marginBottom: 20 },
+    avisoBox: { backgroundColor: colors.iconBox, borderRadius: 12, padding: 12, marginBottom: 18, flexDirection: 'row', alignItems: 'center', gap: 8 },
+    avisoText: { fontSize: 12, color: colors.text, fontWeight: '600', flex: 1 },
     inputLabel: { fontSize: 13, fontWeight: '600', color: colors.text, marginBottom: 6 },
     input: { borderWidth: 1.5, borderColor: colors.border, borderRadius: 12, paddingVertical: 13, paddingHorizontal: 16, fontSize: 14, color: colors.text, backgroundColor: colors.background, marginBottom: 4 },
     inputError: { borderColor: ERROR },
@@ -237,7 +242,7 @@ const getStyles = (colors: typeof coresClaro) =>
     modalBtnSaveText: { color: '#FFF', fontSize: 15, fontWeight: '700' },
   });
 
-const PaginaPrincipal = ({ navigation }: any) => {
+const PaginaPrincipal = ({ navigation, route }: any) => {
   const hoje = new Date();
   const { t } = useLanguage();
   const { darkMode } = useTheme();
@@ -266,6 +271,10 @@ const PaginaPrincipal = ({ navigation }: any) => {
   const [salvando, setSalvando] = useState(false);
   const [expandidoId, setExpandidoId] = useState<string | null>(null);
 
+  // true quando os campos do modal foram preenchidos pela leitura da câmera,
+  // só pra mostrar o aviso "confira os dados" acima do formulário
+  const [avisoEscaneado, setAvisoEscaneado] = useState(false);
+
   // doses "virtuais" (geradas por frequência) marcadas como tomadas ou ignoradas,
   // guardadas só no front (não existem como registro no backend)
   const [dosesTomadas, setDosesTomadas] = useState<Set<string>>(new Set());
@@ -277,6 +286,33 @@ const PaginaPrincipal = ({ navigation }: any) => {
   useEffect(() => {
     carregarTodosExtras().then(setExtras);
   }, []);
+
+  // recebe de volta os dados lidos pela PaginaCamera e abre o modal já preenchido
+  useEffect(() => {
+    const dados = route?.params?.dadosEscaneados;
+    const abrirVazio = route?.params?.abrirModalVazio;
+
+    if (!dados && !abrirVazio) return;
+
+    if (dados) {
+      setNovoNome(dados.nome ?? '');
+      setNovoHorario(dados.horarioInicial ?? '');
+      setNovaFrequencia(dados.intervaloHoras ? String(dados.intervaloHoras) : '');
+      setNovaDuracaoDias(dados.duracaoDias ? String(dados.duracaoDias) : '');
+      setNovaObs(dados.dosagem ? `Dosagem: ${dados.dosagem}` : '');
+      setAvisoEscaneado(true);
+    } else {
+      setNovoNome(''); setNovoHorario(''); setNovaObs(''); setNovaFrequencia(''); setNovaDuracaoDias('');
+      setAvisoEscaneado(false);
+    }
+
+    setErroNome('');
+    setErroHorario('');
+    setModalVisible(true);
+
+    // limpa os params, senão o modal reabre de novo toda vez que a tela ganhar foco
+    navigation.setParams({ dadosEscaneados: undefined, abrirModalVazio: undefined });
+  }, [route?.params?.dadosEscaneados, route?.params?.abrirModalVazio]);
 
   const dataSelecionada = criarData(anoSel, mesSel, diaSel);
 
@@ -306,7 +342,12 @@ const PaginaPrincipal = ({ navigation }: any) => {
   function abrirModal() {
     setNovoNome(''); setNovoHorario(''); setNovaObs(''); setNovaFrequencia(''); setNovaDuracaoDias('');
     setErroNome(''); setErroHorario('');
+    setAvisoEscaneado(false);
     setModalVisible(true);
+  }
+
+  function abrirCamera() {
+    navigation.navigate('PaginaCamera');
   }
 
   function toggleObservacao(chave: string) {
@@ -398,6 +439,7 @@ const PaginaPrincipal = ({ navigation }: any) => {
       }
 
       setModalVisible(false);
+      setAvisoEscaneado(false);
     } catch (e) {
       Alert.alert(t('common.erro'), 'Não foi possível conectar ao servidor');
     } finally {
@@ -514,9 +556,14 @@ const PaginaPrincipal = ({ navigation }: any) => {
             );
           })}
 
-          <TouchableOpacity style={styles.addBtn} onPress={abrirModal}>
-            <Text style={styles.addBtnText}>{t('principal.adicionarRemedio')}</Text>
-          </TouchableOpacity>
+          <View style={styles.addRow}>
+            <TouchableOpacity style={styles.addBtn} onPress={abrirModal}>
+              <Text style={styles.addBtnText}>{t('principal.adicionarRemedio')}</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.scanBtn} onPress={abrirCamera}>
+              <Text style={styles.scanBtnText}>📷</Text>
+            </TouchableOpacity>
+          </View>
         </View>
 
         <View style={{ height: 32 }} />
@@ -526,6 +573,12 @@ const PaginaPrincipal = ({ navigation }: any) => {
         <KeyboardAvoidingView style={styles.modalOverlay} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
           <View style={styles.modalCard}>
             <Text style={styles.modalTitle}>{t('principal.novoRemedio')}</Text>
+
+            {avisoEscaneado && (
+              <View style={styles.avisoBox}>
+                <Text style={styles.avisoText}>📷 Dados lidos da câmera — confira antes de salvar</Text>
+              </View>
+            )}
 
             <Text style={styles.inputLabel}>{t('principal.nomeRemedio')}</Text>
             <TextInput style={[styles.input, erroNome ? styles.inputError : null]} placeholder={t('principal.nomeRemedioPlaceholder')} placeholderTextColor={colors.textSecondary} value={novoNome} onChangeText={txt => { setNovoNome(txt); setErroNome(''); }} />
@@ -575,7 +628,7 @@ const PaginaPrincipal = ({ navigation }: any) => {
             <TextInput style={styles.input} placeholder="Ex: Tomar com água" placeholderTextColor={colors.textSecondary} value={novaObs} onChangeText={setNovaObs} />
 
             <View style={styles.modalButtons}>
-              <TouchableOpacity style={styles.modalBtnCancel} onPress={() => setModalVisible(false)} disabled={salvando}>
+              <TouchableOpacity style={styles.modalBtnCancel} onPress={() => { setModalVisible(false); setAvisoEscaneado(false); }} disabled={salvando}>
                 <Text style={styles.modalBtnCancelText}>{t('common.cancelar')}</Text>
               </TouchableOpacity>
               <TouchableOpacity style={styles.modalBtnSave} onPress={salvarRemedio} disabled={salvando}>

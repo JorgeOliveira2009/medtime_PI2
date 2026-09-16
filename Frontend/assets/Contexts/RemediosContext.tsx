@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { useAuth } from './AuthContext';
 
-const API_URL = 'http://172.20.86.107:3000'
+const API_URL = 'https://ideal-creation-production-a192.up.railway.app'
 
 /* ─── Tipos ─── */
 export interface Remedio {

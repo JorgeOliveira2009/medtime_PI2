@@ -507,3 +507,224 @@
 {"_e":"metro:bundling:progress","_t":1789409653977,"id":"1","progress":0.9979199173597567,"total":972,"current":963}
 {"_e":"metro:bundling:progress","_t":1789409654105,"id":"1","progress":0.999,"total":975,"current":975}
 {"_e":"metro:bundling:done","_t":1789409654590,"id":"1","total":975,"ms":11810.5981}
+{"_e":"root:init","_t":1789410012862,"format":"v0-jsonl","version":"57.0.23"}
+{"_e":"env:mode","_t":1789410012863,"nodeEnv":"development","babelEnv":"development","mode":"development"}
+{"_e":"env:load","_t":1789410012866,"mode":"development","files":[],"env":{}}
+{"_e":"devserver:start","_t":1789410013187,"mode":"development","web":true,"baseUrl":"","asyncRoutes":false,"routerRoot":"../..\\..\\app","serverComponents":false,"serverActions":false,"serverRendering":false,"apiRoutes":false,"exporting":false}
+{"_e":"metro:config","_t":1789410013521,"serverRoot":"../..\\..","projectRoot":"../..\\..","exporting":false,"flags":{"autolinkingModuleResolution":false,"serverActions":false,"serverComponents":false,"reactCompiler":false,"optimizeGraph":false,"treeshaking":false,"logbox":false}}
+{"_e":"expo:dev-tools-plugin:load","_t":1789410013771,"plugins":[]}
+{"_e":"metro:instantiate","_t":1789410019220,"atlas":false,"workers":8,"host":"::","port":8081}
+{"_e":"metro:bundling:started","_t":1789410041322,"id":"1","platform":"ios","environment":null,"entry":"index.ts"}
+{"_e":"metro:bundling:progress","_t":1789410041322,"id":"1","progress":0,"total":1,"current":0}
+{"_e":"metro:bundling:progress","_t":1789410041325,"id":"1","progress":0,"total":1,"current":0}
+{"_e":"metro:bundling:progress","_t":1789410041425,"id":"1","progress":0.10101556396851151,"total":258,"current":82}
+{"_e":"metro:bundling:progress","_t":1789410041525,"id":"1","progress":0.25531334784493737,"total":473,"current":239}
+{"_e":"metro:bundling:progress","_t":1789410041627,"id":"1","progress":0.44710180441078196,"total":670,"current":448}
+{"_e":"metro:bundling:progress","_t":1789410041729,"id":"1","progress":0.7279313485702205,"total":831,"current":709}
+{"_e":"metro:bundling:progress","_t":1789410041829,"id":"1","progress":0.8795343766549606,"total":933,"current":875}
+{"_e":"metro:bundling:done","_t":1789410041940,"id":"1","total":933,"ms":618.4852}
+{"_e":"metro:client_log","_t":1789410054381,"level":"error","data":["Erro ao carregar remédios:","[Error: fetch failed: UnexpectedException: The request timed out. (at ExpoModulesCore/Promise.swift:56)]"]}
+{"_e":"metro:server_log","_t":1789410182916,"level":"error","data":["[timeout] connection terminated with Device for app='%s' on device='%s' after not responding for %s seconds.","host.exp.Exponent","iPhone","60"]}
+{"_e":"metro:bundling:started","_t":1789410311073,"id":"6","platform":"ios","environment":null,"entry":"index.ts"}
+{"_e":"metro:bundling:progress","_t":1789410311073,"id":"6","progress":0,"total":1,"current":0}
+{"_e":"metro:bundling:progress","_t":1789410311074,"id":"6","progress":0,"total":1,"current":0}
+{"_e":"metro:bundling:progress","_t":1789410311176,"id":"6","progress":0,"total":1,"current":0}
+{"_e":"metro:bundling:progress","_t":1789410311800,"id":"6","progress":0,"total":1,"current":0}
+{"_e":"metro:bundling:progress","_t":1789410311904,"id":"6","progress":0,"total":1,"current":0}
+{"_e":"metro:bundling:progress","_t":1789410311950,"id":"6","progress":0,"total":1,"current":0}
+{"_e":"metro:bundling:done","_t":1789410312020,"id":"6","total":1,"ms":946.3322}
+{"_e":"metro:client_log","_t":1789410316322,"level":"error","data":["Erro ao carregar remédios:","[Error: Token inválido]"]}
+{"_e":"metro:bundling:started","_t":1789411271197,"id":"c","platform":"android","environment":null,"entry":"index.ts"}
+{"_e":"metro:bundling:progress","_t":1789411271197,"id":"c","progress":0,"total":1,"current":0}
+{"_e":"metro:bundling:progress","_t":1789411271198,"id":"c","progress":0,"total":1,"current":0}
+{"_e":"metro:bundling:progress","_t":1789411271302,"id":"c","progress":0.09336419753086421,"total":36,"current":11}
+{"_e":"metro:bundling:progress","_t":1789411271406,"id":"c","progress":0.09336419753086421,"total":61,"current":17}
+{"_e":"metro:bundling:progress","_t":1789411271518,"id":"c","progress":0.09336419753086421,"total":163,"current":21}
+{"_e":"metro:bundling:progress","_t":1789411271650,"id":"c","progress":0.09336419753086421,"total":182,"current":32}
+{"_e":"metro:bundling:progress","_t":1789411271751,"id":"c","progress":0.09336419753086421,"total":195,"current":47}
+{"_e":"metro:bundling:progress","_t":1789411271851,"id":"c","progress":0.09336419753086421,"total":235,"current":60}
+{"_e":"metro:bundling:progress","_t":1789411271951,"id":"c","progress":0.09336419753086421,"total":247,"current":68}
+{"_e":"metro:bundling:progress","_t":1789411272052,"id":"c","progress":0.09336419753086421,"total":259,"current":76}
+{"_e":"metro:bundling:progress","_t":1789411272168,"id":"c","progress":0.09336419753086421,"total":266,"current":81}
+{"_e":"metro:bundling:progress","_t":1789411272268,"id":"c","progress":0.09737940747447311,"total":282,"current":88}
+{"_e":"metro:bundling:progress","_t":1789411272370,"id":"c","progress":0.12179631548128463,"total":298,"current":104}
+{"_e":"metro:bundling:progress","_t":1789411272470,"id":"c","progress":0.13653133357986258,"total":341,"current":126}
+{"_e":"metro:bundling:progress","_t":1789411272571,"id":"c","progress":0.16860428825567242,"total":358,"current":147}
+{"_e":"metro:bundling:progress","_t":1789411272671,"id":"c","progress":0.20213231964005968,"total":367,"current":165}
+{"_e":"metro:bundling:progress","_t":1789411272771,"id":"c","progress":0.23714870876736113,"total":384,"current":187}
+{"_e":"metro:bundling:progress","_t":1789411272877,"id":"c","progress":0.2585463947141626,"total":413,"current":210}
+{"_e":"metro:bundling:progress","_t":1789411272978,"id":"c","progress":0.29542422145328723,"total":425,"current":231}
+{"_e":"metro:bundling:progress","_t":1789411273079,"id":"c","progress":0.29542422145328723,"total":505,"current":253}
+{"_e":"metro:bundling:progress","_t":1789411273186,"id":"c","progress":0.29542422145328723,"total":525,"current":279}
+{"_e":"metro:bundling:progress","_t":1789411273286,"id":"c","progress":0.29542422145328723,"total":576,"current":308}
+{"_e":"metro:bundling:progress","_t":1789411273389,"id":"c","progress":0.33456372689812847,"total":593,"current":343}
+{"_e":"metro:bundling:progress","_t":1789411273490,"id":"c","progress":0.33844586843874847,"total":636,"current":370}
+{"_e":"metro:bundling:progress","_t":1789411273590,"id":"c","progress":0.36730945821854916,"total":660,"current":400}
+{"_e":"metro:bundling:progress","_t":1789411273690,"id":"c","progress":0.41229916897506924,"total":665,"current":427}
+{"_e":"metro:bundling:progress","_t":1789411273790,"id":"c","progress":0.4457701542063029,"total":671,"current":448}
+{"_e":"metro:bundling:progress","_t":1789411273890,"id":"c","progress":0.4704299512494914,"total":694,"current":476}
+{"_e":"metro:bundling:progress","_t":1789411273990,"id":"c","progress":0.48862262893134023,"total":711,"current":497}
+{"_e":"metro:bundling:progress","_t":1789411274091,"id":"c","progress":0.5216049382716049,"total":720,"current":520}
+{"_e":"metro:bundling:progress","_t":1789411274191,"id":"c","progress":0.5367111554489298,"total":733,"current":537}
+{"_e":"metro:bundling:progress","_t":1789411274291,"id":"c","progress":0.5665178443764477,"total":748,"current":563}
+{"_e":"metro:bundling:progress","_t":1789411274391,"id":"c","progress":0.6286523346398313,"total":758,"current":601}
+{"_e":"metro:bundling:progress","_t":1789411274491,"id":"c","progress":0.6304478951871959,"total":801,"current":636}
+{"_e":"metro:bundling:progress","_t":1789411274597,"id":"c","progress":0.6821536351165981,"total":810,"current":669}
+{"_e":"metro:bundling:progress","_t":1789411274703,"id":"c","progress":0.7343945217926722,"total":818,"current":701}
+{"_e":"metro:bundling:progress","_t":1789411274809,"id":"c","progress":0.7690591801129444,"total":829,"current":727}
+{"_e":"metro:bundling:progress","_t":1789411274908,"id":"c","progress":0.7873437809958342,"total":852,"current":756}
+{"_e":"metro:bundling:progress","_t":1789411275011,"id":"c","progress":0.8127137407706283,"total":863,"current":778}
+{"_e":"metro:bundling:progress","_t":1789411275117,"id":"c","progress":0.8260698107627088,"total":878,"current":798}
+{"_e":"metro:bundling:progress","_t":1789411275221,"id":"c","progress":0.8567203334142551,"total":887,"current":821}
+{"_e":"metro:bundling:progress","_t":1789411275321,"id":"c","progress":0.8629811985942367,"total":901,"current":837}
+{"_e":"metro:bundling:progress","_t":1789411275424,"id":"c","progress":0.8670357430798172,"total":915,"current":852}
+{"_e":"metro:bundling:progress","_t":1789411275526,"id":"c","progress":0.8736444754205851,"total":934,"current":873}
+{"_e":"metro:bundling:progress","_t":1789411275626,"id":"c","progress":0.9048185603807257,"total":943,"current":897}
+{"_e":"metro:bundling:progress","_t":1789411275727,"id":"c","progress":0.9337662049861496,"total":950,"current":918}
+{"_e":"metro:bundling:progress","_t":1789411275830,"id":"c","progress":0.9749749231729702,"total":953,"current":941}
+{"_e":"metro:bundling:progress","_t":1789411275935,"id":"c","progress":0.9958333378638897,"total":959,"current":957}
+{"_e":"metro:bundling:progress","_t":1789411276584,"id":"c","progress":0.9979155815984021,"total":959,"current":958}
+{"_e":"metro:bundling:progress","_t":1789411276697,"id":"c","progress":0.999,"total":962,"current":962}
+{"_e":"metro:bundling:progress","_t":1789411276797,"id":"c","progress":0.999,"total":973,"current":973}
+{"_e":"metro:bundling:done","_t":1789411277049,"id":"c","total":973,"ms":5850.6877}
+{"_e":"metro:client_log","_t":1789411285140,"level":"error","data":["Erro ao carregar remédios:","[Error: Token inválido]"]}
+{"_e":"metro:client_log","_t":1789411299914,"level":"warn","data":["SafeAreaView has been deprecated and will be removed in a future release. Please use 'react-native-safe-area-context' instead. See https://github.com/AppAndFlow/react-native-safe-area-context"]}
+{"_e":"metro:bundling:started","_t":1789411406359,"id":"f","platform":"android","environment":null,"entry":"index.ts"}
+{"_e":"metro:bundling:progress","_t":1789411406359,"id":"f","progress":0,"total":1,"current":0}
+{"_e":"metro:bundling:done","_t":1789411406391,"id":"f","total":1,"ms":31.7174}
+{"_e":"metro:client_log","_t":1789411429153,"level":"warn","data":["SafeAreaView has been deprecated and will be removed in a future release. Please use 'react-native-safe-area-context' instead. See https://github.com/AppAndFlow/react-native-safe-area-context"]}
+{"_e":"metro:bundling:started","_t":1789411709166,"id":"h","platform":"android","environment":null,"entry":"index.ts"}
+{"_e":"metro:bundling:progress","_t":1789411709167,"id":"h","progress":0,"total":1,"current":0}
+{"_e":"metro:bundling:done","_t":1789411709197,"id":"h","total":1,"ms":30.3077}
+{"_e":"metro:client_log","_t":1789411934860,"level":"warn","data":["SafeAreaView has been deprecated and will be removed in a future release. Please use 'react-native-safe-area-context' instead. See https://github.com/AppAndFlow/react-native-safe-area-context"]}
+{"_e":"root:init","_t":1789415452273,"format":"v0-jsonl","version":"57.0.23"}
+{"_e":"env:mode","_t":1789415452289,"nodeEnv":"development","babelEnv":"development","mode":"development"}
+{"_e":"env:load","_t":1789415452305,"mode":"development","files":[],"env":{}}
+{"_e":"devserver:start","_t":1789415456277,"mode":"development","web":true,"baseUrl":"","asyncRoutes":false,"routerRoot":"../..\\..\\app","serverComponents":false,"serverActions":false,"serverRendering":false,"apiRoutes":false,"exporting":false}
+{"_e":"metro:config","_t":1789415461336,"serverRoot":"../..\\..","projectRoot":"../..\\..","exporting":false,"flags":{"autolinkingModuleResolution":false,"serverActions":false,"serverComponents":false,"reactCompiler":false,"optimizeGraph":false,"treeshaking":false,"logbox":false}}
+{"_e":"expo:dev-tools-plugin:load","_t":1789415463712,"plugins":[]}
+{"_e":"metro:instantiate","_t":1789415471264,"atlas":false,"workers":8,"host":"::","port":8081}
+{"_e":"metro:bundling:started","_t":1789415476510,"id":"1","platform":"android","environment":null,"entry":"index.ts"}
+{"_e":"metro:bundling:progress","_t":1789415476511,"id":"1","progress":0,"total":1,"current":0}
+{"_e":"metro:bundling:progress","_t":1789415476515,"id":"1","progress":0,"total":1,"current":0}
+{"_e":"metro:bundling:progress","_t":1789415476616,"id":"1","progress":0.08975724893048566,"total":247,"current":74}
+{"_e":"metro:bundling:progress","_t":1789415476716,"id":"1","progress":0.19415765693639003,"total":379,"current":167}
+{"_e":"metro:bundling:progress","_t":1789415476816,"id":"1","progress":0.31983896533827105,"total":534,"current":302}
+{"_e":"metro:bundling:progress","_t":1789415476916,"id":"1","progress":0.5070835746900276,"total":653,"current":465}
+{"_e":"metro:bundling:progress","_t":1789415477016,"id":"1","progress":0.7012711758584808,"total":775,"current":649}
+{"_e":"metro:bundling:progress","_t":1789415477118,"id":"1","progress":0.7964643476166289,"total":874,"current":780}
+{"_e":"metro:bundling:progress","_t":1789415477218,"id":"1","progress":0.9813572187313554,"total":961,"current":952}
+{"_e":"metro:bundling:progress","_t":1789415477318,"id":"1","progress":0.9917780410482785,"total":971,"current":967}
+{"_e":"metro:bundling:progress","_t":1789415480766,"id":"1","progress":0.9938303489135496,"total":971,"current":968}
+{"_e":"metro:bundling:done","_t":1789415480913,"id":"1","total":971,"ms":4402.8527}
+{"_e":"metro:bundling:started","_t":1789416198978,"id":"3","platform":"web","environment":null,"entry":"index.ts"}
+{"_e":"metro:bundling:progress","_t":1789416198978,"id":"3","progress":0,"total":1,"current":0}
+{"_e":"metro:bundling:progress","_t":1789416198979,"id":"3","progress":0,"total":1,"current":0}
+{"_e":"metro:bundling:progress","_t":1789416199084,"id":"3","progress":0.04000000000000001,"total":3,"current":2}
+{"_e":"metro:bundling:progress","_t":1789416199185,"id":"3","progress":0.04000000000000001,"total":51,"current":8}
+{"_e":"metro:bundling:progress","_t":1789416199285,"id":"3","progress":0.04000000000000001,"total":78,"current":10}
+{"_e":"metro:bundling:progress","_t":1789416199385,"id":"3","progress":0.04000000000000001,"total":86,"current":12}
+{"_e":"metro:bundling:progress","_t":1789416199489,"id":"3","progress":0.04000000000000001,"total":86,"current":15}
+{"_e":"metro:bundling:progress","_t":1789416199590,"id":"3","progress":0.0791015625,"total":96,"current":27}
+{"_e":"metro:bundling:progress","_t":1789416199690,"id":"3","progress":0.17560090702947848,"total":105,"current":44}
+{"_e":"metro:bundling:progress","_t":1789416199790,"id":"3","progress":0.23182441700960216,"total":108,"current":52}
+{"_e":"metro:bundling:progress","_t":1789416199891,"id":"3","progress":0.28567181926278234,"total":116,"current":62}
+{"_e":"metro:bundling:progress","_t":1789416199998,"id":"3","progress":0.28567181926278234,"total":164,"current":70}
+{"_e":"metro:bundling:progress","_t":1789416200104,"id":"3","progress":0.28567181926278234,"total":174,"current":78}
+{"_e":"metro:bundling:progress","_t":1789416200209,"id":"3","progress":0.28567181926278234,"total":184,"current":90}
+{"_e":"metro:bundling:progress","_t":1789416200309,"id":"3","progress":0.28567181926278234,"total":195,"current":102}
+{"_e":"metro:bundling:progress","_t":1789416200409,"id":"3","progress":0.3330610628449791,"total":201,"current":116}
+{"_e":"metro:bundling:progress","_t":1789416200511,"id":"3","progress":0.3368144132653062,"total":224,"current":130}
+{"_e":"metro:bundling:progress","_t":1789416200612,"id":"3","progress":0.38117202268431,"total":230,"current":142}
+{"_e":"metro:bundling:progress","_t":1789416200713,"id":"3","progress":0.4096,"total":250,"current":160}
+{"_e":"metro:bundling:progress","_t":1789416200814,"id":"3","progress":0.4096,"total":272,"current":173}
+{"_e":"metro:bundling:progress","_t":1789416200914,"id":"3","progress":0.4762943860345169,"total":284,"current":196}
+{"_e":"metro:bundling:progress","_t":1789416201017,"id":"3","progress":0.5521315586419754,"total":288,"current":214}
+{"_e":"metro:bundling:progress","_t":1789416201120,"id":"3","progress":0.6444367284874463,"total":289,"current":232}
+{"_e":"metro:bundling:progress","_t":1789416201220,"id":"3","progress":0.6916414424831933,"total":297,"current":247}
+{"_e":"metro:bundling:progress","_t":1789416201322,"id":"3","progress":0.7022544424064208,"total":321,"current":269}
+{"_e":"metro:bundling:progress","_t":1789416201433,"id":"3","progress":0.7022544424064208,"total":345,"current":288}
+{"_e":"metro:bundling:progress","_t":1789416201534,"id":"3","progress":0.7022544424064208,"total":386,"current":305}
+{"_e":"metro:bundling:progress","_t":1789416201636,"id":"3","progress":0.7022544424064208,"total":388,"current":323}
+{"_e":"metro:bundling:progress","_t":1789416201738,"id":"3","progress":0.7267562500000001,"total":400,"current":341}
+{"_e":"metro:bundling:progress","_t":1789416201839,"id":"3","progress":0.7877104991003163,"total":409,"current":363}
+{"_e":"metro:bundling:progress","_t":1789416201942,"id":"3","progress":0.804529175282045,"total":427,"current":383}
+{"_e":"metro:bundling:progress","_t":1789416202042,"id":"3","progress":0.8189840502856207,"total":442,"current":400}
+{"_e":"metro:bundling:progress","_t":1789416202142,"id":"3","progress":0.820805025933231,"total":468,"current":424}
+{"_e":"metro:bundling:progress","_t":1789416202251,"id":"3","progress":0.8502781163434904,"total":475,"current":438}
+{"_e":"metro:bundling:progress","_t":1789416202351,"id":"3","progress":0.8989557686678947,"total":482,"current":457}
+{"_e":"metro:bundling:progress","_t":1789416202458,"id":"3","progress":0.8989557686678947,"total":503,"current":475}
+{"_e":"metro:bundling:progress","_t":1789416202559,"id":"3","progress":0.976425190207627,"total":506,"current":500}
+{"_e":"metro:bundling:progress","_t":1789416202659,"id":"3","progress":0.976425190207627,"total":519,"current":510}
+{"_e":"metro:bundling:progress","_t":1789416202770,"id":"3","progress":0.9961501479427237,"total":519,"current":518}
+{"_e":"metro:bundling:progress","_t":1789416204327,"id":"3","progress":0.999,"total":519,"current":519}
+{"_e":"metro:bundling:progress","_t":1789416204427,"id":"3","progress":0.999,"total":521,"current":521}
+{"_e":"metro:bundling:done","_t":1789416204690,"id":"3","total":521,"ms":5712.2473}
+{"_e":"metro:client_log","_t":1789416204872,"level":"info","data":["%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools","font-weight:bold"]}
+{"_e":"metro:client_log","_t":1789416204873,"level":"warn","data":["\"shadow*\" style props are deprecated. Use \"boxShadow\"."]}
+{"_e":"metro:client_log","_t":1789416204873,"level":"log","data":["Running application \"main\" with appParams:\n","{\"hydrate\": undefined, \"rootTag\": \"#root\"}","\nDevelopment-level warnings: ON.\nPerformance optimizations: OFF."]}
+{"_e":"metro:client_log","_t":1789416204929,"level":"warn","data":["Animated: `useNativeDriver` is not supported because the native animated module is missing. Falling back to JS-based animation. To resolve this, add `RCTAnimation` module to this app, or remove `useNativeDriver`. Make sure to run `bundle exec pod install` first. Read more about autolinking: https://github.com/react-native-community/cli/blob/master/docs/autolinking.md"]}
+{"_e":"metro:client_log","_t":1789416205878,"level":"error","data":["Erro ao carregar remédios:","[Error: Token inválido]","\n\n\u001b[1mCode: RemediosContext.tsx\u001b[22m\n\u001b[0m \u001b[90m 103 |\u001b[39m\n \u001b[90m 104 |\u001b[39m         \u001b[36mif\u001b[39m (\u001b[33m!\u001b[39mres\u001b[33m.\u001b[39mok) {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 105 |\u001b[39m           \u001b[36mthrow\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mError\u001b[39m(\n \u001b[90m     |\u001b[39m                 \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 106 |\u001b[39m             json\u001b[33m.\u001b[39mmessage \u001b[33m||\u001b[39m \u001b[32m'Erro ao carregar remédios'\u001b[39m\n \u001b[90m 107 |\u001b[39m           )\u001b[33m;\u001b[39m\n \u001b[90m 108 |\u001b[39m         }\u001b[0m\n\u001b[1mCall Stack\u001b[22m\n\u001b[90m  fetch.then$argument_0 (assets\\Contexts\\RemediosContext.tsx:105:17)\u001b[39m"]}
+{"_e":"metro:client_log","_t":1789416206386,"level":"warn","data":["Image: style.resizeMode is deprecated. Please use props.resizeMode."]}
+{"_e":"metro:bundling:started","_t":1789416209321,"id":"8","platform":"web","environment":null,"entry":"index.ts"}
+{"_e":"metro:bundling:progress","_t":1789416209321,"id":"8","progress":0,"total":1,"current":0}
+{"_e":"metro:bundling:done","_t":1789416209338,"id":"8","total":1,"ms":17.4594}
+{"_e":"metro:client_log","_t":1789416209444,"level":"warn","data":["\"shadow*\" style props are deprecated. Use \"boxShadow\"."]}
+{"_e":"metro:client_log","_t":1789416209444,"level":"log","data":["Running application \"main\" with appParams:\n","{\"hydrate\": undefined, \"rootTag\": \"#root\"}","\nDevelopment-level warnings: ON.\nPerformance optimizations: OFF."]}
+{"_e":"metro:client_log","_t":1789416209445,"level":"warn","data":["Animated: `useNativeDriver` is not supported because the native animated module is missing. Falling back to JS-based animation. To resolve this, add `RCTAnimation` module to this app, or remove `useNativeDriver`. Make sure to run `bundle exec pod install` first. Read more about autolinking: https://github.com/react-native-community/cli/blob/master/docs/autolinking.md"]}
+{"_e":"metro:client_log","_t":1789416209697,"level":"error","data":["Erro ao carregar remédios:","[Error: Token inválido]","\n\n\u001b[1mCode: RemediosContext.tsx\u001b[22m\n\u001b[0m \u001b[90m 103 |\u001b[39m\n \u001b[90m 104 |\u001b[39m         \u001b[36mif\u001b[39m (\u001b[33m!\u001b[39mres\u001b[33m.\u001b[39mok) {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 105 |\u001b[39m           \u001b[36mthrow\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mError\u001b[39m(\n \u001b[90m     |\u001b[39m                 \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 106 |\u001b[39m             json\u001b[33m.\u001b[39mmessage \u001b[33m||\u001b[39m \u001b[32m'Erro ao carregar remédios'\u001b[39m\n \u001b[90m 107 |\u001b[39m           )\u001b[33m;\u001b[39m\n \u001b[90m 108 |\u001b[39m         }\u001b[0m\n\u001b[1mCall Stack\u001b[22m\n\u001b[90m  fetch.then$argument_0 (assets\\Contexts\\RemediosContext.tsx:105:17)\u001b[39m"]}
+{"_e":"metro:client_log","_t":1789416211136,"level":"warn","data":["Image: style.resizeMode is deprecated. Please use props.resizeMode."]}
+{"_e":"metro:bundling:started","_t":1789416284910,"id":"b","platform":"ios","environment":null,"entry":"index.ts"}
+{"_e":"metro:bundling:progress","_t":1789416284910,"id":"b","progress":0,"total":1,"current":0}
+{"_e":"metro:bundling:progress","_t":1789416284912,"id":"b","progress":0,"total":1,"current":0}
+{"_e":"metro:bundling:progress","_t":1789416285012,"id":"b","progress":0.08595022660924823,"total":249,"current":73}
+{"_e":"metro:bundling:progress","_t":1789416285112,"id":"b","progress":0.19622314939245336,"total":377,"current":167}
+{"_e":"metro:bundling:progress","_t":1789416285212,"id":"b","progress":0.3483587327135865,"total":593,"current":350}
+{"_e":"metro:bundling:progress","_t":1789416285312,"id":"b","progress":0.5958038120299165,"total":754,"current":582}
+{"_e":"metro:bundling:progress","_t":1789416285414,"id":"b","progress":0.8128212442882953,"total":894,"current":806}
+{"_e":"metro:bundling:done","_t":1789416285524,"id":"b","total":894,"ms":613.6501}
+{"_e":"metro:client_log","_t":1789416290094,"level":"error","data":["Erro ao carregar remédios:","[Error: Token inválido]"]}
+{"_e":"metro:client_log","_t":1789416325565,"level":"warn","data":["SafeAreaView has been deprecated and will be removed in a future release. Please use 'react-native-safe-area-context' instead. See https://github.com/AppAndFlow/react-native-safe-area-context"]}
+{"_e":"root:init","_t":1789585311549,"format":"v0-jsonl","version":"57.0.23"}
+{"_e":"env:mode","_t":1789585311549,"nodeEnv":"development","babelEnv":"development","mode":"development"}
+{"_e":"env:load","_t":1789585311552,"mode":"development","files":[],"env":{}}
+{"_e":"devserver:start","_t":1789585315112,"mode":"development","web":true,"baseUrl":"","asyncRoutes":false,"routerRoot":"../..\\..\\app","serverComponents":false,"serverActions":false,"serverRendering":false,"apiRoutes":false,"exporting":false}
+{"_e":"metro:config","_t":1789585322119,"serverRoot":"../..\\..","projectRoot":"../..\\..","exporting":false,"flags":{"autolinkingModuleResolution":false,"serverActions":false,"serverComponents":false,"reactCompiler":false,"optimizeGraph":false,"treeshaking":false,"logbox":false}}
+{"_e":"expo:dev-tools-plugin:load","_t":1789585324696,"plugins":[]}
+{"_e":"metro:instantiate","_t":1789585333438,"atlas":false,"workers":8,"host":"::","port":8081}
+{"_e":"metro:bundling:started","_t":1789585343099,"id":"1","platform":"android","environment":null,"entry":"index.ts"}
+{"_e":"metro:bundling:progress","_t":1789585343099,"id":"1","progress":0,"total":1,"current":0}
+{"_e":"metro:bundling:progress","_t":1789585343103,"id":"1","progress":0,"total":1,"current":0}
+{"_e":"metro:bundling:progress","_t":1789585343203,"id":"1","progress":0.10430135202652577,"total":257,"current":83}
+{"_e":"metro:bundling:progress","_t":1789585343311,"id":"1","progress":0.30081205394318417,"total":423,"current":232}
+{"_e":"metro:bundling:progress","_t":1789585343411,"id":"1","progress":0.41773261723007143,"total":639,"current":413}
+{"_e":"metro:bundling:progress","_t":1789585343511,"id":"1","progress":0.6317152976893238,"total":770,"current":612}
+{"_e":"metro:bundling:progress","_t":1789585343625,"id":"1","progress":0.8050759992493902,"total":876,"current":786}
+{"_e":"metro:bundling:progress","_t":1789585343725,"id":"1","progress":0.9261042348698376,"total":956,"current":920}
+{"_e":"metro:bundling:done","_t":1789585343867,"id":"1","total":956,"ms":767.9393}
+{"_e":"metro:client_log","_t":1789585352922,"level":"error","data":["Erro ao carregar remédios:","[Error: Token inválido]"]}
+{"_e":"metro:client_log","_t":1789585366855,"level":"warn","data":["SafeAreaView has been deprecated and will be removed in a future release. Please use 'react-native-safe-area-context' instead. See https://github.com/AppAndFlow/react-native-safe-area-context"]}
+{"_e":"metro:server_log","_t":1789586408522,"level":"error","data":["[timeout] connection terminated with Device for app='%s' on device='%s' after not responding for %s seconds.","host.exp.exponent","moto g14 - 14 - API 34","60"]}
+{"_e":"metro:server_log","_t":1789586863797,"level":"error","data":["[timeout] connection terminated with Device for app='%s' on device='%s' after not responding for %s seconds.","host.exp.exponent","moto g14 - 14 - API 34","60"]}
+{"_e":"metro:bundling:started","_t":1789587229369,"id":"6","platform":"android","environment":null,"entry":"index.ts"}
+{"_e":"metro:bundling:progress","_t":1789587229369,"id":"6","progress":0,"total":1,"current":0}
+{"_e":"metro:bundling:progress","_t":1789587229370,"id":"6","progress":0,"total":1,"current":0}
+{"_e":"metro:bundling:progress","_t":1789587229479,"id":"6","progress":0,"total":1,"current":0}
+{"_e":"metro:bundling:progress","_t":1789587229578,"id":"6","progress":0,"total":1,"current":0}
+{"_e":"metro:bundling:done","_t":1789587229653,"id":"6","total":1,"ms":284.4338}
+{"_e":"metro:client_log","_t":1789587252257,"level":"warn","data":["SafeAreaView has been deprecated and will be removed in a future release. Please use 'react-native-safe-area-context' instead. See https://github.com/AppAndFlow/react-native-safe-area-context"]}
+{"_e":"metro:bundling:failed","_t":1789587640910,"id":null,"message":"Unable to resolve \"expo-file-system\" from \"assets\\Pages\\PaginaCamera.tsx\"\n  10 | } from 'react-native';\n  11 | import { CameraView, useCameraPermissions } from 'expo-camera';\n> 12 | import { File } from 'expo-file-system';\n     |                       ^\n  13 |\n  14 | import { useAuth } from '../Contexts/AuthContext';\n  15 | import { parseReceita } from '../Utils/parserReceita';","importStack":"\u001b[1mImport stack:\u001b[22m\n\n\u001b[90m \u001b[39massets\\Pages\\PaginaCamera.tsx\n\u001b[90m |\u001b[39m \u001b[36mimport\u001b[39m \u001b[32m\"expo-file-system\"\u001b[39m\n\n\u001b[90m \u001b[39mApp.tsx\n\u001b[90m |\u001b[39m \u001b[36mimport\u001b[39m \u001b[32m\"./assets/Pages/PaginaCamera\"\u001b[39m\n\n\u001b[90m \u001b[39mindex.ts\n\u001b[90m |\u001b[39m \u001b[36mimport\u001b[39m \u001b[32m\"./App\"\u001b[39m\n\n\u001b[90m \u001b[39m\n\u001b[90m |\u001b[39m \u001b[36mimport\u001b[39m \u001b[32m\"./index.ts\"\u001b[39m\n","filename":null,"targetModuleName":"expo-file-system","originModulePath":"assets\\Pages\\PaginaCamera.tsx"}
+{"_e":"metro:bundling:failed","_t":1789587641846,"id":null,"message":"Unable to resolve \"expo-file-system\" from \"assets\\Pages\\PaginaCamera.tsx\"\n  10 | } from 'react-native';\n  11 | import { CameraView, useCameraPermissions } from 'expo-camera';\n> 12 | import { File } from 'expo-file-system';\n     |                       ^\n  13 |\n  14 | import { useAuth } from '../Contexts/AuthContext';\n  15 | import { parseReceita } from '../Utils/parserReceita';","importStack":"\u001b[1mImport stack:\u001b[22m\n\n\u001b[90m \u001b[39massets\\Pages\\PaginaCamera.tsx\n\u001b[90m |\u001b[39m \u001b[36mimport\u001b[39m \u001b[32m\"expo-file-system\"\u001b[39m\n\n\u001b[90m \u001b[39mApp.tsx\n\u001b[90m |\u001b[39m \u001b[36mimport\u001b[39m \u001b[32m\"./assets/Pages/PaginaCamera\"\u001b[39m\n\n\u001b[90m \u001b[39mindex.ts\n\u001b[90m |\u001b[39m \u001b[36mimport\u001b[39m \u001b[32m\"./App\"\u001b[39m\n\n\u001b[90m \u001b[39m\n\u001b[90m |\u001b[39m \u001b[36mimport\u001b[39m \u001b[32m\"./index.ts\"\u001b[39m\n","filename":null,"targetModuleName":"expo-file-system","originModulePath":"assets\\Pages\\PaginaCamera.tsx"}
+{"_e":"metro:bundling:failed","_t":1789587654317,"id":null,"message":"Unable to resolve \"expo-file-system\" from \"assets\\Pages\\PaginaCamera.tsx\"\n  10 | } from 'react-native';\n  11 | import { CameraView, useCameraPermissions } from 'expo-camera';\n> 12 | import { File } from 'expo-file-system';\n     |                       ^\n  13 |\n  14 | import { useAuth } from '../Contexts/AuthContext';\n  15 | import { parseReceita } from '../utils/parserReceita';","importStack":"\u001b[1mImport stack:\u001b[22m\n\n\u001b[90m \u001b[39massets\\Pages\\PaginaCamera.tsx\n\u001b[90m |\u001b[39m \u001b[36mimport\u001b[39m \u001b[32m\"expo-file-system\"\u001b[39m\n\n\u001b[90m \u001b[39mApp.tsx\n\u001b[90m |\u001b[39m \u001b[36mimport\u001b[39m \u001b[32m\"./assets/Pages/PaginaCamera\"\u001b[39m\n\n\u001b[90m \u001b[39mindex.ts\n\u001b[90m |\u001b[39m \u001b[36mimport\u001b[39m \u001b[32m\"./App\"\u001b[39m\n\n\u001b[90m \u001b[39m\n\u001b[90m |\u001b[39m \u001b[36mimport\u001b[39m \u001b[32m\"./index.ts\"\u001b[39m\n","filename":null,"targetModuleName":"expo-file-system","originModulePath":"assets\\Pages\\PaginaCamera.tsx"}
+{"_e":"metro:server_log","_t":1789587654583,"level":"error","data":["[timeout] connection terminated with Device for app='%s' on device='%s' after not responding for %s seconds.","host.exp.exponent","moto g14 - 14 - API 34","60"]}
+{"_e":"metro:bundling:failed","_t":1789587668944,"id":null,"message":"Unable to resolve \"expo-file-system\" from \"assets\\Pages\\PaginaCamera.tsx\"\n  10 | } from 'react-native';\n  11 | import { CameraView, useCameraPermissions } from 'expo-camera';\n> 12 | import { File } from 'expo-file-system';\n     |                       ^\n  13 |\n  14 | import { useAuth } from '../Contexts/AuthContext';\n  15 | import { parseReceita } from '../utils/parserReceita';","importStack":"\u001b[1mImport stack:\u001b[22m\n\n\u001b[90m \u001b[39massets\\Pages\\PaginaCamera.tsx\n\u001b[90m |\u001b[39m \u001b[36mimport\u001b[39m \u001b[32m\"expo-file-system\"\u001b[39m\n\n\u001b[90m \u001b[39mApp.tsx\n\u001b[90m |\u001b[39m \u001b[36mimport\u001b[39m \u001b[32m\"./assets/Pages/PaginaCamera\"\u001b[39m\n\n\u001b[90m \u001b[39mindex.ts\n\u001b[90m |\u001b[39m \u001b[36mimport\u001b[39m \u001b[32m\"./App\"\u001b[39m\n\n\u001b[90m \u001b[39m\n\u001b[90m |\u001b[39m \u001b[36mimport\u001b[39m \u001b[32m\"./index.ts\"\u001b[39m\n","filename":null,"targetModuleName":"expo-file-system","originModulePath":"assets\\Pages\\PaginaCamera.tsx"}
+{"_e":"metro:bundling:started","_t":1789587714571,"id":"9","platform":"android","environment":null,"entry":"index.ts"}
+{"_e":"metro:bundling:progress","_t":1789587714572,"id":"9","progress":0,"total":1,"current":0}
+{"_e":"metro:bundling:progress","_t":1789587714572,"id":"9","progress":0,"total":1,"current":0}
+{"_e":"metro:bundling:progress","_t":1789587714964,"id":"9","progress":0,"total":1,"current":0}
+{"_e":"metro:bundling:failed","_t":1789587714969,"id":"9","message":"Unable to resolve \"expo-file-system\" from \"assets\\Pages\\PaginaCamera.tsx\"\n  10 | } from 'react-native';\n  11 | import { CameraView, useCameraPermissions } from 'expo-camera';\n> 12 | import { File } from 'expo-file-system';\n     |                       ^\n  13 |\n  14 | import { useAuth } from '../Contexts/AuthContext';\n  15 | import { parseReceita } from '../utils/parserReceita';","importStack":"\u001b[1mImport stack:\u001b[22m\n\n\u001b[90m \u001b[39massets\\Pages\\PaginaCamera.tsx\n\u001b[90m |\u001b[39m \u001b[36mimport\u001b[39m \u001b[32m\"expo-file-system\"\u001b[39m\n\n\u001b[90m \u001b[39mApp.tsx\n\u001b[90m |\u001b[39m \u001b[36mimport\u001b[39m \u001b[32m\"./assets/Pages/PaginaCamera\"\u001b[39m\n\n\u001b[90m \u001b[39mindex.ts\n\u001b[90m |\u001b[39m \u001b[36mimport\u001b[39m \u001b[32m\"./App\"\u001b[39m\n\n\u001b[90m \u001b[39m\n\u001b[90m |\u001b[39m \u001b[36mimport\u001b[39m \u001b[32m\"./index.ts\"\u001b[39m\n","filename":null,"targetModuleName":"expo-file-system","originModulePath":"assets\\Pages\\PaginaCamera.tsx"}
+{"_e":"metro:bundling:started","_t":1789587753886,"id":"a","platform":"android","environment":null,"entry":"index.ts"}
+{"_e":"metro:bundling:progress","_t":1789587753886,"id":"a","progress":0,"total":1,"current":0}
+{"_e":"metro:bundling:progress","_t":1789587753887,"id":"a","progress":0,"total":1,"current":0}
+{"_e":"metro:bundling:progress","_t":1789587754655,"id":"a","progress":0,"total":1,"current":0}
+{"_e":"metro:bundling:failed","_t":1789587754659,"id":"a","message":"Unable to resolve \"expo-file-system\" from \"assets\\Pages\\PaginaCamera.tsx\"\n  10 | } from 'react-native';\n  11 | import { CameraView, useCameraPermissions } from 'expo-camera';\n> 12 | import { File } from 'expo-file-system';\n     |                       ^\n  13 |\n  14 | import { useAuth } from '../Contexts/AuthContext';\n  15 | import { parseReceita } from '../utils/parserReceita';","importStack":"\u001b[1mImport stack:\u001b[22m\n\n\u001b[90m \u001b[39massets\\Pages\\PaginaCamera.tsx\n\u001b[90m |\u001b[39m \u001b[36mimport\u001b[39m \u001b[32m\"expo-file-system\"\u001b[39m\n\n\u001b[90m \u001b[39mApp.tsx\n\u001b[90m |\u001b[39m \u001b[36mimport\u001b[39m \u001b[32m\"./assets/Pages/PaginaCamera\"\u001b[39m\n\n\u001b[90m \u001b[39mindex.ts\n\u001b[90m |\u001b[39m \u001b[36mimport\u001b[39m \u001b[32m\"./App\"\u001b[39m\n\n\u001b[90m \u001b[39m\n\u001b[90m |\u001b[39m \u001b[36mimport\u001b[39m \u001b[32m\"./index.ts\"\u001b[39m\n","filename":null,"targetModuleName":"expo-file-system","originModulePath":"assets\\Pages\\PaginaCamera.tsx"}

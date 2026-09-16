@@ -9,6 +9,7 @@ import PaginaArte from './assets/Pages/PaginaArte';
 import PaginaLogin from './assets/Pages/PaginaLogin';
 import PaginaCadastro from './assets/Pages/PaginaCadastro';
 import PaginaPrincipal from './assets/Pages/PaginaPrincipal';
+import PaginaCamera from './assets/Pages/PaginaCamera';
 
 import PaginaPerfil from './assets/Pages/PaginaPerfil';
 import PaginaNotificacoes from './assets/Pages/PaginaNotificacoes';
@@ -48,6 +49,13 @@ export default function App() {
             <Stack.Screen
               name="PaginaPrincipal"
               component={PaginaPrincipal}
+            />
+
+            {/* CAMERA / ESCANEAR RECEITA */}
+            <Stack.Screen
+              name="PaginaCamera"
+              component={PaginaCamera}
+              options={{ animation: 'slide_from_bottom' }}
             />
 
             {/* MENU LATERAL */}
