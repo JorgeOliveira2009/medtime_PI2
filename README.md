@@ -47,24 +47,34 @@ apresentação: https://canva.link/7yzkmbztfahzpb8
 ## Arquitetura
 
 ```
-medtime/
-├── frontend/          # React Native + Expo
-│   ├── src/
-│   │   ├── screens/   # Telas do app
-│   │   ├── components/# Componentes reutilizáveis (MedCard, MenuLateral...)
-│   │   ├── context/   # Context API (estado global)
-│   │   ├── navigation/# React Navigation
-│   │   └── services/  # Chamadas à API
-│   └── app.json
+MEDTIME_PI2/
 │
-└── backend/           # Node.js + TypeScript + Express
-    ├── src/
-    │   ├── controllers/
-    │   ├── entities/  # TypeORM entities
-    │   ├── routes/
-    │   ├── middlewares/
-    │   └── config/
-    └── tests/         # Jest
+├── backend/
+│   ├── src/                  # Código fonte da API
+│   ├── .env                  # Variáveis de ambiente
+│   ├── .gitignore
+│   ├── jest.config.js        # Configuração dos testes
+│   ├── package.json
+│   ├── server.ts             # Entry point do servidor
+│   └── tsconfig.json
+│
+├── Documentacao/
+│   ├── Documentacao_Backend.md
+│   ├── Documentacao_rotas.md
+│   ├── instrucoes.md
+│   ├── IntegracaoDeCameraReactNative.md
+│   └── rotas.md
+│
+└── Frontend/
+    ├── .expo/
+    ├── assets/               # Imagens e fontes
+    ├── .gitignore
+    ├── app.json
+    ├── App.tsx               # Entry point do app
+    ├── index.ts
+    ├── package.json
+    ├── tsconfig.json
+    └── rotas.json
 ```
 
 **Fluxo geral:** o frontend em React Native se comunica com a API REST via HTTP. O backend valida os dados com Zod, autentica com JWT e persiste no MySQL via TypeORM. O backend e o banco estão hospedados no Railway.
