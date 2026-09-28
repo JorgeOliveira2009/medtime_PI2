@@ -27,8 +27,6 @@ Com o MedTime, o usuário fotografa a receita ou o rótulo da caixa e o app pree
 
 apresentação: https://canva.link/7yzkmbztfahzpb8
 
-Artigo: https://www.overleaf.com/read/zmsqpqgtyrtq#e4b70c
-
 ---
 
 ## Funcionalidades
