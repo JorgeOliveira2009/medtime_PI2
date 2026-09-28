@@ -210,5 +210,5 @@ Projeto acadêmico desenvolvido no **Centro Universitário SENAC — São Leopol
 ---
 
 <div align="center">
-  <sub>Feito com 💊 pelo time MedTime</sub>
+  <sub>Feito com carinho pelo time MedTime Group 💊❤️</sub>
 </div>
