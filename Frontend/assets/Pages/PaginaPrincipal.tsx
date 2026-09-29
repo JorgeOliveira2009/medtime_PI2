@@ -15,6 +15,7 @@ import {
   Alert,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import logo from './logo.png';
 import MenuLateral from '../Components/MenuLateral';
@@ -175,7 +176,6 @@ const getStyles = (colors: typeof coresClaro) =>
     greeting: { fontSize: 18, fontWeight: '800', color: colors.text },
     headerSub: { fontSize: 12, color: colors.textSecondary, marginTop: 1 },
     menuBtn: { width: 40, height: 40, borderRadius: 12, backgroundColor: colors.card, justifyContent: 'center', alignItems: 'center', elevation: 2 },
-    menuIcon: { fontSize: 18, color: colors.text },
     card: { marginHorizontal: 20, marginBottom: 16, backgroundColor: colors.card, borderRadius: 24, padding: 20, shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.07, shadowRadius: 16, elevation: 5 },
     progressCard: { marginHorizontal: 20, marginBottom: 16, backgroundColor: TEAL, borderRadius: 24, padding: 20, shadowColor: TEAL, shadowOffset: { width: 0, height: 6 }, shadowOpacity: 0.35, shadowRadius: 12, elevation: 6 },
     progressInfo: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 },
@@ -187,7 +187,6 @@ const getStyles = (colors: typeof coresClaro) =>
     progressLabel: { color: 'rgba(255,255,255,0.85)', fontSize: 12, fontWeight: '500' },
     calHeader: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14 },
     calArrow: { width: 32, height: 32, borderRadius: 10, backgroundColor: colors.iconBox, justifyContent: 'center', alignItems: 'center' },
-    calArrowText: { fontSize: 20, color: colors.text, fontWeight: '700', lineHeight: 24 },
     calTitle: { fontSize: 15, fontWeight: '700', color: colors.text },
     calWeekRow: { flexDirection: 'row', marginBottom: 6 },
     calWeekDay: { flex: 1, textAlign: 'center', fontSize: 11, fontWeight: '700', color: colors.textSecondary },
@@ -201,7 +200,7 @@ const getStyles = (colors: typeof coresClaro) =>
     sectionHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 },
     sectionTitle: { fontSize: 16, fontWeight: '800', color: colors.text },
     emptyState: { alignItems: 'center', paddingVertical: 28 },
-    emptyIcon: { fontSize: 40, marginBottom: 10 },
+    emptyIcon: { marginBottom: 10 },
     emptyText: { fontSize: 15, fontWeight: '700', color: colors.text, marginBottom: 4 },
     emptySubtext: { fontSize: 13, color: colors.textSecondary },
     remedioRow: { flexDirection: 'row', alignItems: 'center', paddingVertical: 10, borderBottomWidth: 1, borderBottomColor: colors.border, gap: 10 },
@@ -209,22 +208,19 @@ const getStyles = (colors: typeof coresClaro) =>
     horarioBadgeDone: { backgroundColor: '#E8F5E9' },
     horarioText: { fontSize: 11, fontWeight: '700', color: TEAL },
     horarioTextDone: { color: '#43A047' },
-    remedioNomeTouch: { flex: 1 },
-    remedioNome: { fontSize: 13, fontWeight: '600', color: colors.text },
+    remedioNomeTouch: { flex: 1, flexDirection: 'row', alignItems: 'center', gap: 5 },
+    remedioNome: { flexShrink: 1, fontSize: 13, fontWeight: '600', color: colors.text },
     remedioNomeDone: { color: colors.textSecondary, textDecorationLine: 'line-through' },
     remedioActions: { flexDirection: 'row', alignItems: 'center', gap: 6 },
     deleteBtn: { width: 28, height: 28, borderRadius: 8, backgroundColor: '#FFEBEE', justifyContent: 'center', alignItems: 'center' },
-    deleteBtnText: { color: ERROR, fontSize: 12, fontWeight: '800' },
     checkBtn: { width: 28, height: 28, borderRadius: 14, borderWidth: 2, borderColor: '#CFD8DC', justifyContent: 'center', alignItems: 'center' },
     checkBtnDone: { backgroundColor: '#43A047', borderColor: '#43A047' },
-    checkIcon: { color: '#FFF', fontSize: 14, fontWeight: '800' },
-    obsBox: { backgroundColor: colors.iconBox, borderRadius: 12, padding: 10, marginTop: -4, marginBottom: 8 },
-    obsText: { fontSize: 12, color: colors.text, lineHeight: 18 },
+    obsBox: { flexDirection: 'row', alignItems: 'flex-start', gap: 6, backgroundColor: colors.iconBox, borderRadius: 12, padding: 10, marginTop: -4, marginBottom: 8 },
+    obsText: { flex: 1, fontSize: 12, color: colors.text, lineHeight: 18 },
     addRow: { flexDirection: 'row', gap: 10, marginTop: 14 },
     addBtn: { flex: 1, height: 48, borderRadius: 14, borderWidth: 1.5, borderColor: TEAL, borderStyle: 'dashed', justifyContent: 'center', alignItems: 'center' },
     addBtnText: { color: TEAL, fontSize: 14, fontWeight: '700' },
     scanBtn: { width: 48, height: 48, borderRadius: 14, backgroundColor: TEAL, justifyContent: 'center', alignItems: 'center' },
-    scanBtnText: { fontSize: 20 },
     modalOverlay: { flex: 1, backgroundColor: 'rgba(0,0,0,0.5)', justifyContent: 'flex-end' },
     modalCard: { backgroundColor: colors.card, borderTopLeftRadius: 28, borderTopRightRadius: 28, padding: 28, paddingBottom: 40 },
     modalTitle: { fontSize: 20, fontWeight: '800', color: colors.text, marginBottom: 20 },
@@ -466,7 +462,7 @@ const PaginaPrincipal = ({ navigation, route }: any) => {
             <Text style={styles.headerSub}>{t('principal.veja')}</Text>
           </View>
           <TouchableOpacity style={styles.menuBtn} onPress={() => setMenuVisible(true)}>
-            <Text style={styles.menuIcon}>☰</Text>
+            <MaterialCommunityIcons name="menu" size={22} color={colors.text} />
           </TouchableOpacity>
         </View>
 
@@ -486,11 +482,11 @@ const PaginaPrincipal = ({ navigation, route }: any) => {
         <View style={styles.card}>
           <View style={styles.calHeader}>
             <TouchableOpacity onPress={() => mudarMes(-1)} style={styles.calArrow}>
-              <Text style={styles.calArrowText}>‹</Text>
+              <MaterialCommunityIcons name="chevron-left" size={22} color={colors.text} />
             </TouchableOpacity>
             <Text style={styles.calTitle}>{MESES[mesSel]} {anoSel}</Text>
             <TouchableOpacity onPress={() => mudarMes(1)} style={styles.calArrow}>
-              <Text style={styles.calArrowText}>›</Text>
+              <MaterialCommunityIcons name="chevron-right" size={22} color={colors.text} />
             </TouchableOpacity>
           </View>
           <View style={styles.calWeekRow}>
@@ -516,7 +512,7 @@ const PaginaPrincipal = ({ navigation, route }: any) => {
 
           {remediosDoDia.length === 0 && (
             <View style={styles.emptyState}>
-              <Text style={styles.emptyIcon}>💊</Text>
+              <MaterialCommunityIcons name="pill" size={40} color={colors.textSecondary} style={styles.emptyIcon} />
               <Text style={styles.emptyText}>{t('principal.nenhumCadastrado')}</Text>
               <Text style={styles.emptySubtext}>{t('principal.toqueAdicionar')}</Text>
             </View>
@@ -533,23 +529,30 @@ const PaginaPrincipal = ({ navigation, route }: any) => {
 
                   <TouchableOpacity style={styles.remedioNomeTouch} onPress={() => toggleObservacao(dose.chave)} disabled={!dose.observacoes} activeOpacity={dose.observacoes ? 0.6 : 1}>
                     <Text style={[styles.remedioNome, dose.tomado && styles.remedioNomeDone]} numberOfLines={1}>
-                      {dose.nome}{dose.observacoes ? ' 💬' : ''}{dose.ehVirtual ? ' 🔁' : ''}
+                      {dose.nome}
                     </Text>
+                    {dose.observacoes && (
+                      <MaterialCommunityIcons name="comment-text-outline" size={14} color={colors.textSecondary} />
+                    )}
+                    {dose.ehVirtual && (
+                      <MaterialCommunityIcons name="repeat" size={14} color={colors.textSecondary} />
+                    )}
                   </TouchableOpacity>
 
                   <View style={styles.remedioActions}>
                     <TouchableOpacity style={styles.deleteBtn} onPress={() => removerDose(dose)}>
-                      <Text style={styles.deleteBtnText}>✕</Text>
+                      <MaterialCommunityIcons name="close" size={14} color={ERROR} />
                     </TouchableOpacity>
                     <TouchableOpacity style={[styles.checkBtn, dose.tomado && styles.checkBtnDone]} onPress={() => alternarDose(dose)}>
-                      <Text style={styles.checkIcon}>{dose.tomado ? '✓' : ''}</Text>
+                      {dose.tomado && <MaterialCommunityIcons name="check" size={14} color="#FFF" />}
                     </TouchableOpacity>
                   </View>
                 </View>
 
                 {expandido && dose.observacoes && (
                   <View style={styles.obsBox}>
-                    <Text style={styles.obsText}>💬 {dose.observacoes}</Text>
+                    <MaterialCommunityIcons name="comment-text-outline" size={14} color={colors.text} style={{ marginTop: 2 }} />
+                    <Text style={styles.obsText}>{dose.observacoes}</Text>
                   </View>
                 )}
               </View>
@@ -561,7 +564,7 @@ const PaginaPrincipal = ({ navigation, route }: any) => {
               <Text style={styles.addBtnText}>{t('principal.adicionarRemedio')}</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.scanBtn} onPress={abrirCamera}>
-              <Text style={styles.scanBtnText}>📷</Text>
+              <MaterialCommunityIcons name="camera" size={22} color="#FFF" />
             </TouchableOpacity>
           </View>
         </View>
@@ -576,7 +579,8 @@ const PaginaPrincipal = ({ navigation, route }: any) => {
 
             {avisoEscaneado && (
               <View style={styles.avisoBox}>
-                <Text style={styles.avisoText}>📷 Dados lidos da câmera — confira antes de salvar</Text>
+                <MaterialCommunityIcons name="camera-outline" size={16} color={colors.text} />
+                <Text style={styles.avisoText}>Dados lidos da câmera — confira antes de salvar</Text>
               </View>
             )}
 

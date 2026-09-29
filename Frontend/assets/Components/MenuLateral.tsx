@@ -9,6 +9,7 @@ import {
   SafeAreaView,
   StatusBar,
 } from 'react-native';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import logo from '../Pages/logo.png';
 import { useTheme } from '../Contexts/ThemeContext';
@@ -20,12 +21,14 @@ interface MenuLateralProps {
   navigation: any;
 }
 
-const ITENS = [
-  { icon: '💊', labelKey: 'menu.remedios',       rota: 'PaginaPrincipal' },
-  { icon: '👤', labelKey: 'menu.perfil',         rota: 'PaginaPerfil' },
-  { icon: '🔔', labelKey: 'menu.notificacoes',   rota: 'PaginaNotificacoes' },
-  { icon: '❓', labelKey: 'menu.ajuda',          rota: 'PaginaAjuda' },
-  { icon: '⚙️', labelKey: 'menu.configuracoes',  rota: 'PaginaConfiguracoes' },
+type IconName = React.ComponentProps<typeof MaterialCommunityIcons>['name'];
+
+const ITENS: { icon: IconName; labelKey: string; rota: string }[] = [
+  { icon: 'pill',              labelKey: 'menu.remedios',      rota: 'PaginaPrincipal' },
+  { icon: 'account',           labelKey: 'menu.perfil',        rota: 'PaginaPerfil' },
+  { icon: 'bell',              labelKey: 'menu.notificacoes',  rota: 'PaginaNotificacoes' },
+  { icon: 'help-circle',       labelKey: 'menu.ajuda',         rota: 'PaginaAjuda' },
+  { icon: 'cog',               labelKey: 'menu.configuracoes', rota: 'PaginaConfiguracoes' },
 ];
 
 const coresClaro = {
@@ -34,6 +37,7 @@ const coresClaro = {
   textSecondary: '#78909C',
   iconBox: '#E0F7FA',
   border: '#F0F4F8',
+  iconColor: '#00BCD4',
 };
 
 const coresEscuro = {
@@ -42,6 +46,7 @@ const coresEscuro = {
   textSecondary: '#AAAAAA',
   iconBox: '#2A2A2A',
   border: '#2C2C2C',
+  iconColor: '#4DD0E1',
 };
 
 const getStyles = (colors: typeof coresClaro) => StyleSheet.create({
@@ -54,14 +59,11 @@ const getStyles = (colors: typeof coresClaro) => StyleSheet.create({
   appName: { fontSize: 16, fontWeight: '800', color: colors.text },
   appSub: { fontSize: 11, color: colors.textSecondary, marginTop: 1 },
   closeBtn: { marginLeft: 'auto', width: 32, height: 32, borderRadius: 10, backgroundColor: colors.iconBox, justifyContent: 'center', alignItems: 'center' },
-  closeBtnText: { fontSize: 13, color: colors.text, fontWeight: '700' },
   divider: { height: 1, backgroundColor: colors.border, marginHorizontal: 20, marginVertical: 8 },
   itemList: { paddingHorizontal: 12, paddingVertical: 8 },
   menuItem: { flexDirection: 'row', alignItems: 'center', gap: 12, paddingVertical: 12, paddingHorizontal: 12, borderRadius: 14, marginBottom: 2 },
   menuIconBox: { width: 38, height: 38, borderRadius: 10, backgroundColor: colors.iconBox, justifyContent: 'center', alignItems: 'center' },
-  menuIcon: { fontSize: 18 },
   menuLabel: { flex: 1, fontSize: 15, fontWeight: '600', color: colors.text },
-  menuArrow: { fontSize: 18, color: colors.textSecondary },
   sairBtn: { flexDirection: 'row', alignItems: 'center', gap: 12, marginHorizontal: 12, marginTop: 8, paddingVertical: 12, paddingHorizontal: 12, borderRadius: 14 },
   sairIconBox: { backgroundColor: '#FFEBEE' },
   sairLabel: { fontSize: 15, fontWeight: '700', color: '#E53935' },
@@ -93,7 +95,7 @@ const MenuLateral = ({ visible, onClose, navigation }: MenuLateralProps) => {
               <Text style={styles.appSub}>{t('menu.appSub')}</Text>
             </View>
             <TouchableOpacity style={styles.closeBtn} onPress={onClose}>
-              <Text style={styles.closeBtnText}>✕</Text>
+              <MaterialCommunityIcons name="close" size={16} color={colors.text} />
             </TouchableOpacity>
           </View>
 
@@ -103,10 +105,10 @@ const MenuLateral = ({ visible, onClose, navigation }: MenuLateralProps) => {
             {ITENS.map((item, i) => (
               <TouchableOpacity key={i} style={styles.menuItem} onPress={() => navegar(item.rota)} activeOpacity={0.7}>
                 <View style={styles.menuIconBox}>
-                  <Text style={styles.menuIcon}>{item.icon}</Text>
+                  <MaterialCommunityIcons name={item.icon} size={20} color={colors.iconColor} />
                 </View>
                 <Text style={styles.menuLabel}>{t(item.labelKey)}</Text>
-                <Text style={styles.menuArrow}>›</Text>
+                <MaterialCommunityIcons name="chevron-right" size={20} color={colors.textSecondary} />
               </TouchableOpacity>
             ))}
           </View>
@@ -115,7 +117,7 @@ const MenuLateral = ({ visible, onClose, navigation }: MenuLateralProps) => {
 
           <TouchableOpacity style={styles.sairBtn} onPress={() => { onClose(); navigation?.navigate('PaginaLogin'); }} activeOpacity={0.7}>
             <View style={[styles.menuIconBox, styles.sairIconBox]}>
-              <Text style={styles.menuIcon}>🚪</Text>
+              <MaterialCommunityIcons name="logout" size={20} color="#E53935" />
             </View>
             <Text style={styles.sairLabel}>{t('menu.sair')}</Text>
           </TouchableOpacity>

@@ -7,6 +7,9 @@ export const translations = {
       erro: '❌ Erro',
       atencao: 'Atenção',
       ok: 'OK',
+      horaDoRemedioTitulo: '💊 Hora do remédio',
+      estaNaHoraDeTomar: 'Está na hora de tomar:',
+      marcarComoTomado: 'Marcar como tomado',
       meses: [
         'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
         'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro',
@@ -213,6 +216,9 @@ export const translations = {
       erro: '❌ Error',
       atencao: 'Attention',
       ok: 'OK',
+      horaDoRemedioTitulo: '💊 Medication time',
+      estaNaHoraDeTomar: "It's time to take:",
+      marcarComoTomado: 'Mark as taken',
       meses: [
         'January', 'February', 'March', 'April', 'May', 'June',
         'July', 'August', 'September', 'October', 'November', 'December',

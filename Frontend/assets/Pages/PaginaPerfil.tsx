@@ -9,6 +9,7 @@ import {
   StatusBar,
   SafeAreaView,
 } from 'react-native';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import logo from './logo.png';
 import MenuLateral from '../Components/MenuLateral';
@@ -46,13 +47,12 @@ const getStyles = (colors: typeof coresClaro) => StyleSheet.create({
   greeting: { fontSize: 18, fontWeight: '800', color: colors.text },
   headerSub: { fontSize: 12, color: colors.textSecondary, marginTop: 1 },
   menuBtn: { width: 40, height: 40, borderRadius: 12, backgroundColor: colors.card, justifyContent: 'center', alignItems: 'center', elevation: 2 },
-  menuIcon: { fontSize: 18, color: colors.text },
   card: { marginHorizontal: 20, marginBottom: 16, backgroundColor: colors.card, borderRadius: 24, padding: 20, shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.07, shadowRadius: 16, elevation: 5 },
   avatarRow: { flexDirection: 'row', alignItems: 'center', gap: 14 },
   avatar: { width: 64, height: 64, borderRadius: 32, backgroundColor: colors.iconBox, justifyContent: 'center', alignItems: 'center', borderWidth: 2, borderColor: TEAL },
-  avatarIcon: { fontSize: 30 },
   nomeText: { fontSize: 18, fontWeight: '800', color: colors.text },
-  emailText: { fontSize: 14, color: colors.textSecondary, marginTop: 4 },
+  emailRow: { flexDirection: 'row', alignItems: 'center', gap: 5, marginTop: 4 },
+  emailText: { fontSize: 14, color: colors.textSecondary },
   editProfileBtn: { marginTop: 16, backgroundColor: TEAL, paddingVertical: 12, borderRadius: 12, alignItems: 'center' },
   editProfileBtnText: { color: '#FFF', fontSize: 15, fontWeight: '700' },
 
@@ -93,18 +93,21 @@ const PaginaPerfil = ({ navigation }: any) => {
             <Text style={styles.headerSub}>{t('perfil.subtitulo')}</Text>
           </View>
           <TouchableOpacity style={styles.menuBtn} onPress={() => setMenuVisible(true)}>
-            <Text style={styles.menuIcon}>☰</Text>
+            <MaterialCommunityIcons name="menu" size={22} color={colors.text} />
           </TouchableOpacity>
         </View>
 
         <View style={styles.card}>
           <View style={styles.avatarRow}>
             <View style={styles.avatar}>
-              <Text style={styles.avatarIcon}>👤</Text>
+              <MaterialCommunityIcons name="account" size={32} color={TEAL} />
             </View>
             <View style={{ flex: 1 }}>
               <Text style={styles.nomeText}>{user?.nome || t('perfil.carregando')}</Text>
-              <Text style={styles.emailText}>📧 {user?.email || t('perfil.carregando')}</Text>
+              <View style={styles.emailRow}>
+                <MaterialCommunityIcons name="email-outline" size={14} color={colors.textSecondary} />
+                <Text style={styles.emailText}>{user?.email || t('perfil.carregando')}</Text>
+              </View>
             </View>
           </View>
 

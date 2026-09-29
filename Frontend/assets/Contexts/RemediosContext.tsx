@@ -1,5 +1,7 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useRef } from 'react';
+import { Alert, Vibration } from 'react-native';
 import { useAuth } from './AuthContext';
+import { useLanguage } from './LanguageContext';
 
 const API_URL = 'https://ideal-creation-production-a192.up.railway.app'
 
@@ -74,9 +76,14 @@ export function RemediosProvider({
   children: React.ReactNode;
 }) {
   const { user, token, carregado: authCarregado } = useAuth();
+  const { t } = useLanguage();
 
   const [remedios, setRemedios] = useState<Remedio[]>([]);
   const [carregado, setCarregado] = useState(false);
+
+  // Guarda quais remédios já dispararam alerta hoje, pra não repetir
+  // toda vez que o check roda dentro do mesmo minuto.
+  const alertadosHojeRef = useRef<Set<string>>(new Set());
 
   /*
    * Carrega os remédios diretamente do banco
@@ -124,6 +131,53 @@ export function RemediosProvider({
         setCarregado(true);
       });
   }, [user, token, authCarregado]);
+
+  /*
+   * Verifica a cada 20s se algum remédio DE HOJE bate com o horário
+   * atual e, se sim, dispara um Alert. Só funciona com o app aberto
+   * (foreground) — é o substituto temporário da notificação nativa,
+   * que está pausada por causa do Expo Go (ver notifications.ts).
+   */
+  useEffect(() => {
+    function checarHorarios() {
+      const agora = new Date();
+      const hh = String(agora.getHours()).padStart(2, '0');
+      const mm = String(agora.getMinutes()).padStart(2, '0');
+      const horarioAtual = `${hh}:${mm}`;
+      const dataAtual = `${agora.getFullYear()}-${String(agora.getMonth() + 1).padStart(2, '0')}-${String(agora.getDate()).padStart(2, '0')}`;
+
+      remedios.forEach(r => {
+        if (r.horario !== horarioAtual) return;
+        if (r.data !== dataAtual) return; // só alerta remédio agendado pra hoje
+
+        const chave = `${r.id}-${dataAtual}`;
+        if (alertadosHojeRef.current.has(chave)) return;
+        alertadosHojeRef.current.add(chave);
+
+        // Padrão: vibra 500ms, pausa 200ms, vibra 500ms de novo — chama mais atenção
+        Vibration.vibrate([0, 500, 200, 500]);
+
+        const mensagem = r.observacoes
+          ? `${t('common.estaNaHoraDeTomar')} ${r.nome}\n\n${r.observacoes}`
+          : `${t('common.estaNaHoraDeTomar')} ${r.nome}`;
+
+        Alert.alert(
+          t('common.horaDoRemedioTitulo'),
+          mensagem,
+          [
+            { text: t('common.ok'), style: 'cancel' },
+            {
+              text: t('common.marcarComoTomado'),
+              onPress: () => toggleRemedio(r.id),
+            },
+          ]
+        );
+      });
+    }
+
+    const intervalo = setInterval(checarHorarios, 20000);
+    return () => clearInterval(intervalo);
+  }, [remedios, t]);
 
   /*
    * Adiciona na lista o remédio que já foi salvo
