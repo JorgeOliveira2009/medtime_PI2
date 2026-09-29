@@ -1029,3 +1029,31 @@
 {"_e":"metro:bundling:progress","_t":1790702120663,"id":"1","progress":0.9981524253368002,"total":1082,"current":1081}
 {"_e":"metro:bundling:progress","_t":1790702120714,"id":"1","progress":0.999,"total":1082,"current":1082}
 {"_e":"metro:bundling:done","_t":1790702120789,"id":"1","total":1082,"ms":837.0478}
+{"_e":"root:init","_t":1790702381324,"format":"v0-jsonl","version":"57.0.23"}
+{"_e":"env:mode","_t":1790702381325,"nodeEnv":"development","babelEnv":"development","mode":"development"}
+{"_e":"env:load","_t":1790702381327,"mode":"development","files":[],"env":{}}
+{"_e":"devserver:start","_t":1790702381632,"mode":"development","web":true,"baseUrl":"","asyncRoutes":false,"routerRoot":"../..\\..\\app","serverComponents":false,"serverActions":false,"serverRendering":false,"apiRoutes":false,"exporting":false}
+{"_e":"metro:config","_t":1790702381959,"serverRoot":"../..\\..","projectRoot":"../..\\..","exporting":false,"flags":{"autolinkingModuleResolution":false,"serverActions":false,"serverComponents":false,"reactCompiler":false,"optimizeGraph":false,"treeshaking":false,"logbox":false}}
+{"_e":"expo:dev-tools-plugin:load","_t":1790702382175,"plugins":[]}
+{"_e":"metro:instantiate","_t":1790702387784,"atlas":false,"workers":8,"host":"::","port":8081}
+{"_e":"metro:bundling:started","_t":1790702402586,"id":"1","platform":"ios","environment":null,"entry":"index.ts"}
+{"_e":"metro:bundling:progress","_t":1790702402586,"id":"1","progress":0,"total":1,"current":0}
+{"_e":"metro:bundling:progress","_t":1790702402589,"id":"1","progress":0,"total":1,"current":0}
+{"_e":"metro:bundling:progress","_t":1790702402692,"id":"1","progress":0.09515656420568804,"total":295,"current":91}
+{"_e":"metro:bundling:progress","_t":1790702402791,"id":"1","progress":0.21501790718975042,"total":427,"current":198}
+{"_e":"metro:bundling:progress","_t":1790702402891,"id":"1","progress":0.32094172637919754,"total":669,"current":379}
+{"_e":"metro:bundling:progress","_t":1790702402992,"id":"1","progress":0.5521935064542023,"total":833,"current":619}
+{"_e":"metro:bundling:progress","_t":1790702403097,"id":"1","progress":0.7998779750164365,"total":975,"current":872}
+{"_e":"metro:bundling:progress","_t":1790702403197,"id":"1","progress":0.9260207458153485,"total":1061,"current":1021}
+{"_e":"metro:bundling:progress","_t":1790702403307,"id":"1","progress":0.9981524253368002,"total":1082,"current":1081}
+{"_e":"metro:bundling:progress","_t":1790702403339,"id":"1","progress":0.999,"total":1082,"current":1082}
+{"_e":"metro:bundling:done","_t":1790702403412,"id":"1","total":1082,"ms":826.7569}
+{"_e":"metro:client_log","_t":1790702420148,"level":"warn","data":["SafeAreaView has been deprecated and will be removed in a future release. Please use 'react-native-safe-area-context' instead. See https://github.com/AppAndFlow/react-native-safe-area-context"]}
+{"_e":"metro:bundling:failed","_t":1790702809878,"id":null,"message":"SyntaxError: C:\\Users\\GABRIELDORNELLESDEAL\\medtime_PI2\\Frontend\\assets\\Pages\\PaginaConfiguracoes.tsx: Unexpected character '🔒'. (324:27)\n\n  322 |   card: '#1E1E1E',\n  323 |   text: '#F5F5F5',\n> 324 |   textSecondary: '#AAAAAA',🔒\n      |                            ^\n  325 |   border: '#2C2C2C',\n  326 |   iconBox: '#2A2A2A',\n  327 | };","importStack":null,"filename":"assets\\Pages\\PaginaConfiguracoes.tsx","targetModuleName":null,"originModulePath":null}
+{"_e":"metro:bundling:failed","_t":1790702810062,"id":null,"message":"SyntaxError: C:\\Users\\GABRIELDORNELLESDEAL\\medtime_PI2\\Frontend\\assets\\Pages\\PaginaConfiguracoes.tsx: Unexpected character '🔒'. (324:27)\n\n  322 |   card: '#1E1E1E',\n  323 |   text: '#F5F5F5',\n> 324 |   textSecondary: '#AAAAAA',🔒\n      |                            ^\n  325 |   border: '#2C2C2C',\n  326 |   iconBox: '#2A2A2A',\n  327 | };","importStack":null,"filename":"assets\\Pages\\PaginaConfiguracoes.tsx","targetModuleName":null,"originModulePath":null}
+{"_e":"metro:client_log","_t":1790702833110,"level":"error","data":["[TypeError: undefined is not a function]"]}
+{"_e":"metro:client_log","_t":1790702833197,"level":"error","data":["[TypeError: An error was thrown when attempting to render log messages via LogBox.\n\nundefined is not a function]"]}
+{"_e":"metro:bundling:started","_t":1790702855785,"id":"j","platform":"ios","environment":null,"entry":"index.ts"}
+{"_e":"metro:bundling:progress","_t":1790702855786,"id":"j","progress":0,"total":1,"current":0}
+{"_e":"metro:bundling:done","_t":1790702855820,"id":"j","total":1,"ms":34.0583}
+{"_e":"metro:client_log","_t":1790702872873,"level":"warn","data":["SafeAreaView has been deprecated and will be removed in a future release. Please use 'react-native-safe-area-context' instead. See https://github.com/AppAndFlow/react-native-safe-area-context"]}
