@@ -10,6 +10,8 @@ import {
   SafeAreaView,
 } from 'react-native';
 
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+
 import logo from './logo.png';
 import MenuLateral from '../Components/MenuLateral';
 import { useTheme } from '../Contexts/ThemeContext';
@@ -122,7 +124,7 @@ const PaginaNotificacoes = ({ navigation }: any) => {
             </Text>
           </View>
           <TouchableOpacity style={styles.menuBtn} onPress={() => setMenuVisible(true)}>
-            <Text style={styles.menuIcon}>☰</Text>
+            <MaterialCommunityIcons name="menu" size={25} color={colors.text} />
           </TouchableOpacity>
         </View>
 
@@ -143,7 +145,7 @@ const PaginaNotificacoes = ({ navigation }: any) => {
 
           {notificacoes.length === 0 && (
             <View style={styles.emptyState}>
-              <Text style={styles.emptyIcon}>🔕</Text>
+              <MaterialCommunityIcons name="bell-off-outline" size={40} color={colors.textSecondary} />
               <Text style={styles.emptyText}>{t('notificacoes.semNotificacoes')}</Text>
               <Text style={styles.emptySubtext}>{t('notificacoes.emDia')}</Text>
             </View>
@@ -156,13 +158,16 @@ const PaginaNotificacoes = ({ navigation }: any) => {
                 <Text style={[styles.notifMensagem, n.lida && styles.notifMensagemLida]}>{n.mensagem}</Text>
                 <View style={styles.notifFooter}>
                   <View style={[styles.horarioBadge, n.lida && styles.horarioBadgeLido]}>
-                    <Text style={[styles.horarioText, n.lida && styles.horarioTextLido]}>⏰ {n.horario}</Text>
+                    <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
+                      <MaterialCommunityIcons name="clock-outline" size={13} color={n.lida ? colors.textSecondary : TEAL} />
+                      <Text style={[styles.horarioText, n.lida && styles.horarioTextLido]}>{n.horario}</Text>
+                    </View>
                   </View>
                   {!n.lida && <Text style={styles.tapHint}>{t('notificacoes.tocarMarcar')}</Text>}
                 </View>
               </View>
               <TouchableOpacity style={styles.removeBtn} onPress={() => remover(n.id)}>
-                <Text style={styles.removeBtnText}>✕</Text>
+                <MaterialCommunityIcons name="close" size={16} color={ERROR} />
               </TouchableOpacity>
             </TouchableOpacity>
           ))}
