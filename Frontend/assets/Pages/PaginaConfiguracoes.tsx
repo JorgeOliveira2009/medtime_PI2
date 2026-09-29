@@ -18,6 +18,7 @@ import {
   Linking,
 } from 'react-native';
 import { useCameraPermissions } from 'expo-camera';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import logo from './logo.png';
 import MenuLateral from '../Components/MenuLateral';
@@ -168,7 +169,7 @@ const PaginaConfiguracoes = ({ navigation }: any) => {
             <Text style={styles.headerSub}>{t('configuracoes.subtitulo')}</Text>
           </View>
           <TouchableOpacity style={styles.menuBtn} onPress={() => setMenuVisible(true)}>
-            <Text style={styles.menuIcon}>☰</Text>
+            <MaterialCommunityIcons name="menu" size={25} color={colors.text} />
           </TouchableOpacity>
         </View>
 
@@ -177,7 +178,7 @@ const PaginaConfiguracoes = ({ navigation }: any) => {
 
           <TouchableOpacity style={styles.settingRow} onPress={handleAbrirEdicao} activeOpacity={0.7}>
             <View style={styles.settingLeft}>
-              <View style={styles.settingIconBox}><Text style={styles.settingIcon}>✏️</Text></View>
+              <View style={styles.settingIconBox}><MaterialCommunityIcons name="pencil" size={20} color={colors.text} /></View>
               <Text style={styles.settingLabel}>{t('configuracoes.editarPerfil')}</Text>
             </View>
             <Text style={styles.settingArrow}>›</Text>
@@ -187,7 +188,7 @@ const PaginaConfiguracoes = ({ navigation }: any) => {
 
           <View style={styles.settingRow}>
             <View style={styles.settingLeft}>
-              <View style={styles.settingIconBox}><Text style={styles.settingIcon}>🌙</Text></View>
+              <View style={styles.settingIconBox}><MaterialCommunityIcons name="moon-waning-crescent" size={20} color={colors.text} /></View>
               <Text style={styles.settingLabel}>{t('configuracoes.modoEscuro')}</Text>
             </View>
             <Switch value={darkMode} onValueChange={alternarTema} />
@@ -198,7 +199,7 @@ const PaginaConfiguracoes = ({ navigation }: any) => {
           {/* ── Seletor de idioma ── */}
           <View style={styles.settingRow}>
             <View style={styles.settingLeft}>
-              <View style={styles.settingIconBox}><Text style={styles.settingIcon}>🌐</Text></View>
+              <View style={styles.settingIconBox}><MaterialCommunityIcons name="web" size={20} color={colors.text} /></View>
               <Text style={styles.settingLabel}>{t('configuracoes.idioma')}</Text>
             </View>
             <View style={styles.idiomaSwitchBox}>
@@ -221,7 +222,7 @@ const PaginaConfiguracoes = ({ navigation }: any) => {
 
           <TouchableOpacity style={styles.settingRow} onPress={handleLogout} activeOpacity={0.7}>
             <View style={styles.settingLeft}>
-              <View style={styles.settingIconBox}><Text style={styles.settingIcon}>🚪</Text></View>
+              <View style={styles.settingIconBox}><MaterialCommunityIcons name="logout" size={20} color={colors.text} /></View>
               <Text style={styles.settingLabel}>{t('configuracoes.sairConta')}</Text>
             </View>
             <Text style={styles.settingArrow}>›</Text>
@@ -231,7 +232,7 @@ const PaginaConfiguracoes = ({ navigation }: any) => {
 
           <TouchableOpacity style={[styles.settingRow, styles.dangerRow]} onPress={handleDeletarConta} disabled={deletando} activeOpacity={0.7}>
             <View style={styles.settingLeft}>
-              <View style={[styles.settingIconBox, styles.dangerIconBox]}><Text style={styles.settingIcon}>🗑️</Text></View>
+              <View style={[styles.settingIconBox, styles.dangerIconBox]}><MaterialCommunityIcons name="delete" size={20} color={DANGER} /></View>
               <Text style={[styles.settingLabel, styles.dangerText]}>{deletando ? t('configuracoes.deletando') : t('configuracoes.deletarConta')}</Text>
             </View>
             {deletando ? <ActivityIndicator size="small" color="#E53935" /> : <Text style={styles.settingArrow}>›</Text>}
@@ -243,7 +244,7 @@ const PaginaConfiguracoes = ({ navigation }: any) => {
 
           <View style={styles.settingRow}>
             <View style={styles.settingLeft}>
-              <View style={styles.settingIconBox}><Text style={styles.settingIcon}>📷</Text></View>
+              <View style={styles.settingIconBox}><MaterialCommunityIcons name="camera" size={20} color={colors.text} /></View>
               <View>
                 <Text style={styles.settingLabel}>{t('configuracoes.permissaoCamera')}</Text>
                 <Text style={styles.settingSubLabel}>
@@ -255,7 +256,7 @@ const PaginaConfiguracoes = ({ navigation }: any) => {
             </View>
 
             {permissaoCamera?.granted ? (
-              <Text style={styles.permissaoOkIcon}>✓</Text>
+              <MaterialCommunityIcons name="check" size={18} color="#43A047" />
             ) : (
               <TouchableOpacity style={styles.permissaoBtn} onPress={handlePermissaoCamera}>
                 <Text style={styles.permissaoBtnText}>{t('configuracoes.permitir')}</Text>
