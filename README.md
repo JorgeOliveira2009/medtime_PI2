@@ -170,17 +170,6 @@ JWT_SECRET=sua_chave_secreta
 
 ---
 
-## Testes
-
-Os testes cobrem os principais endpoints da API e são executados com Jest:
-
-```bash
-cd backend
-npm run test
-```
-
----
-
 ## Deploy
 
 O backend está hospedado no [Railway](https://railway.app). As variáveis de ambiente são configuradas direto no painel do Railway. O banco MySQL também está provisionado lá.
