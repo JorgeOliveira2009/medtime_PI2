@@ -3,7 +3,8 @@ import { Alert, Vibration } from 'react-native';
 import { useAuth } from './AuthContext';
 import { useLanguage } from './LanguageContext';
 
-const API_URL = 'https://ideal-creation-production-a192.up.railway.app'
+//const API_URL = 'https://ideal-creation-production-a192.up.railway.app'
+const API_URL = 'http://172.20.86.203:3000';
 
 /* ─── Tipos ─── */
 export interface Remedio {

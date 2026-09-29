@@ -8,19 +8,21 @@ import userRoutes from "./src/routes/user-routes";
 import { errorMiddleware, notFoundMiddleware } from "./src/middlewares/errors-middlewares";
 import { AppDataSource } from "./src/config/database";
 import { swaggerSpec } from "./src/config/swagger";
-import { globalRateLimit } from "./src/middlewares/rate-limit.middlewares"; // ← novo
+import { globalRateLimit } from "./src/middlewares/rate-limit.middlewares";
 import remedioRoutes from "./src/routes/remedio-routes";
+import ocrRoutes from "./src/routes/ocr-routes"; // ← novo
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(globalRateLimit); // ← antes de tudo, protege toda a API
+app.use(globalRateLimit);
 
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use("/user", userRoutes);
 app.use("/remedio", remedioRoutes);
+app.use("/ocr", ocrRoutes); // ← novo
 
 app.use(notFoundMiddleware);
 app.use(errorMiddleware);

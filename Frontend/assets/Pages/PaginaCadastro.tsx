@@ -16,7 +16,8 @@ import logo from './logo.png';
 import { useTheme } from '../Contexts/ThemeContext';
 import { useLanguage } from '../Contexts/LanguageContext';
 
-const API_URL = 'https://ideal-creation-production-a192.up.railway.app'
+//const API_URL = 'https://ideal-creation-production-a192.up.railway.app'
+const API_URL = 'http://172.20.86.203:3000';
 
 const coresClaro = {
   background: '#E0F7FA',

@@ -15,7 +15,8 @@ import * as ImageManipulator from 'expo-image-manipulator';
 import { useAuth } from '../Contexts/AuthContext';
 import { parseReceita } from '../utils/parserReceita';
 
-const API_URL = 'https://ideal-creation-production-a192.up.railway.app';
+//const API_URL = 'https://ideal-creation-production-a192.up.railway.app';
+const API_URL = 'http://172.20.86.203:3000';
 
 export default function PaginaCamera({ navigation }: any) {
   const [permissao, pedirPermissao] = useCameraPermissions();

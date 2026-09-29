@@ -25,8 +25,8 @@ import MenuLateral from '../Components/MenuLateral';
 import { useAuth } from '../Contexts/AuthContext';
 import { useTheme } from '../Contexts/ThemeContext';
 import { useLanguage } from '../Contexts/LanguageContext';
-
-const API_URL = 'http://172.20.86.107:3000'
+//const API_URL = 'http://172.20.86.107:3000'
+const API_URL = 'http://172.20.86.203:3000';
 
 const PaginaConfiguracoes = ({ navigation }: any) => {
   const { user, token, logout, updateUser } = useAuth();

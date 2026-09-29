@@ -1077,3 +1077,26 @@
 {"_e":"metro:bundling:progress","_t":1790704688299,"id":"1","progress":0.999,"total":1082,"current":1082}
 {"_e":"metro:bundling:done","_t":1790704688394,"id":"1","total":1082,"ms":3617.4079}
 {"_e":"metro:client_log","_t":1790704746887,"level":"warn","data":["SafeAreaView has been deprecated and will be removed in a future release. Please use 'react-native-safe-area-context' instead. See https://github.com/AppAndFlow/react-native-safe-area-context"]}
+{"_e":"root:init","_t":1790707779700,"format":"v0-jsonl","version":"57.0.23"}
+{"_e":"env:mode","_t":1790707779717,"nodeEnv":"development","babelEnv":"development","mode":"development"}
+{"_e":"env:load","_t":1790707779733,"mode":"development","files":[],"env":{}}
+{"_e":"devserver:start","_t":1790707784678,"mode":"development","web":true,"baseUrl":"","asyncRoutes":false,"routerRoot":"../..\\..\\app","serverComponents":false,"serverActions":false,"serverRendering":false,"apiRoutes":false,"exporting":false}
+{"_e":"metro:config","_t":1790707791058,"serverRoot":"../..\\..","projectRoot":"../..\\..","exporting":false,"flags":{"autolinkingModuleResolution":false,"serverActions":false,"serverComponents":false,"reactCompiler":false,"optimizeGraph":false,"treeshaking":false,"logbox":false}}
+{"_e":"expo:dev-tools-plugin:load","_t":1790707793818,"plugins":[]}
+{"_e":"metro:instantiate","_t":1790707802349,"atlas":false,"workers":8,"host":"::","port":8081}
+{"_e":"metro:bundling:started","_t":1790707808079,"id":"1","platform":"ios","environment":null,"entry":"index.ts"}
+{"_e":"metro:bundling:progress","_t":1790707808079,"id":"1","progress":0,"total":1,"current":0}
+{"_e":"metro:bundling:progress","_t":1790707808085,"id":"1","progress":0,"total":1,"current":0}
+{"_e":"metro:bundling:progress","_t":1790707808185,"id":"1","progress":0.060024999999999995,"total":200,"current":49}
+{"_e":"metro:bundling:progress","_t":1790707808286,"id":"1","progress":0.10027777777777777,"total":300,"current":95}
+{"_e":"metro:bundling:progress","_t":1790707808386,"id":"1","progress":0.20013850415512466,"total":380,"current":170}
+{"_e":"metro:bundling:progress","_t":1790707808489,"id":"1","progress":0.2251199637845179,"total":470,"current":223}
+{"_e":"metro:bundling:progress","_t":1790707808589,"id":"1","progress":0.27843350153884605,"total":506,"current":267}
+{"_e":"metro:bundling:progress","_t":1790707808689,"id":"1","progress":0.3649379534078357,"total":634,"current":383}
+{"_e":"metro:bundling:progress","_t":1790707808789,"id":"1","progress":0.6022087171769248,"total":759,"current":589}
+{"_e":"metro:bundling:progress","_t":1790707808891,"id":"1","progress":0.7681530649798122,"total":866,"current":759}
+{"_e":"metro:bundling:progress","_t":1790707808997,"id":"1","progress":0.8611041738929356,"total":930,"current":863}
+{"_e":"metro:bundling:progress","_t":1790707809108,"id":"1","progress":0.9774943267455842,"total":972,"current":961}
+{"_e":"metro:bundling:progress","_t":1790707813804,"id":"1","progress":0.9795297126115599,"total":972,"current":962}
+{"_e":"metro:bundling:progress","_t":1790707813904,"id":"1","progress":0.9795297126115599,"total":1001,"current":989}
+{"_e":"metro:bundling:failed","_t":1790707813978,"id":"1","message":"Unable to resolve \"@expo/vector-icons\" from \"assets\\Pages\\PaginaPerfil.tsx\"\n  10 |   SafeAreaView,\n  11 | } from 'react-native';\n> 12 | import { MaterialCommunityIcons } from '@expo/vector-icons';\n     |                                         ^\n  13 |\n  14 | import logo from './logo.png';\n  15 | import MenuLateral from '../Components/MenuLateral';","importStack":"\u001b[1mImport stack:\u001b[22m\n\n\u001b[90m \u001b[39massets\\Pages\\PaginaPerfil.tsx\n\u001b[90m |\u001b[39m \u001b[36mimport\u001b[39m \u001b[32m\"@expo/vector-icons\"\u001b[39m\n\n\u001b[90m \u001b[39mApp.tsx\n\u001b[90m |\u001b[39m \u001b[36mimport\u001b[39m \u001b[32m\"./assets/Pages/PaginaPerfil\"\u001b[39m\n\n\u001b[90m \u001b[39mindex.ts\n\u001b[90m |\u001b[39m \u001b[36mimport\u001b[39m \u001b[32m\"./App\"\u001b[39m\n\n\u001b[90m \u001b[39m\n\u001b[90m |\u001b[39m \u001b[36mimport\u001b[39m \u001b[32m\"./index.ts\"\u001b[39m\n","filename":null,"targetModuleName":"@expo/vector-icons","originModulePath":"assets\\Pages\\PaginaPerfil.tsx"}

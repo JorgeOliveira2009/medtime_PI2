@@ -31,7 +31,7 @@ export const cadastroRateLimit = rateLimit({
 // GERAL — proteção global pra toda a API, 100 req por 15 minutos
 export const globalRateLimit = rateLimit({
     windowMs: 15 * 60 * 1000,
-    limit: 10,
+    limit: 500,
     standardHeaders: "draft-8",
     legacyHeaders: false,
     message: rateLimitResponse("Muitas requisições. Tente novamente em alguns minutos."),
