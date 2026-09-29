@@ -1010,3 +1010,22 @@
 {"_e":"metro:bundling:progress","_t":1790701727744,"id":"1","progress":0.999,"total":1082,"current":1082}
 {"_e":"metro:bundling:done","_t":1790701727818,"id":"1","total":1082,"ms":859.1822}
 {"_e":"metro:client_log","_t":1790701751430,"level":"warn","data":["SafeAreaView has been deprecated and will be removed in a future release. Please use 'react-native-safe-area-context' instead. See https://github.com/AppAndFlow/react-native-safe-area-context"]}
+{"_e":"root:init","_t":1790702103757,"format":"v0-jsonl","version":"57.0.23"}
+{"_e":"env:mode","_t":1790702103758,"nodeEnv":"development","babelEnv":"development","mode":"development"}
+{"_e":"env:load","_t":1790702103760,"mode":"development","files":[],"env":{}}
+{"_e":"devserver:start","_t":1790702104065,"mode":"development","web":true,"baseUrl":"","asyncRoutes":false,"routerRoot":"../..\\..\\app","serverComponents":false,"serverActions":false,"serverRendering":false,"apiRoutes":false,"exporting":false}
+{"_e":"metro:config","_t":1790702104390,"serverRoot":"../..\\..","projectRoot":"../..\\..","exporting":false,"flags":{"autolinkingModuleResolution":false,"serverActions":false,"serverComponents":false,"reactCompiler":false,"optimizeGraph":false,"treeshaking":false,"logbox":false}}
+{"_e":"expo:dev-tools-plugin:load","_t":1790702104608,"plugins":[]}
+{"_e":"metro:instantiate","_t":1790702110216,"atlas":false,"workers":8,"host":"::","port":8081}
+{"_e":"metro:bundling:started","_t":1790702119952,"id":"1","platform":"ios","environment":null,"entry":"index.ts"}
+{"_e":"metro:bundling:progress","_t":1790702119952,"id":"1","progress":0,"total":1,"current":0}
+{"_e":"metro:bundling:progress","_t":1790702119955,"id":"1","progress":0,"total":1,"current":0}
+{"_e":"metro:bundling:progress","_t":1790702120055,"id":"1","progress":0.07726515369146797,"total":295,"current":82}
+{"_e":"metro:bundling:progress","_t":1790702120155,"id":"1","progress":0.2314880740477038,"total":530,"current":255}
+{"_e":"metro:bundling:progress","_t":1790702120255,"id":"1","progress":0.31080219251688146,"total":687,"current":383}
+{"_e":"metro:bundling:progress","_t":1790702120356,"id":"1","progress":0.5699874384297418,"total":804,"current":607}
+{"_e":"metro:bundling:progress","_t":1790702120456,"id":"1","progress":0.8219656913542259,"total":921,"current":835}
+{"_e":"metro:bundling:progress","_t":1790702120556,"id":"1","progress":0.89338849852071,"total":1040,"current":983}
+{"_e":"metro:bundling:progress","_t":1790702120663,"id":"1","progress":0.9981524253368002,"total":1082,"current":1081}
+{"_e":"metro:bundling:progress","_t":1790702120714,"id":"1","progress":0.999,"total":1082,"current":1082}
+{"_e":"metro:bundling:done","_t":1790702120789,"id":"1","total":1082,"ms":837.0478}
