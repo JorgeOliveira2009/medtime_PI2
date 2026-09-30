@@ -3,20 +3,17 @@ import * as controller from "../controller/user-controller";
 import { authMiddleware } from "../middlewares/auth-middlewares";
 import { validate } from "../middlewares/validate-middleware";
 import { createUserScheme, loginScheme, updateUserScheme } from "../schemas/user.schema";
-import { loginRateLimit, cadastroRateLimit } from "../middlewares/rate-limit.middlewares";
-// loginRateLimit e cadastroRateLimit = limitam tentativas por IP
-// evita ataque de força bruta no login e criação em massa de contas falsas
 
 const router = Router();
 
 // ==================== ROTAS PÚBLICAS ====================
 // sem authMiddleware — qualquer um acessa sem precisar de token
 
-router.post("/cadastro", cadastroRateLimit, validate(createUserScheme), controller.cadastro);
-// POST /usuarios/cadastro → limita tentativas → valida body → cria conta
+router.post("/cadastro", validate(createUserScheme), controller.cadastro);
+// POST /usuarios/cadastro → valida body → cria conta
 
-router.post("/login",    loginRateLimit,    validate(loginScheme),       controller.login);
-// POST /usuarios/login → limita tentativas → valida body → loga e retorna token
+router.post("/login",    validate(loginScheme),       controller.login);
+// POST /usuarios/login → valida body → loga e retorna token
 
 // ==================== ROTAS PROTEGIDAS ====================
 // authMiddleware checa se o token JWT é válido antes de deixar passar
