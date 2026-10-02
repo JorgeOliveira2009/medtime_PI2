@@ -157,15 +157,13 @@ Escaneie o QR code com o Expo Go ou pressione `a` para Android / `i` para iOS.
 Crie um arquivo `.env` dentro da pasta `backend` com base no `.env.example`:
 
 ```env
-PORT=3000
-
 DB_HOST=localhost
+DB_DATABASE=medtime
 DB_PORT=3306
 DB_USER=root
-DB_PASS=sua_senha
-DB_NAME=medtime
-
-JWT_SECRET=sua_chave_secreta
+DB_PASSWORD=root
+JWT_SECRET=jhkzcvbsxhjjhasdasvbd
+OCR_SPACE_API_KEY=K89313494588957
 ```
 
 ---
